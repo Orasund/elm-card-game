@@ -23,12 +23,13 @@ chapter args =
                 ( args.setTo model init, Cmd.none )
             )
         |> ElmBook.Chapter.withStatefulComponentList
-            [ ( "Styles"
+            [ ( "Views"
               , \_ ->
                     View.Component.list
                         [ ( "empty", View.Card.empty )
                         , ( "default", View.Card.default )
                         , ( "back", View.Card.back )
+                        , ( "coin", View.Card.coin )
                         ]
               )
             , ( "Ratios"
@@ -45,15 +46,6 @@ chapter args =
                         [ ( "header", View.Card.titleRow )
                         , ( "fillingImage", View.Card.fullImage )
                         , ( "description", View.Card.imageAndDesc )
-                        ]
-              )
-            , ( "Transformations"
-              , \_ ->
-                    View.Component.list
-                        [ ( "rotate (pi/2)", View.Card.rotated )
-                        , ( "scale (1/2)", View.Card.small )
-                        , ( "translate (0,-50)", View.Card.drawn )
-                        , ( "flip (pi/4)", View.Card.flipped )
                         ]
               )
             ]

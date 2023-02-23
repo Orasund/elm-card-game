@@ -1,13 +1,14 @@
 module View.Component exposing (..)
 
 import Game.Card
+import Game.Entity exposing (Entity)
 import Html exposing (Attribute, Html)
 import Html.Attributes
 
 
 image : String
 image =
-    "https://upload.wikimedia.org/wikipedia/commons/f/f3/Elm_logo.svg"
+    "/assert/Elm_logo.svg"
 
 
 empty : List (Attribute msg) -> Html msg
@@ -15,24 +16,43 @@ empty attrs =
     Game.Card.empty attrs "No Card"
 
 
-defaultCard : List (Attribute msg) -> Html msg
-defaultCard attrs =
-    [ [ Html.div [] [ Html.text "Elm" ]
-      , Html.div [] [ Html.text "🌳" ]
-      ]
-        |> Game.Card.header []
-    , image |> Game.Card.fillingImage []
-    , Html.text "Removes runtime exceptions"
-        |> Game.Card.description []
-    ]
-        |> Game.Card.default attrs
+defaultCard : Entity (List (Attribute msg) -> Html msg)
+defaultCard =
+    (\a ->
+        [ [ Html.div [] [ Html.text "Elm" ]
+          , Html.div [] [ Html.text "🌳" ]
+          ]
+            |> Game.Card.header []
+        , image |> Game.Card.fillingImage []
+        , Html.text "Removes runtime exceptions"
+            |> Game.Card.description []
+        ]
+            |> Game.Card.default a
+    )
+        |> Game.Entity.new
 
 
-defaultBack : List (Attribute msg) -> Html msg
-defaultBack attrs =
-    [ image |> Game.Card.fillingImage [ Html.Attributes.style "filter" "grayscale(1)" ]
+defaultBack : Entity (List (Attribute msg) -> Html msg)
+defaultBack =
+    (\attrs ->
+        [ image |> Game.Card.fillingImage [ Html.Attributes.style "filter" "grayscale(1)" ]
+        ]
+            |> Game.Card.default attrs
+    )
+        |> Game.Entity.new
+
+
+coin : List (Attribute msg) -> Html msg
+coin attrs =
+    [ image
+        |> Game.Card.fillingImage [ Html.Attributes.style "filter" "sepia(1)" ]
+        |> Game.Card.coin
+            [ Html.Attributes.style "border-radius" "100%"
+            , Html.Attributes.style "height" "100px"
+            , Game.Card.ratio 1
+            ]
     ]
-        |> Game.Card.default attrs
+        |> Html.div ([] ++ attrs)
 
 
 list : List ( String, Html msg ) -> Html msg

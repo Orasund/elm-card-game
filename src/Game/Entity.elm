@@ -1,12 +1,16 @@
 module Game.Entity exposing (..)
 
-import Game.Card exposing (Transformation)
+{-|
+
+
+# Transformation
+
+@docs Transformation, transform, move, rotate, zoom
+
+-}
+
 import Html exposing (Attribute, Html, a)
 import Html.Attributes
-
-
-type alias Transformation =
-    String
 
 
 type alias Entity a =
@@ -40,11 +44,11 @@ map fun i =
 
 attributes : Entity a -> List (Attribute msg)
 attributes entity =
-    [ [ Game.Card.move entity.position
-      , Game.Card.rotate entity.rotation
+    [ [ move entity.position
+      , rotate entity.rotation
       ]
         ++ entity.customTransformations
-        |> Game.Card.transform
+        |> transform
     , Html.Attributes.style "z-index" (String.fromInt entity.zIndex)
     ]
 
@@ -105,10 +109,10 @@ flippable :
 flippable attrs args =
     (\a ->
         [ args.front
-            |> mapCustomTransformations ((::) (Game.Card.flip 0))
+            |> mapCustomTransformations ((::) (flip 0))
             |> toHtml [ Html.Attributes.style "position" "absolute" ] identity
         , args.back
-            |> mapCustomTransformations ((::) (Game.Card.flip pi))
+            |> mapCustomTransformations ((::) (flip pi))
             |> toHtml [ Html.Attributes.style "position" "absolute" ] identity
         ]
             |> Html.div
@@ -124,8 +128,73 @@ flippable attrs args =
     )
         |> new
         |> (if not args.faceUp then
-                withCustomTransformations [ Game.Card.flip pi ]
+                withCustomTransformations [ flip pi ]
 
             else
                 identity
            )
+
+
+{-| A transformation string
+-}
+type alias Transformation =
+    String
+
+
+{-| Add transformations to a card
+-}
+transform : List Transformation -> Attribute msg
+transform list =
+    (if list == [] then
+        "unset"
+
+     else
+        list
+            |> String.join " "
+    )
+        |> Html.Attributes.style "transform"
+
+
+{-| Scale the card
+-}
+scale : Float -> Transformation
+scale float =
+    "scale("
+        ++ String.fromFloat float
+        ++ ","
+        ++ String.fromFloat float
+        ++ ")"
+
+
+{-| Rotate the card by a radial.
+-}
+rotate : Float -> Transformation
+rotate float =
+    "rotate("
+        ++ String.fromFloat float
+        ++ "rad)"
+
+
+{-| Move the card
+-}
+move : ( Float, Float ) -> Transformation
+move ( x, y ) =
+    "translate("
+        ++ String.fromFloat x
+        ++ "px,"
+        ++ String.fromFloat y
+        ++ "px)"
+
+
+{-| Only works if the outer div has a `perspective` Attribute
+-}
+flip : Float -> Transformation
+flip float =
+    "rotateY("
+        ++ String.fromFloat float
+        ++ "rad)"
+
+
+perspective : Attribute msg
+perspective =
+    Html.Attributes.style "perspective" "1000px"

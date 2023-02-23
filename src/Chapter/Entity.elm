@@ -4,6 +4,7 @@ import ElmBook.Actions
 import ElmBook.Chapter exposing (Chapter)
 import Example.FlippableCard
 import Html
+import View.Card
 import View.Component
 
 
@@ -24,7 +25,21 @@ chapter args =
                 ( args.setTo model init, Cmd.none )
             )
         |> ElmBook.Chapter.withStatefulComponentList
-            [ ( "Flippable Cards"
+            [ ( "Entity"
+              , \_ ->
+                    View.Component.list
+                        [ ( "withRotate (pi/2)", View.Card.rotated )
+                        , ( "withTranslate (0,-50)", View.Card.move )
+                        ]
+              )
+            , ( "Transformations"
+              , \_ ->
+                    View.Component.list
+                        [ ( "scale (1/2)", View.Card.small )
+                        , ( "flip (pi/4)", View.Card.flipped )
+                        ]
+              )
+            , ( "Flippable Cards"
               , \model ->
                     model
                         |> args.get

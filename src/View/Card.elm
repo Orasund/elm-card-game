@@ -1,6 +1,7 @@
 module View.Card exposing (..)
 
 import Game.Card
+import Game.Entity
 import Html exposing (Html)
 import View.Component
 
@@ -70,30 +71,33 @@ imageAndDesc =
 rotated : Html msg
 rotated =
     View.Component.defaultCard
-        [ Game.Card.transform
-            [ Game.Card.rotate (pi / 2) ]
-        ]
+        |> Game.Entity.withRotation (pi / 2)
+        |> Game.Entity.toHtml [] identity
 
 
 small : Html msg
 small =
     View.Component.defaultCard
-        [ Game.Card.transform
-            [ Game.Card.scale (1 / 2) ]
-        ]
+        |> Game.Entity.withCustomTransformations [ Game.Entity.scale (1 / 2) ]
+        |> Game.Entity.toHtml [] identity
 
 
-drawn : Html msg
-drawn =
+move : Html msg
+move =
     View.Component.defaultCard
-        [ Game.Card.transform
-            [ Game.Card.move ( 0, -50 )
-            ]
-        ]
+        |> Game.Entity.withPosition ( 0, -50 )
+        |> Game.Entity.toHtml [] identity
 
 
 flipped : Html msg
 flipped =
-    View.Component.defaultCard [ Game.Card.transform [ Game.Card.flip (pi / 4) ] ]
+    View.Component.defaultCard
+        |> Game.Entity.withCustomTransformations [ Game.Entity.flip (pi / 4) ]
+        |> Game.Entity.toHtml [] identity
         |> List.singleton
-        |> Html.div [ Game.Card.perspective ]
+        |> Html.div [ Game.Entity.perspective ]
+
+
+coin : Html msg
+coin =
+    Html.text "Title" |> Game.Card.coin []

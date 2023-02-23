@@ -1,6 +1,5 @@
 module Example.FlippableCard exposing (..)
 
-import Game.Card
 import Game.Entity
 import Html exposing (Html)
 import Html.Events
@@ -30,10 +29,10 @@ update msg model =
 view : Model -> Html Msg
 view model =
     Game.Entity.flippable [ Html.Events.onClick Flip ]
-        { front = Game.Entity.new View.Component.defaultCard
-        , back = Game.Entity.new View.Component.defaultBack
+        { front = View.Component.defaultCard
+        , back = View.Component.defaultBack
         , faceUp = model.isFlipped
         }
         |> Game.Entity.toHtml [] identity
         |> List.singleton
-        |> Html.div [ Game.Card.perspective ]
+        |> Html.div [ Game.Entity.perspective ]

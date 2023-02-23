@@ -1,7 +1,6 @@
 module View.Area exposing (..)
 
 import Game.Area exposing (AreaEntity)
-import Game.Card
 import Game.Entity
 import Game.Pile
 import Html exposing (Html)
@@ -23,8 +22,8 @@ hoverable args =
         |> List.indexedMap
             (\i () ->
                 [ Game.Entity.flippable []
-                    { front = Game.Entity.new View.Component.defaultCard
-                    , back = Game.Entity.new View.Component.defaultBack
+                    { front = View.Component.defaultCard
+                    , back = View.Component.defaultBack
                     , faceUp = args.hoverOver == Just i
                     }
                 ]
@@ -41,7 +40,7 @@ hoverable args =
             , Html.Attributes.style "flex-direction" "row"
             , Html.Attributes.style "flex-wrap" "wrap"
             , Html.Attributes.style "gap" "8px"
-            , Game.Card.perspective
+            , Game.Entity.perspective
             ]
 
 
@@ -76,7 +75,7 @@ draggable args =
                         { view =
                             \_ () ->
                                 ( "draggable__card"
-                                , \a -> View.Component.defaultCard (attrs ++ a)
+                                , \a -> View.Component.defaultCard |> Game.Entity.toHtml (attrs ++ a) identity
                                 )
                         , empty =
                             ( "draggable__empty_" ++ String.fromInt i
@@ -87,7 +86,7 @@ draggable args =
         |> List.concat
         |> Game.Area.toHtml [ Html.Attributes.style "height" "200px" ]
         |> List.singleton
-        |> Html.div [ Game.Card.perspective ]
+        |> Html.div [ Game.Entity.perspective ]
 
 
 pile :
@@ -140,16 +139,18 @@ pile index args list =
                     ( "pile__" ++ String.fromInt card.cardId.cardId
                     , \a ->
                         View.Component.defaultCard
-                            ((if card.asPhantom then
-                                [ Html.Attributes.style "filter" "brightness(0.9)"
-                                ]
+                            |> Game.Entity.toHtml
+                                ((if card.asPhantom then
+                                    [ Html.Attributes.style "filter" "brightness(0.9)"
+                                    ]
 
-                              else
-                                []
-                             )
-                                ++ attrs
-                                ++ a
-                            )
+                                  else
+                                    []
+                                 )
+                                    ++ attrs
+                                    ++ a
+                                )
+                                identity
                     )
             , empty = ( "pile__empty__" ++ String.fromInt index, \a -> View.Component.empty (Html.Attributes.style "z-index" "0" :: attrs ++ a) )
             }

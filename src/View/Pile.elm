@@ -14,7 +14,7 @@ singleCard =
         |> (\it -> { it | rotation = -pi / 16, position = ( -50, 0 ) })
     ]
         |> Game.Pile.toHtml []
-            { view = \_ () -> View.Component.defaultCard
+            { view = \_ () attrs -> View.Component.defaultCard |> Game.Entity.toHtml attrs identity
             , empty = View.Component.empty []
             }
 
@@ -30,7 +30,7 @@ below =
             , maxAngle = pi / 2
             }
         |> Game.Pile.toHtml []
-            { view = \_ () -> View.Component.defaultCard
+            { view = \_ () attrs -> View.Component.defaultCard |> Game.Entity.toHtml attrs identity
             , empty = View.Component.empty []
             }
 
@@ -41,7 +41,7 @@ rotated =
         |> List.repeat 3
         |> Game.Pile.withRotation { min = -pi / 16, max = 0 }
         |> Game.Pile.toHtml []
-            { view = \_ () -> View.Component.defaultCard
+            { view = \_ () attrs -> View.Component.defaultCard |> Game.Entity.toHtml attrs identity
             , empty = View.Component.empty []
             }
 
@@ -63,7 +63,7 @@ random =
         |> (\generator -> Random.step generator (Random.initialSeed 40))
         |> Tuple.first
         |> Game.Pile.toHtml []
-            { view = \_ () -> View.Component.defaultCard
+            { view = \_ () attrs -> View.Component.defaultCard |> Game.Entity.toHtml attrs identity
             , empty = View.Component.empty []
             }
 
@@ -100,6 +100,6 @@ hand =
             , Html.Attributes.style "align-items" "end"
             , Html.Attributes.style "justify-content" "center"
             ]
-            { view = \_ () -> View.Component.defaultCard
+            { view = \_ () attrs -> View.Component.defaultCard |> Game.Entity.toHtml attrs identity
             , empty = Html.text ""
             }

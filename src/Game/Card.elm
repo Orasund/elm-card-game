@@ -16,7 +16,6 @@ module Game.Card exposing (..)
 # Attributes
 
 @docs ratio, backgroundImage
-@docs Transformation, transform, move, rotate, zoom
 
 -}
 
@@ -81,6 +80,20 @@ back attrs content =
     default
         ([ Html.Attributes.style "justify-content" "center"
          , Html.Attributes.style "align-items" "center"
+         ]
+            ++ attrs
+        )
+        [ content ]
+
+
+coin : List (Attribute msg) -> Html msg -> Html msg
+coin attrs content =
+    default
+        ([ Html.Attributes.style "justify-content" "center"
+         , Html.Attributes.style "align-items" "center"
+         , Html.Attributes.style "border-radius" "100%"
+         , ratio 1
+         , Html.Attributes.style "height" "100px"
          ]
             ++ attrs
         )
@@ -159,68 +172,3 @@ ratio float =
     float
         |> String.fromFloat
         |> Html.Attributes.style "aspect-ratio"
-
-
-{-| A transformation string
--}
-type alias Transformation =
-    String
-
-
-{-| Add transformations to a card
--}
-transform : List Transformation -> Attribute msg
-transform list =
-    (if list == [] then
-        "unset"
-
-     else
-        list
-            |> String.join " "
-    )
-        |> Html.Attributes.style "transform"
-
-
-{-| Scale the card
--}
-scale : Float -> Transformation
-scale float =
-    "scale("
-        ++ String.fromFloat float
-        ++ ","
-        ++ String.fromFloat float
-        ++ ")"
-
-
-{-| Rotate the card by a radial.
--}
-rotate : Float -> Transformation
-rotate float =
-    "rotate("
-        ++ String.fromFloat float
-        ++ "rad)"
-
-
-{-| Move the card
--}
-move : ( Float, Float ) -> Transformation
-move ( x, y ) =
-    "translate("
-        ++ String.fromFloat x
-        ++ "px,"
-        ++ String.fromFloat y
-        ++ "px)"
-
-
-{-| Only works if the outer div has a `perspective` Attribute
--}
-flip : Float -> Transformation
-flip float =
-    "rotateY("
-        ++ String.fromFloat float
-        ++ "rad)"
-
-
-perspective : Attribute msg
-perspective =
-    Html.Attributes.style "perspective" "1000px"
