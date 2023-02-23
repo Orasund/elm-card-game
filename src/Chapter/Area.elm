@@ -1,227 +1,45 @@
 module Chapter.Area exposing (..)
 
-import Dict exposing (Dict)
 import ElmBook.Actions
 import ElmBook.Chapter exposing (Chapter)
-import Game.Area
-import Html exposing (Html)
-import Html.Attributes
-import View.Area
-
-
-type alias AreaId =
-    { areaId : Int }
-
-
-type alias CardId =
-    { cardId : Int }
-
-
-type alias Card =
-    {}
-
-
-type alias HoverState =
-    Maybe Int
-
-
-type alias DraggableState =
-    { at : Int
-    , selected : Bool
-    }
+import Example.Draggable
+import Example.Hover
+import Example.StackArea
+import Html
 
 
 type alias State =
-    { cards : Dict Int Card
-    , areas : Dict Int (List CardId)
-    , dragging :
-        Maybe
-            { cardId : CardId
-            , fromArea : AreaId
-            , aboveArea : AreaId
-            }
-    , hoverState : HoverState
-    , draggableState : DraggableState
+    { stackAreaModel : Example.StackArea.Model
+    , hoverState : Example.Hover.Model
+    , draggableState : Example.Draggable.Model
     }
 
 
 type Msg
-    = StartDragging AreaId
-    | DraggedOnto AreaId
-    | DragIn AreaId
-    | DragOut
-    | StopDragging
-    | HoverStateSet (Maybe Int)
-    | DraggableStateSet DraggableState
+    = StackAreaMsg Example.StackArea.Msg
+    | HoverStateSet Example.Hover.Model
+    | DraggableStateSet Example.Draggable.Model
 
 
 init : State
 init =
-    { cards =
-        List.repeat 3 {}
-            |> List.indexedMap Tuple.pair
-            |> Dict.fromList
-    , areas =
-        Dict.fromList
-            [ ( 0, List.range 0 4 |> List.map CardId ) ]
-    , dragging = Nothing
-    , hoverState = Nothing
-    , draggableState = { at = 0, selected = False }
+    { stackAreaModel = Example.StackArea.init
+    , hoverState = Example.Hover.init
+    , draggableState = Example.Draggable.init
     }
 
 
 update : Msg -> State -> State
 update msg state =
     case msg of
-        StartDragging areaId ->
-            { state
-                | dragging =
-                    state.areas
-                        |> Dict.get areaId.areaId
-                        |> Maybe.andThen List.head
-                        |> Maybe.map
-                            (\cardId ->
-                                { fromArea = areaId
-                                , cardId = cardId
-                                , aboveArea = areaId
-                                }
-                            )
-            }
+        StackAreaMsg m ->
+            { state | stackAreaModel = Example.StackArea.update m state.stackAreaModel }
 
-        StopDragging ->
-            { state | dragging = Nothing }
+        HoverStateSet m ->
+            { state | hoverState = m }
 
-        DraggedOnto id ->
-            state.dragging
-                |> Maybe.map
-                    (\{ cardId, fromArea } ->
-                        { state
-                            | dragging = Nothing
-                            , areas =
-                                state.areas
-                                    |> Dict.update fromArea.areaId
-                                        (\maybe ->
-                                            maybe
-                                                |> Maybe.map (List.filter ((/=) cardId))
-                                        )
-                                    |> Dict.update id.areaId
-                                        (\maybe ->
-                                            maybe
-                                                |> Maybe.withDefault []
-                                                |> (::) cardId
-                                                |> Just
-                                        )
-                        }
-                    )
-                |> Maybe.withDefault state
-
-        DragIn areaId ->
-            { state
-                | dragging =
-                    state.dragging
-                        |> Maybe.map (\dragging -> { dragging | aboveArea = areaId })
-            }
-
-        DragOut ->
-            { state
-                | dragging =
-                    state.dragging
-                        |> Maybe.map (\dragging -> { dragging | aboveArea = dragging.fromArea })
-            }
-
-        HoverStateSet maybe ->
-            { state | hoverState = maybe }
-
-        DraggableStateSet int ->
-            { state | draggableState = int }
-
-
-pile : State -> Html Msg
-pile state =
-    let
-        draggedFromArea =
-            state.dragging
-                |> Maybe.map .fromArea
-    in
-    List.repeat 3 ()
-        |> List.indexedMap (\i () -> state.areas |> Dict.get i |> Maybe.withDefault [])
-        |> List.indexedMap
-            (\i list ->
-                list
-                    |> List.filterMap
-                        (\cardId ->
-                            if
-                                state.dragging
-                                    |> Maybe.map .cardId
-                                    |> Maybe.map ((==) cardId)
-                                    |> Maybe.withDefault False
-                            then
-                                Nothing
-
-                            else
-                                state.cards
-                                    |> Dict.get cardId.cardId
-                                    |> Maybe.map
-                                        (\card ->
-                                            { cardId = cardId
-                                            , card = card
-                                            , asPhantom = False
-                                            }
-                                        )
-                        )
-                    |> (state.dragging
-                            |> Maybe.map
-                                (\dragging ->
-                                    if dragging.aboveArea == AreaId i then
-                                        state.cards
-                                            |> Dict.get dragging.cardId.cardId
-                                            |> Maybe.map
-                                                (\card ->
-                                                    (::)
-                                                        { cardId = dragging.cardId
-                                                        , card = card
-                                                        , asPhantom = True
-                                                        }
-                                                )
-                                            |> Maybe.withDefault identity
-
-                                    else
-                                        identity
-                                )
-                            |> Maybe.withDefault identity
-                       )
-                    |> View.Area.pile i
-                        { position = ( toFloat i * 150, 0 )
-                        , onStartDragging =
-                            if draggedFromArea /= Nothing then
-                                Nothing
-
-                            else
-                                StartDragging (AreaId i) |> Just
-                        , onStopDragging =
-                            if draggedFromArea == Just (AreaId i) then
-                                StopDragging |> Just
-
-                            else
-                                DraggedOnto (AreaId i) |> Just
-                        , onEntering =
-                            draggedFromArea
-                                |> Maybe.andThen
-                                    (\_ ->
-                                        Just (DragIn (AreaId i))
-                                    )
-                        , onLeaving =
-                            draggedFromArea
-                                |> Maybe.andThen
-                                    (\_ ->
-                                        Just DragOut
-                                    )
-                        }
-            )
-        |> List.concat
-        |> Game.Area.toHtml
-            [ Html.Attributes.style "height" "200px"
-            ]
+        DraggableStateSet m ->
+            { state | draggableState = m }
 
 
 chapter : { get : model -> State, setTo : model -> State -> model } -> Chapter model
@@ -234,45 +52,21 @@ chapter args =
         |> ElmBook.Chapter.renderStatefulComponentList
             ([ ( "hoverable"
                , \state ->
-                    View.Area.hoverable
-                        { onEnter = \int -> HoverStateSet (Just int)
-                        , onLeave = HoverStateSet Nothing
-                        , hoverOver = state.hoverState
-                        }
+                    state.hoverState
+                        |> Example.Hover.view
+                        |> Html.map HoverStateSet
                )
              , ( "draggable"
                , \state ->
-                    View.Area.draggable
-                        { onPress =
-                            \int ->
-                                state.draggableState
-                                    |> (\s ->
-                                            if s.at == int && not s.selected then
-                                                { s | selected = True }
-                                                    |> DraggableStateSet
-                                                    |> Just
-
-                                            else
-                                                Nothing
-                                       )
-                        , onRelease =
-                            \int ->
-                                state.draggableState
-                                    |> (\s ->
-                                            if s.selected then
-                                                { s | at = int, selected = False }
-                                                    |> DraggableStateSet
-                                                    |> Just
-
-                                            else
-                                                Nothing
-                                       )
-                        , cardAt = state.draggableState.at
-                        , isSelected = state.draggableState.selected
-                        }
+                    state.draggableState
+                        |> Example.Draggable.view
+                        |> Html.map DraggableStateSet
                )
              , ( "fromStack"
-               , pile
+               , \state ->
+                    state.stackAreaModel
+                        |> Example.StackArea.view
+                        |> Html.map StackAreaMsg
                )
              ]
                 |> List.map

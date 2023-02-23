@@ -42,7 +42,7 @@ main =
             [ ElmBook.StatefulOptions.initialState init ]
         |> ElmBook.withChapterGroups
             [ ( "Documentation"
-              , [ Chapter.Card.chapter { get = .card, setTo = \model state -> { model | card = state } }
+              , [ Chapter.Card.chapter
                 , Chapter.Entity.chapter { get = .card, setTo = \model state -> { model | card = state } }
                 , Chapter.Pile.chapter
                 , Chapter.Area.chapter { get = .area, setTo = \model state -> { model | area = state } }
