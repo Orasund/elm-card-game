@@ -17,7 +17,7 @@ new offset =
         )
 
 
-fromStack :
+fromPile :
     ( Float, Float )
     ->
         { view : Int -> a -> ( String, List (Attribute msg) -> Html msg )
@@ -25,7 +25,7 @@ fromStack :
         }
     -> List (Entity a)
     -> List (Entity ( String, List (Attribute msg) -> Html msg ))
-fromStack ( x, y ) args list =
+fromPile ( x, y ) args list =
     (args.empty |> List.singleton |> new ( x, y ))
         ++ (list
                 |> List.indexedMap

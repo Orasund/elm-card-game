@@ -12,6 +12,7 @@ import Random exposing (Seed)
 type alias Model =
     { game : Game
     , selected : Maybe CardId
+    , turnedOver : Bool
     , seed : Seed
     }
 
@@ -32,6 +33,7 @@ init =
     { game = game
     , selected = Nothing
     , seed = seed
+    , turnedOver = False
     }
 
 
@@ -45,29 +47,47 @@ update msg model =
             model.selected
                 |> Maybe.map
                     (\selected ->
-                        Random.step (Demo.Game.play selected model.game) model.seed
-                            |> (\( game, seed ) ->
-                                    { model
-                                        | game = game
-                                        , selected = Nothing
-                                        , seed = seed
-                                    }
-                               )
+                        if model.turnedOver then
+                            Random.step (Demo.Game.play selected model.game) model.seed
+                                |> (\( game, seed ) ->
+                                        { model
+                                            | game = game
+                                            , selected = Nothing
+                                            , turnedOver = False
+                                            , seed = seed
+                                        }
+                                   )
+
+                        else
+                            { model | turnedOver = True }
                     )
                 |> Maybe.withDefault model
 
         Restart ->
             Random.step Demo.Game.init model.seed
-                |> (\( game, seed ) -> { model | game = game, seed = seed, selected = Nothing })
+                |> (\( game, seed ) ->
+                        { model
+                            | game = game
+                            , seed = seed
+                            , selected = Nothing
+                            , turnedOver = False
+                        }
+                   )
 
 
 view : Model -> Html Msg
 view model =
     Demo.View.Game.toHtml
-        { selectCard = SelectCard
+        { selectCard =
+            if model.turnedOver then
+                \_ -> PlayCard
+
+            else
+                SelectCard
         , selected = model.selected
         , playCard = PlayCard
         , restart = Restart
+        , turnedOver = model.turnedOver
         }
         model.game
 

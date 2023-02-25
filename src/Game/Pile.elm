@@ -73,7 +73,11 @@ withLinearRotation : { min : Float, max : Float } -> List (Entity a) -> List (En
 withLinearRotation args list =
     mapRotation
         (\i _ _ ->
-            args.min + toFloat i * (args.max - args.min) / toFloat (List.length list - 1)
+            if List.length list == 1 then
+                args.min + (args.max - args.min) / 2
+
+            else
+                args.min + toFloat i * (args.max - args.min) / toFloat (List.length list - 1)
         )
         list
 
@@ -82,10 +86,17 @@ withPolarPosition : { minAngle : Float, maxAngle : Float, minDistance : Float, m
 withPolarPosition args list =
     mapPosition
         (\i _ _ ->
-            ( args.minDistance + toFloat i * (args.maxDistance - args.minDistance) / toFloat (List.length list - 1)
-            , args.minAngle + toFloat i * (args.maxAngle - args.minAngle) / toFloat (List.length list - 1)
-            )
-                |> fromPolar
+            if List.length list == 1 then
+                ( args.minDistance + (args.maxDistance - args.minDistance) / 2
+                , args.minAngle + (args.maxAngle - args.minAngle) / 2
+                )
+                    |> fromPolar
+
+            else
+                ( args.minDistance + toFloat i * (args.maxDistance - args.minDistance) / toFloat (List.length list - 1)
+                , args.minAngle + toFloat i * (args.maxAngle - args.minAngle) / toFloat (List.length list - 1)
+                )
+                    |> fromPolar
         )
         list
 

@@ -12,10 +12,10 @@ chapter =
             [ ( "Pile"
               , View.Component.list
                     [ ( "Single Card", View.Pile.singleCard )
-                    , ( "withMovement", View.Pile.below )
-                    , ( "withRotation", View.Pile.rotated )
-                    , ( "randomRotation and randomMovement", View.Pile.random )
-                    , ( "withRotation and withMovement", View.Pile.hand )
+                    , ( "withPolarPosition", View.Pile.below )
+                    , ( "withLinearRotation", View.Pile.rotated )
+                    , ( "Randomness", View.Pile.random )
+                    , ( "withLinearRotation and withPolarPosition", View.Pile.hand )
                     ]
               )
             ]

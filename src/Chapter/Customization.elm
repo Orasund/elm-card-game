@@ -13,6 +13,7 @@ While developing this package we sticked to the following rules:
 
 * We always used `height` and `aspect-ratio` instead of using `weight`.
 * We used `rgba(0, 0, 0, 0.2)` as a placeholder for color.
-* The styling is intended to be overwritten.
+* Every node uses Flexbox.
+* All stylings are intended to be overwritten.
 * Cards have a minimum z-Index of 1
 """

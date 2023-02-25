@@ -62,7 +62,7 @@ chapter args =
                         |> Example.Draggable.view
                         |> Html.map DraggableStateSet
                )
-             , ( "fromStack"
+             , ( "fromPile"
                , \state ->
                     state.stackAreaModel
                         |> Example.StackArea.view

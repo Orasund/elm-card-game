@@ -19,6 +19,7 @@ arena :
     ->
         { yourPick : Maybe ( CardId, Card )
         , opponentPick : Maybe ( CardId, Card )
+        , turnedOver : Bool
         , playCard : msg
         }
     -> List (Entity ( String, List (Attribute msg) -> Html msg ))
@@ -27,7 +28,7 @@ arena ( x, y ) args =
         |> Maybe.map Game.Entity.new
         |> Maybe.map List.singleton
         |> Maybe.withDefault []
-        |> Game.Area.fromStack ( -100, 0 )
+        |> Game.Area.fromPile ( -100, 0 )
             { view =
                 \_ ( cardId, card ) ->
                     ( "card_" ++ String.fromInt cardId
@@ -56,12 +57,12 @@ arena ( x, y ) args =
         |> Maybe.map
             (\( cardId, card ) ->
                 card
-                    |> Demo.View.Card.toEntity [] False
+                    |> Demo.View.Card.toEntity [] args.turnedOver
                     |> Game.Entity.map (Tuple.pair cardId)
             )
         |> Maybe.map List.singleton
         |> Maybe.withDefault []
-        |> Game.Area.fromStack ( 100, 0 )
+        |> Game.Area.fromPile ( 100, 0 )
             { view =
                 \_ ( cardId, fun ) ->
                     ( "card_" ++ String.fromInt cardId
@@ -88,14 +89,14 @@ hand pos args l =
                 else
                     Nothing
             )
-        |> (\list ->
-                list
-                    |> Game.Pile.mapPosition
-                        (\i ( _, _ ) _ ->
-                            ( (toFloat i - (toFloat (List.length list) - 1) / 2) * 30, 0 )
-                        )
-           )
-        |> Game.Area.fromStack pos
+        |> Game.Pile.withPolarPosition
+            { minDistance = -50
+            , maxDistance = 50
+            , minAngle = -pi / 32
+            , maxAngle = pi / 32
+            }
+        |> Game.Pile.withLinearRotation { min = -pi / 16, max = pi / 16 }
+        |> Game.Area.fromPile pos
             { view =
                 \_ ( cardId, fun ) ->
                     ( "card_" ++ String.fromInt cardId
@@ -130,7 +131,7 @@ hiddenHand pos args l =
                             ( (toFloat i - (toFloat (List.length list) - 1) / 2) * 30, 0 )
                         )
            )
-        |> Game.Area.fromStack pos
+        |> Game.Area.fromPile pos
             { view =
                 \_ ( cardId, fun ) ->
                     ( "card_" ++ String.fromInt cardId
@@ -160,6 +161,7 @@ discardPile ( x, y ) l =
 toHtml :
     { selectCard : CardId -> msg
     , selected : Maybe CardId
+    , turnedOver : Bool
     , playCard : msg
     , restart : msg
     }
@@ -168,7 +170,9 @@ toHtml :
 toHtml args game =
     [ [ game
             |> Demo.Game.handOf Demo.Player.opponent
-            |> hiddenHand ( 0, 0 ) { selected = game.opponentPick }
+            |> hiddenHand ( 0, 0 )
+                { selected = game.opponentPick
+                }
       , arena ( 0, 150 + 16 )
             { yourPick =
                 args.selected
@@ -176,6 +180,8 @@ toHtml args game =
             , opponentPick =
                 game.opponentPick
                     |> Maybe.andThen (\cardId -> game.cards |> Dict.get cardId |> Maybe.map (Tuple.pair cardId))
+            , turnedOver =
+                args.turnedOver
             , playCard = args.playCard
             }
       , game.discardPile

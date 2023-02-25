@@ -71,7 +71,7 @@ draggable args =
                  else
                     []
                 )
-                    |> Game.Area.fromStack ( toFloat i * 150, 0 )
+                    |> Game.Area.fromPile ( toFloat i * 150, 0 )
                         { view =
                             \_ () ->
                                 ( "draggable__card"
@@ -135,7 +135,7 @@ pile index args list =
                 else
                     stackItem
             )
-        |> Game.Area.fromStack args.position
+        |> Game.Area.fromPile args.position
             { view =
                 \_ card ->
                     ( "pile__" ++ String.fromInt card.cardId.cardId
