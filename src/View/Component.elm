@@ -8,7 +8,7 @@ import Html.Attributes
 
 image : String
 image =
-    "/assets/Elm_logo.svg"
+    "assets/Elm_logo.svg"
 
 
 empty : List (Attribute msg) -> Html msg
