@@ -7,14 +7,13 @@ import Html.Events
 import Html.Keyed
 
 
-new : ( Float, Float ) -> List ( String, List (Attribute msg) -> Html msg ) -> List ( String, Entity (List (Attribute msg) -> Html msg) )
+new : ( Float, Float ) -> List ( String, List (Attribute msg) -> Html msg ) -> List (Entity ( String, List (Attribute msg) -> Html msg ))
 new offset =
     List.map
         (\( id, content ) ->
-            ( id
-            , Game.Entity.new content
+            Game.Entity.new content
+                |> Game.Entity.map (Tuple.pair id)
                 |> Game.Entity.mapPosition (\_ -> offset)
-            )
         )
 
 
@@ -25,38 +24,37 @@ fromStack :
         , empty : ( String, List (Attribute msg) -> Html msg )
         }
     -> List (Entity a)
-    -> List ( String, Entity (List (Attribute msg) -> Html msg) )
+    -> List (Entity ( String, List (Attribute msg) -> Html msg ))
 fromStack ( x, y ) args list =
     (args.empty |> List.singleton |> new ( x, y ))
         ++ (list
                 |> List.indexedMap
-                    (\i stackItem ->
-                        args.view i stackItem.content
-                            |> (\( id, content ) ->
-                                    ( id
-                                    , stackItem
-                                        |> Game.Entity.map (\_ -> content)
-                                        |> Game.Entity.mapPosition (Tuple.mapBoth ((+) x) ((+) y))
-                                        |> Game.Entity.mapZIndex ((+) (i + 1))
-                                    )
-                               )
+                    (\i entity ->
+                        entity
+                            |> Game.Entity.map (args.view i)
+                            |> Game.Entity.mapPosition (Tuple.mapBoth ((+) x) ((+) y))
+                            |> Game.Entity.mapZIndex ((+) (i + 1))
                     )
            )
 
 
-toHtml : List (Attribute msg) -> List ( String, Entity (List (Attribute msg) -> Html msg) ) -> Html msg
+toHtml : List (Attribute msg) -> List (Entity ( String, List (Attribute msg) -> Html msg )) -> Html msg
 toHtml attr list =
     list
-        |> List.sortBy Tuple.first
+        |> List.sortBy (\entity -> Tuple.first entity.content)
         |> List.map
-            (Tuple.mapSecond
-                (\entity ->
-                    entity.content
-                        ([ Html.Attributes.style "position" "absolute"
-                         , Html.Attributes.style "transition" "transform 0.5s"
-                         ]
-                            ++ Tuple.second (Game.Entity.toAttributes entity)
-                        )
+            (\entity ->
+                ( Tuple.first entity.content
+                , entity.content
+                    |> Tuple.second
+                    |> (\f ->
+                            f
+                                ([ Html.Attributes.style "position" "absolute"
+                                 , Html.Attributes.style "transition" "transform 0.5s"
+                                 ]
+                                    ++ Tuple.second (Game.Entity.toAttributes entity)
+                                )
+                       )
                 )
             )
         |> Html.Keyed.node "div"

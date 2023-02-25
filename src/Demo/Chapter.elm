@@ -19,13 +19,14 @@ type alias Model =
 type Msg
     = SelectCard CardId
     | PlayCard
+    | Restart
 
 
 init : Model
 init =
     let
         ( game, seed ) =
-            Random.initialSeed 42
+            Random.initialSeed 39
                 |> Random.step Demo.Game.init
     in
     { game = game
@@ -55,6 +56,10 @@ update msg model =
                     )
                 |> Maybe.withDefault model
 
+        Restart ->
+            Random.step Demo.Game.init model.seed
+                |> (\( game, seed ) -> { model | game = game, seed = seed, selected = Nothing })
+
 
 view : Model -> Html Msg
 view model =
@@ -62,6 +67,7 @@ view model =
         { selectCard = SelectCard
         , selected = model.selected
         , playCard = PlayCard
+        , restart = Restart
         }
         model.game
 

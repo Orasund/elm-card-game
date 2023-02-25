@@ -43,7 +43,7 @@ toEntity attrs faceUp card =
                     ++ " "
                     ++ toString card
                     |> Html.text
-                    |> Game.Card.title []
+                    |> Game.Card.title [ Html.Attributes.style "font-size" "18px" ]
                 , toEmoji card
                     |> Html.text
                     |> Game.Card.description

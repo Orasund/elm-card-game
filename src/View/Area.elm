@@ -99,7 +99,7 @@ pile :
         , onLeaving : Maybe msg
         }
     -> List { cardId : CardId, card : card, asPhantom : Bool }
-    -> List ( String, Entity (List (Attribute msg) -> Html msg) )
+    -> List (Entity ( String, List (Attribute msg) -> Html msg ))
 pile index args list =
     let
         attrs =

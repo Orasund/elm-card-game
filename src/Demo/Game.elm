@@ -10,7 +10,33 @@ type alias Game =
     { players : Dict PlayerId Player
     , cards : Dict CardId Card
     , opponentPick : Maybe CardId
+    , discardPile : List CardId
     }
+
+
+gameOver : Game -> Maybe String
+gameOver game =
+    let
+        won =
+            game.opponentPick == Nothing
+
+        lost =
+            game.players
+                |> Dict.get Demo.Player.you
+                |> Maybe.map List.isEmpty
+                |> Maybe.withDefault False
+    in
+    if won && lost then
+        Just "It's a draw!"
+
+    else if won then
+        Just "You win!"
+
+    else if lost then
+        Just "You loose!"
+
+    else
+        Nothing
 
 
 init : Generator Game
@@ -43,6 +69,7 @@ init =
                                     |> Dict.fromList
                             , cards = Dict.fromList deck
                             , opponentPick = Just opponentPick
+                            , discardPile = []
                             }
                         )
             )
@@ -72,14 +99,13 @@ play cardId game =
                             (game.cards |> Dict.get opponentPick)
                             (game.cards |> Dict.get cardId)
                             |> Maybe.andThen identity
-                            |> Maybe.withDefault True
 
                     opponent =
                         game.players
                             |> Dict.get Demo.Player.opponent
                             |> Maybe.withDefault (Demo.Player.init [])
                             |> List.filter (\id -> Just id /= game.opponentPick)
-                            |> (if not won then
+                            |> (if won == Just False then
                                     (++) [ cardId, opponentPick ]
 
                                 else
@@ -91,7 +117,7 @@ play cardId game =
                             |> Dict.get Demo.Player.you
                             |> Maybe.withDefault (Demo.Player.init [])
                             |> List.filter ((/=) cardId)
-                            |> (if won then
+                            |> (if won == Just True then
                                     (++) [ cardId, opponentPick ]
 
                                 else
@@ -113,8 +139,15 @@ play cardId game =
                                     game.players
                                         |> Dict.update Demo.Player.you (\_ -> Just you)
                                         |> Dict.update Demo.Player.opponent (\_ -> Just opponent)
-                                , opponentPick =
-                                    newOpponentPick
+                                , opponentPick = newOpponentPick
+                                , discardPile =
+                                    game.discardPile
+                                        ++ (if won == Nothing then
+                                                [ cardId, opponentPick ]
+
+                                            else
+                                                []
+                                           )
                             }
                         )
             )

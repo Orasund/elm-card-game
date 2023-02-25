@@ -21,7 +21,7 @@ arena :
         , opponentPick : Maybe ( CardId, Card )
         , playCard : msg
         }
-    -> List ( String, Entity (List (Attribute msg) -> Html msg) )
+    -> List (Entity ( String, List (Attribute msg) -> Html msg ))
 arena ( x, y ) args =
     [ args.yourPick
         |> Maybe.map Game.Entity.new
@@ -37,8 +37,7 @@ arena ( x, y ) args =
                     )
             , empty = ( "selected_0", \attrs -> Game.Card.empty attrs "Select a card" )
             }
-    , [ ( "vs"
-        , (\attrs ->
+    , [ (\attrs ->
             Html.text "vs."
                 |> List.singleton
                 |> Html.h1 attrs
@@ -49,9 +48,9 @@ arena ( x, y ) args =
                     , Html.Attributes.style "align-items" "center"
                     , Html.Attributes.style "height" "200px"
                     ]
-          )
-            |> Game.Entity.new
         )
+            |> Game.Entity.new
+            |> Game.Entity.map (Tuple.pair "vs.")
       ]
     , args.opponentPick
         |> Maybe.map
@@ -72,10 +71,10 @@ arena ( x, y ) args =
             }
     ]
         |> List.concat
-        |> List.map (Tuple.mapSecond (Game.Entity.mapPosition (Tuple.mapBoth ((+) x) ((+) y))))
+        |> List.map (Game.Entity.mapPosition (Tuple.mapBoth ((+) x) ((+) y)))
 
 
-hand : ( Float, Float ) -> { selectCard : CardId -> msg, selected : Maybe CardId } -> List ( CardId, Card ) -> List ( String, Entity (List (Attribute msg) -> Html msg) )
+hand : ( Float, Float ) -> { selectCard : CardId -> msg, selected : Maybe CardId } -> List ( CardId, Card ) -> List (Entity ( String, List (Attribute msg) -> Html msg ))
 hand pos args l =
     l
         |> List.filterMap
@@ -109,7 +108,7 @@ hand pos args l =
             }
 
 
-hiddenHand : ( Float, Float ) -> { selected : Maybe CardId } -> List ( CardId, Card ) -> List ( String, Entity (List (Attribute msg) -> Html msg) )
+hiddenHand : ( Float, Float ) -> { selected : Maybe CardId } -> List ( CardId, Card ) -> List (Entity ( String, List (Attribute msg) -> Html msg ))
 hiddenHand pos args l =
     l
         |> List.filterMap
@@ -144,33 +143,78 @@ hiddenHand pos args l =
             }
 
 
+discardPile : ( Float, Float ) -> List ( CardId, Card ) -> List (Entity ( String, List (Attribute msg) -> Html msg ))
+discardPile ( x, y ) l =
+    l
+        |> List.map
+            (\( cardId, card ) ->
+                card
+                    |> Demo.View.Card.toEntity [] True
+                    |> Game.Entity.map (Tuple.pair ("card_" ++ String.fromInt cardId))
+                    |> Game.Entity.mapCustomTransformations ((++) [ Game.Entity.scale (1 / 2) ])
+            )
+        |> Game.Pile.mapZIndex (\i _ -> (+) (i + 1))
+        |> Game.Pile.mapPosition (\i _ _ -> ( x, toFloat i * 15 + y - (toFloat (List.length l) * 15 / 2) ))
+
+
 toHtml :
     { selectCard : CardId -> msg
     , selected : Maybe CardId
     , playCard : msg
+    , restart : msg
     }
     -> Game
     -> Html msg
 toHtml args game =
-    [ game
-        |> Demo.Game.handOf Demo.Player.opponent
-        |> hiddenHand ( 0, 0 ) { selected = game.opponentPick }
-    , arena ( 0, 150 + 16 )
-        { yourPick =
-            args.selected
-                |> Maybe.andThen (\cardId -> game.cards |> Dict.get cardId |> Maybe.map (Tuple.pair cardId))
-        , opponentPick =
-            game.opponentPick
-                |> Maybe.andThen (\cardId -> game.cards |> Dict.get cardId |> Maybe.map (Tuple.pair cardId))
-        , playCard = args.playCard
-        }
-    , game
-        |> Demo.Game.handOf Demo.Player.you
-        |> hand ( 0, 150 + 32 + 200 ) { selectCard = args.selectCard, selected = args.selected }
-    ]
+    [ [ game
+            |> Demo.Game.handOf Demo.Player.opponent
+            |> hiddenHand ( 0, 0 ) { selected = game.opponentPick }
+      , arena ( 0, 150 + 16 )
+            { yourPick =
+                args.selected
+                    |> Maybe.andThen (\cardId -> game.cards |> Dict.get cardId |> Maybe.map (Tuple.pair cardId))
+            , opponentPick =
+                game.opponentPick
+                    |> Maybe.andThen (\cardId -> game.cards |> Dict.get cardId |> Maybe.map (Tuple.pair cardId))
+            , playCard = args.playCard
+            }
+      , game.discardPile
+            |> List.filterMap (\cardId -> game.cards |> Dict.get cardId |> Maybe.map (Tuple.pair cardId))
+            |> discardPile ( -216, 150 + 16 )
+      , game
+            |> Demo.Game.handOf Demo.Player.you
+            |> hand ( 0, 150 + 32 + 200 ) { selectCard = args.selectCard, selected = args.selected }
+      ]
         |> List.concat
         |> Game.Area.toHtml
             [ Html.Attributes.style "height" "600px"
             , Html.Attributes.style "justify-content" "center"
             , Game.Entity.perspective
+            ]
+    , Demo.Game.gameOver game
+        |> Maybe.map
+            (\reason ->
+                [ Html.text reason |> List.singleton |> Html.h1 [ Html.Attributes.style "font-size" "64px" ]
+                , Html.text "Click to restart" |> List.singleton |> Html.div []
+                ]
+                    |> Html.div
+                        [ Html.Attributes.style "height" "600px"
+                        , Html.Attributes.style "width" "100%"
+                        , Html.Attributes.style "background-color" "rgba(0, 0, 0, 0.2)"
+                        , Html.Attributes.style "z-index" "1000"
+                        , Html.Attributes.style "position" "absolute"
+                        , Html.Attributes.style "top" "0"
+                        , Html.Attributes.style "left" "0"
+                        , Html.Events.onClick args.restart
+                        , Html.Attributes.style "display" "flex"
+                        , Html.Attributes.style "flex-direction" "column"
+                        , Html.Attributes.style "backdrop-filter" "blur(4px)"
+                        , Html.Attributes.style "align-items" "center"
+                        , Html.Attributes.style "justify-content" "center"
+                        ]
+            )
+        |> Maybe.withDefault (Html.text "")
+    ]
+        |> Html.div
+            [ Html.Attributes.style "position" "relative"
             ]
