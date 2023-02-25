@@ -5,6 +5,7 @@ import Chapter.Card
 import Chapter.Customization
 import Chapter.Entity
 import Chapter.Pile
+import Demo.Chapter
 import ElmBook exposing (Book)
 import ElmBook.Chapter
 import ElmBook.StatefulOptions
@@ -15,6 +16,7 @@ import Html
 type alias Model =
     { area : Chapter.Area.State
     , card : Chapter.Card.Model
+    , demo : Demo.Chapter.Model
     }
 
 
@@ -22,6 +24,7 @@ init : Model
 init =
     { area = Chapter.Area.init
     , card = Chapter.Card.init
+    , demo = Demo.Chapter.init
     }
 
 
@@ -48,6 +51,7 @@ main =
                 , Chapter.Area.chapter { get = .area, setTo = \model state -> { model | area = state } }
                 ]
               )
+            , ( "Demo", [ Demo.Chapter.chapter { get = .demo, setTo = \model state -> { model | demo = state } } ] )
             , ( "Development"
               , [ Chapter.Customization.chapter
                 , ElmBook.Chapter.chapterLink

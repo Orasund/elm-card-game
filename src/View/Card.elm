@@ -71,28 +71,28 @@ imageAndDesc =
 rotated : Html msg
 rotated =
     View.Component.defaultCard
-        |> Game.Entity.withRotation (pi / 2)
+        |> Game.Entity.mapRotation ((+) (pi / 2))
         |> Game.Entity.toHtml [] identity
 
 
 small : Html msg
 small =
     View.Component.defaultCard
-        |> Game.Entity.withCustomTransformations [ Game.Entity.scale (1 / 2) ]
+        |> Game.Entity.mapCustomTransformations ((++) [ Game.Entity.scale (1 / 2) ])
         |> Game.Entity.toHtml [] identity
 
 
 move : Html msg
 move =
     View.Component.defaultCard
-        |> Game.Entity.withPosition ( 0, -50 )
+        |> Game.Entity.mapPosition (\_ -> ( 0, -50 ))
         |> Game.Entity.toHtml [] identity
 
 
 flipped : Html msg
 flipped =
     View.Component.defaultCard
-        |> Game.Entity.withCustomTransformations [ Game.Entity.flip (pi / 4) ]
+        |> Game.Entity.mapCustomTransformations ((++) [ Game.Entity.flip (pi / 4) ])
         |> Game.Entity.toHtml [] identity
         |> List.singleton
         |> Html.div [ Game.Entity.perspective ]

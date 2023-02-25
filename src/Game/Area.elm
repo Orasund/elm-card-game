@@ -7,17 +7,13 @@ import Html.Events
 import Html.Keyed
 
 
-type alias AreaEntity msg =
-    ( String, Entity (List (Attribute msg) -> Html msg) )
-
-
-new : ( Float, Float ) -> List ( String, List (Attribute msg) -> Html msg ) -> List (AreaEntity msg)
+new : ( Float, Float ) -> List ( String, List (Attribute msg) -> Html msg ) -> List ( String, Entity (List (Attribute msg) -> Html msg) )
 new offset =
     List.map
         (\( id, content ) ->
             ( id
             , Game.Entity.new content
-                |> Game.Entity.withPosition offset
+                |> Game.Entity.mapPosition (\_ -> offset)
             )
         )
 
@@ -29,7 +25,7 @@ fromStack :
         , empty : ( String, List (Attribute msg) -> Html msg )
         }
     -> List (Entity a)
-    -> List (AreaEntity msg)
+    -> List ( String, Entity (List (Attribute msg) -> Html msg) )
 fromStack ( x, y ) args list =
     (args.empty |> List.singleton |> new ( x, y ))
         ++ (list
@@ -38,19 +34,17 @@ fromStack ( x, y ) args list =
                         args.view i stackItem.content
                             |> (\( id, content ) ->
                                     ( id
-                                    , { content = content
-                                      , position = stackItem.position |> Tuple.mapBoth ((+) x) ((+) y)
-                                      , rotation = stackItem.rotation
-                                      , zIndex = stackItem.zIndex + i + 1
-                                      , customTransformations = []
-                                      }
+                                    , stackItem
+                                        |> Game.Entity.map (\_ -> content)
+                                        |> Game.Entity.mapPosition (Tuple.mapBoth ((+) x) ((+) y))
+                                        |> Game.Entity.mapZIndex ((+) (i + 1))
                                     )
                                )
                     )
            )
 
 
-toHtml : List (Attribute msg) -> List (AreaEntity msg) -> Html msg
+toHtml : List (Attribute msg) -> List ( String, Entity (List (Attribute msg) -> Html msg) ) -> Html msg
 toHtml attr list =
     list
         |> List.sortBy Tuple.first
@@ -61,7 +55,7 @@ toHtml attr list =
                         ([ Html.Attributes.style "position" "absolute"
                          , Html.Attributes.style "transition" "transform 0.5s"
                          ]
-                            ++ Game.Entity.attributes entity
+                            ++ Tuple.second (Game.Entity.toAttributes entity)
                         )
                 )
             )

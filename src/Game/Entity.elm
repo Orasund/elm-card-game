@@ -1,18 +1,34 @@
-module Game.Entity exposing (..)
+module Game.Entity exposing
+    ( Entity, new, toAttributes, toHtml
+    , map, mapCustomTransformations, mapPosition, mapRotation, mapZIndex
+    , flippable, perspective
+    , Transformation, transform, move, rotate, scale, flip
+    )
 
-{-|
+{-| module for working with entities.
+
+
+# Entity
+
+@docs Entity, new, toAttributes, toHtml
+
+@docs map, mapCustomTransformations, mapPosition, mapRotation, mapZIndex
+
+@docs flippable, perspective
 
 
 # Transformation
 
-@docs Transformation, transform, move, rotate, zoom
+@docs Transformation, transform, move, rotate, scale, flip
 
 -}
 
-import Html exposing (Attribute, Html, a)
+import Html exposing (Attribute, Html)
 import Html.Attributes
 
 
+{-| A entity allows for different relative transformations like rotating or moving by a relative amount.
+-}
 type alias Entity a =
     { position : ( Float, Float )
     , rotation : Float
@@ -22,6 +38,8 @@ type alias Entity a =
     }
 
 
+{-| construct a entity
+-}
 new : a -> Entity a
 new a =
     { position = ( 0, 0 )
@@ -32,6 +50,8 @@ new a =
     }
 
 
+{-| map the content of a entity
+-}
 map : (a -> b) -> Entity a -> Entity b
 map fun i =
     { position = i.position
@@ -42,62 +62,58 @@ map fun i =
     }
 
 
-attributes : Entity a -> List (Attribute msg)
-attributes entity =
-    [ [ move entity.position
-      , rotate entity.rotation
+{-| Attributes of a Entity
+-}
+toAttributes : Entity a -> ( a, List (Attribute msg) )
+toAttributes entity =
+    ( entity.content
+    , [ [ move entity.position
+        , rotate entity.rotation
+        ]
+            ++ entity.customTransformations
+            |> transform
+      , Html.Attributes.style "z-index" (String.fromInt entity.zIndex)
       ]
-        ++ entity.customTransformations
-        |> transform
-    , Html.Attributes.style "z-index" (String.fromInt entity.zIndex)
-    ]
+    )
 
 
+{-| turn the entity into html
+-}
 toHtml : List (Attribute msg) -> (a -> List (Attribute msg) -> Html msg) -> Entity a -> Html msg
 toHtml attrs fun entity =
-    fun entity.content (attributes entity ++ attrs)
+    fun entity.content (Tuple.second (toAttributes entity) ++ attrs)
 
 
-withRotation : Float -> Entity a -> Entity a
-withRotation float entity =
-    { entity | rotation = float }
-
-
-withPosition : ( Float, Float ) -> Entity a -> Entity a
-withPosition pos entity =
-    { entity | position = pos }
-
-
-withZIndex : Int -> Entity a -> Entity a
-withZIndex int entity =
-    { entity | zIndex = int }
-
-
-withCustomTransformations : List Transformation -> Entity a -> Entity a
-withCustomTransformations list entity =
-    { entity | customTransformations = list }
-
-
+{-| map rotation
+-}
 mapRotation : (Float -> Float) -> Entity a -> Entity a
 mapRotation fun entity =
-    withRotation (fun entity.rotation) entity
+    { entity | rotation = fun entity.rotation }
 
 
+{-| map position
+-}
 mapPosition : (( Float, Float ) -> ( Float, Float )) -> Entity a -> Entity a
 mapPosition fun entity =
-    withPosition (fun entity.position) entity
+    { entity | position = fun entity.position }
 
 
+{-| map z-index
+-}
 mapZIndex : (Int -> Int) -> Entity a -> Entity a
 mapZIndex fun entity =
-    withZIndex (fun entity.zIndex) entity
+    { entity | zIndex = fun entity.zIndex }
 
 
+{-| map custom transformations
+-}
 mapCustomTransformations : (List Transformation -> List Transformation) -> Entity a -> Entity a
 mapCustomTransformations fun entity =
-    withCustomTransformations (fun entity.customTransformations) entity
+    { entity | customTransformations = fun entity.customTransformations }
 
 
+{-| Create an entity that can be flipped
+-}
 flippable :
     List (Attribute msg)
     ->
@@ -127,12 +143,15 @@ flippable attrs args =
                 )
     )
         |> new
-        |> (if not args.faceUp then
-                withCustomTransformations [ flip pi ]
+        |> mapCustomTransformations
+            ((++)
+                (if not args.faceUp then
+                    [ flip pi ]
 
-            else
-                identity
-           )
+                 else
+                    [ flip 0 ]
+                )
+            )
 
 
 {-| A transformation string
@@ -160,8 +179,6 @@ transform list =
 scale : Float -> Transformation
 scale float =
     "scale("
-        ++ String.fromFloat float
-        ++ ","
         ++ String.fromFloat float
         ++ ")"
 
@@ -195,6 +212,8 @@ flip float =
         ++ "rad)"
 
 
+{-| activates a 3d-effect for the child notes. Should be used in combination with `flip`
+-}
 perspective : Attribute msg
 perspective =
     Html.Attributes.style "perspective" "1000px"

@@ -1,11 +1,15 @@
-module Game.Card exposing (..)
+module Game.Card exposing
+    ( default, empty, back, coin
+    , title, header, fillingImage, description
+    , ratio, backgroundImage
+    )
 
 {-| This module contains functions to display cards.
 
 
 # Styles
 
-@docs default, empty, back
+@docs default, empty, back, coin
 
 
 # Parts
@@ -86,6 +90,8 @@ back attrs content =
         [ content ]
 
 
+{-| Displays a coin.
+-}
 coin : List (Attribute msg) -> Html msg -> Html msg
 coin attrs content =
     default

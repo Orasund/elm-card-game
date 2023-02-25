@@ -1,9 +1,9 @@
 module View.Area exposing (..)
 
-import Game.Area exposing (AreaEntity)
-import Game.Entity
+import Game.Area
+import Game.Entity exposing (Entity)
 import Game.Pile
-import Html exposing (Html)
+import Html exposing (Attribute, Html)
 import Html.Attributes
 import View.Component
 
@@ -99,7 +99,7 @@ pile :
         , onLeaving : Maybe msg
         }
     -> List { cardId : CardId, card : card, asPhantom : Bool }
-    -> List (AreaEntity msg)
+    -> List ( String, Entity (List (Attribute msg) -> Html msg) )
 pile index args list =
     let
         attrs =
@@ -117,12 +117,14 @@ pile index args list =
                             ((+) 0)
                             ((+) (-4 * toFloat i))
                         )
-                    |> Game.Entity.withRotation
-                        (if stackItem.content.asPhantom then
-                            pi / 16
+                    |> Game.Entity.mapRotation
+                        ((+)
+                            (if stackItem.content.asPhantom then
+                                pi / 16
 
-                         else
-                            stackItem.rotation
+                             else
+                                stackItem.rotation
+                            )
                         )
             )
         |> List.map
