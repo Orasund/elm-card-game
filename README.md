@@ -14,6 +14,8 @@ elm install Orasund/elm-card-game
 
 ## No Magic Included
 
+The mechanics behind this package are actually quite boring. No wizardry was used.
+
 Please feel free to look at the source code. We tried to make the code as understandable as possible.
 
 While developing this package we sticked to the following rules:

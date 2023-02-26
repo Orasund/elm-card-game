@@ -807,6 +807,66 @@ var _List_sortWith = F2(function(f, xs)
 
 
 
+// MATH
+
+var _Basics_add = F2(function(a, b) { return a + b; });
+var _Basics_sub = F2(function(a, b) { return a - b; });
+var _Basics_mul = F2(function(a, b) { return a * b; });
+var _Basics_fdiv = F2(function(a, b) { return a / b; });
+var _Basics_idiv = F2(function(a, b) { return (a / b) | 0; });
+var _Basics_pow = F2(Math.pow);
+
+var _Basics_remainderBy = F2(function(b, a) { return a % b; });
+
+// https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/divmodnote-letter.pdf
+var _Basics_modBy = F2(function(modulus, x)
+{
+	var answer = x % modulus;
+	return modulus === 0
+		? _Debug_crash(11)
+		:
+	((answer > 0 && modulus < 0) || (answer < 0 && modulus > 0))
+		? answer + modulus
+		: answer;
+});
+
+
+// TRIGONOMETRY
+
+var _Basics_pi = Math.PI;
+var _Basics_e = Math.E;
+var _Basics_cos = Math.cos;
+var _Basics_sin = Math.sin;
+var _Basics_tan = Math.tan;
+var _Basics_acos = Math.acos;
+var _Basics_asin = Math.asin;
+var _Basics_atan = Math.atan;
+var _Basics_atan2 = F2(Math.atan2);
+
+
+// MORE MATH
+
+function _Basics_toFloat(x) { return x; }
+function _Basics_truncate(n) { return n | 0; }
+function _Basics_isInfinite(n) { return n === Infinity || n === -Infinity; }
+
+var _Basics_ceiling = Math.ceil;
+var _Basics_floor = Math.floor;
+var _Basics_round = Math.round;
+var _Basics_sqrt = Math.sqrt;
+var _Basics_log = Math.log;
+var _Basics_isNaN = isNaN;
+
+
+// BOOLEANS
+
+function _Basics_not(bool) { return !bool; }
+var _Basics_and = F2(function(a, b) { return a && b; });
+var _Basics_or  = F2(function(a, b) { return a || b; });
+var _Basics_xor = F2(function(a, b) { return a !== b; });
+
+
+
 var _String_cons = F2(function(chr, str)
 {
 	return chr + str;
@@ -1116,66 +1176,6 @@ function _String_fromList(chars)
 	return _List_toArray(chars).join('');
 }
 
-
-
-
-// MATH
-
-var _Basics_add = F2(function(a, b) { return a + b; });
-var _Basics_sub = F2(function(a, b) { return a - b; });
-var _Basics_mul = F2(function(a, b) { return a * b; });
-var _Basics_fdiv = F2(function(a, b) { return a / b; });
-var _Basics_idiv = F2(function(a, b) { return (a / b) | 0; });
-var _Basics_pow = F2(Math.pow);
-
-var _Basics_remainderBy = F2(function(b, a) { return a % b; });
-
-// https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/divmodnote-letter.pdf
-var _Basics_modBy = F2(function(modulus, x)
-{
-	var answer = x % modulus;
-	return modulus === 0
-		? _Debug_crash(11)
-		:
-	((answer > 0 && modulus < 0) || (answer < 0 && modulus > 0))
-		? answer + modulus
-		: answer;
-});
-
-
-// TRIGONOMETRY
-
-var _Basics_pi = Math.PI;
-var _Basics_e = Math.E;
-var _Basics_cos = Math.cos;
-var _Basics_sin = Math.sin;
-var _Basics_tan = Math.tan;
-var _Basics_acos = Math.acos;
-var _Basics_asin = Math.asin;
-var _Basics_atan = Math.atan;
-var _Basics_atan2 = F2(Math.atan2);
-
-
-// MORE MATH
-
-function _Basics_toFloat(x) { return x; }
-function _Basics_truncate(n) { return n | 0; }
-function _Basics_isInfinite(n) { return n === Infinity || n === -Infinity; }
-
-var _Basics_ceiling = Math.ceil;
-var _Basics_floor = Math.floor;
-var _Basics_round = Math.round;
-var _Basics_sqrt = Math.sqrt;
-var _Basics_log = Math.log;
-var _Basics_isNaN = isNaN;
-
-
-// BOOLEANS
-
-function _Basics_not(bool) { return !bool; }
-var _Basics_and = F2(function(a, b) { return a && b; });
-var _Basics_or  = F2(function(a, b) { return a || b; });
-var _Basics_xor = F2(function(a, b) { return a !== b; });
 
 
 
@@ -4794,78 +4794,53 @@ var $author$project$Chapter$Area$HoverStateSet = function (a) {
 var $author$project$Chapter$Area$StackAreaMsg = function (a) {
 	return {$: 'StackAreaMsg', a: a};
 };
-var $dtwrks$elm_book$ElmBook$Internal$Chapter$ChapterBuilder = function (a) {
-	return {$: 'ChapterBuilder', a: a};
+var $elm$core$Result$Err = function (a) {
+	return {$: 'Err', a: a};
 };
-var $elm$core$Basics$True = {$: 'True'};
-var $dtwrks$elm_book$ElmBook$Internal$Chapter$ChapterOptions = function (a) {
-	return {$: 'ChapterOptions', a: a};
-};
-var $dtwrks$elm_book$ElmBook$Internal$Chapter$defaultOverrides = $dtwrks$elm_book$ElmBook$Internal$Chapter$ChapterOptions(
-	{hiddenTitle: $elm$core$Maybe$Nothing});
-var $dtwrks$elm_book$ElmBook$Internal$ComponentOptions$ComponentOptions = function (a) {
-	return {$: 'ComponentOptions', a: a};
-};
-var $dtwrks$elm_book$ElmBook$Internal$ComponentOptions$defaultOverrides = $dtwrks$elm_book$ElmBook$Internal$ComponentOptions$ComponentOptions(
-	{background: $elm$core$Maybe$Nothing, display: $elm$core$Maybe$Nothing, fullWidth: $elm$core$Maybe$Nothing, hiddenLabel: $elm$core$Maybe$Nothing});
-var $elm$core$Basics$composeR = F3(
-	function (f, g, x) {
-		return g(
-			f(x));
+var $elm$json$Json$Decode$Failure = F2(
+	function (a, b) {
+		return {$: 'Failure', a: a, b: b};
 	});
+var $elm$json$Json$Decode$Field = F2(
+	function (a, b) {
+		return {$: 'Field', a: a, b: b};
+	});
+var $elm$json$Json$Decode$Index = F2(
+	function (a, b) {
+		return {$: 'Index', a: a, b: b};
+	});
+var $elm$core$Result$Ok = function (a) {
+	return {$: 'Ok', a: a};
+};
+var $elm$json$Json$Decode$OneOf = function (a) {
+	return {$: 'OneOf', a: a};
+};
+var $elm$core$Basics$add = _Basics_add;
 var $elm$core$Maybe$Just = function (a) {
 	return {$: 'Just', a: a};
 };
-var $elm$core$String$map = _String_map;
+var $elm$core$String$all = _String_all;
 var $elm$core$Basics$and = _Basics_and;
-var $elm$core$Basics$le = _Utils_le;
-var $elm$core$Char$toCode = _Char_toCode;
-var $elm$core$Char$isDigit = function (_char) {
-	var code = $elm$core$Char$toCode(_char);
-	return (code <= 57) && (48 <= code);
+var $elm$json$Json$Encode$encode = _Json_encode;
+var $elm$core$String$fromInt = _String_fromNumber;
+var $elm$core$String$join = F2(
+	function (sep, chunks) {
+		return A2(
+			_String_join,
+			sep,
+			_List_toArray(chunks));
+	});
+var $elm$core$String$split = F2(
+	function (sep, string) {
+		return _List_fromArray(
+			A2(_String_split, sep, string));
+	});
+var $elm$json$Json$Decode$indent = function (str) {
+	return A2(
+		$elm$core$String$join,
+		'\n    ',
+		A2($elm$core$String$split, '\n', str));
 };
-var $elm$core$Char$isLower = function (_char) {
-	var code = $elm$core$Char$toCode(_char);
-	return (97 <= code) && (code <= 122);
-};
-var $elm$core$Char$isUpper = function (_char) {
-	var code = $elm$core$Char$toCode(_char);
-	return (code <= 90) && (65 <= code);
-};
-var $elm$core$Basics$or = _Basics_or;
-var $elm$core$Char$isAlphaNum = function (_char) {
-	return $elm$core$Char$isLower(_char) || ($elm$core$Char$isUpper(_char) || $elm$core$Char$isDigit(_char));
-};
-var $elm$core$Char$toLower = _Char_toLower;
-var $dtwrks$elm_book$ElmBook$Internal$Helpers$toUrlSafe = function (c) {
-	return $elm$core$Char$isAlphaNum(c) ? $elm$core$Char$toLower(c) : _Utils_chr('-');
-};
-var $elm$core$String$trim = _String_trim;
-var $dtwrks$elm_book$ElmBook$Internal$Helpers$toSlug = A2(
-	$elm$core$Basics$composeR,
-	$elm$core$String$trim,
-	$elm$core$String$map($dtwrks$elm_book$ElmBook$Internal$Helpers$toUrlSafe));
-var $dtwrks$elm_book$ElmBook$Chapter$chapter = function (title) {
-	return $dtwrks$elm_book$ElmBook$Internal$Chapter$ChapterBuilder(
-		{
-			body: '',
-			chapterOptions: $dtwrks$elm_book$ElmBook$Internal$Chapter$defaultOverrides,
-			componentList: _List_Nil,
-			componentOptions: $dtwrks$elm_book$ElmBook$Internal$ComponentOptions$defaultOverrides,
-			groupTitle: $elm$core$Maybe$Nothing,
-			init: $elm$core$Maybe$Nothing,
-			internal: true,
-			title: title,
-			url: '/' + $dtwrks$elm_book$ElmBook$Internal$Helpers$toSlug(title)
-		});
-};
-var $author$project$Example$Draggable$init = {at: 0, selected: false};
-var $author$project$Example$Hover$init = $elm$core$Maybe$Nothing;
-var $author$project$Example$StackArea$CardId = function (cardId) {
-	return {cardId: cardId};
-};
-var $elm$core$Dict$RBEmpty_elm_builtin = {$: 'RBEmpty_elm_builtin'};
-var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
 var $elm$core$List$foldl = F3(
 	function (func, acc, list) {
 		foldl:
@@ -4885,128 +4860,6 @@ var $elm$core$List$foldl = F3(
 			}
 		}
 	});
-var $elm$core$Dict$Black = {$: 'Black'};
-var $elm$core$Dict$RBNode_elm_builtin = F5(
-	function (a, b, c, d, e) {
-		return {$: 'RBNode_elm_builtin', a: a, b: b, c: c, d: d, e: e};
-	});
-var $elm$core$Dict$Red = {$: 'Red'};
-var $elm$core$Dict$balance = F5(
-	function (color, key, value, left, right) {
-		if ((right.$ === 'RBNode_elm_builtin') && (right.a.$ === 'Red')) {
-			var _v1 = right.a;
-			var rK = right.b;
-			var rV = right.c;
-			var rLeft = right.d;
-			var rRight = right.e;
-			if ((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Red')) {
-				var _v3 = left.a;
-				var lK = left.b;
-				var lV = left.c;
-				var lLeft = left.d;
-				var lRight = left.e;
-				return A5(
-					$elm$core$Dict$RBNode_elm_builtin,
-					$elm$core$Dict$Red,
-					key,
-					value,
-					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, lK, lV, lLeft, lRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, rK, rV, rLeft, rRight));
-			} else {
-				return A5(
-					$elm$core$Dict$RBNode_elm_builtin,
-					color,
-					rK,
-					rV,
-					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, key, value, left, rLeft),
-					rRight);
-			}
-		} else {
-			if ((((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Red')) && (left.d.$ === 'RBNode_elm_builtin')) && (left.d.a.$ === 'Red')) {
-				var _v5 = left.a;
-				var lK = left.b;
-				var lV = left.c;
-				var _v6 = left.d;
-				var _v7 = _v6.a;
-				var llK = _v6.b;
-				var llV = _v6.c;
-				var llLeft = _v6.d;
-				var llRight = _v6.e;
-				var lRight = left.e;
-				return A5(
-					$elm$core$Dict$RBNode_elm_builtin,
-					$elm$core$Dict$Red,
-					lK,
-					lV,
-					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, llK, llV, llLeft, llRight),
-					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, key, value, lRight, right));
-			} else {
-				return A5($elm$core$Dict$RBNode_elm_builtin, color, key, value, left, right);
-			}
-		}
-	});
-var $elm$core$Basics$compare = _Utils_compare;
-var $elm$core$Dict$insertHelp = F3(
-	function (key, value, dict) {
-		if (dict.$ === 'RBEmpty_elm_builtin') {
-			return A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, key, value, $elm$core$Dict$RBEmpty_elm_builtin, $elm$core$Dict$RBEmpty_elm_builtin);
-		} else {
-			var nColor = dict.a;
-			var nKey = dict.b;
-			var nValue = dict.c;
-			var nLeft = dict.d;
-			var nRight = dict.e;
-			var _v1 = A2($elm$core$Basics$compare, key, nKey);
-			switch (_v1.$) {
-				case 'LT':
-					return A5(
-						$elm$core$Dict$balance,
-						nColor,
-						nKey,
-						nValue,
-						A3($elm$core$Dict$insertHelp, key, value, nLeft),
-						nRight);
-				case 'EQ':
-					return A5($elm$core$Dict$RBNode_elm_builtin, nColor, nKey, value, nLeft, nRight);
-				default:
-					return A5(
-						$elm$core$Dict$balance,
-						nColor,
-						nKey,
-						nValue,
-						nLeft,
-						A3($elm$core$Dict$insertHelp, key, value, nRight));
-			}
-		}
-	});
-var $elm$core$Dict$insert = F3(
-	function (key, value, dict) {
-		var _v0 = A3($elm$core$Dict$insertHelp, key, value, dict);
-		if ((_v0.$ === 'RBNode_elm_builtin') && (_v0.a.$ === 'Red')) {
-			var _v1 = _v0.a;
-			var k = _v0.b;
-			var v = _v0.c;
-			var l = _v0.d;
-			var r = _v0.e;
-			return A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, k, v, l, r);
-		} else {
-			var x = _v0;
-			return x;
-		}
-	});
-var $elm$core$Dict$fromList = function (assocs) {
-	return A3(
-		$elm$core$List$foldl,
-		F2(
-			function (_v0, dict) {
-				var key = _v0.a;
-				var value = _v0.b;
-				return A3($elm$core$Dict$insert, key, value, dict);
-			}),
-		$elm$core$Dict$empty,
-		assocs);
-};
-var $elm$core$Basics$add = _Basics_add;
 var $elm$core$List$length = function (xs) {
 	return A3(
 		$elm$core$List$foldl,
@@ -5018,6 +4871,7 @@ var $elm$core$List$length = function (xs) {
 		xs);
 };
 var $elm$core$List$map2 = _List_map2;
+var $elm$core$Basics$le = _Utils_le;
 var $elm$core$Basics$sub = _Basics_sub;
 var $elm$core$List$rangeHelp = F3(
 	function (lo, hi, list) {
@@ -5051,170 +4905,28 @@ var $elm$core$List$indexedMap = F2(
 				$elm$core$List$length(xs) - 1),
 			xs);
 	});
-var $elm$core$Basics$gt = _Utils_gt;
-var $elm$core$List$reverse = function (list) {
-	return A3($elm$core$List$foldl, $elm$core$List$cons, _List_Nil, list);
+var $elm$core$Char$toCode = _Char_toCode;
+var $elm$core$Char$isLower = function (_char) {
+	var code = $elm$core$Char$toCode(_char);
+	return (97 <= code) && (code <= 122);
 };
-var $elm$core$List$foldrHelper = F4(
-	function (fn, acc, ctr, ls) {
-		if (!ls.b) {
-			return acc;
-		} else {
-			var a = ls.a;
-			var r1 = ls.b;
-			if (!r1.b) {
-				return A2(fn, a, acc);
-			} else {
-				var b = r1.a;
-				var r2 = r1.b;
-				if (!r2.b) {
-					return A2(
-						fn,
-						a,
-						A2(fn, b, acc));
-				} else {
-					var c = r2.a;
-					var r3 = r2.b;
-					if (!r3.b) {
-						return A2(
-							fn,
-							a,
-							A2(
-								fn,
-								b,
-								A2(fn, c, acc)));
-					} else {
-						var d = r3.a;
-						var r4 = r3.b;
-						var res = (ctr > 500) ? A3(
-							$elm$core$List$foldl,
-							fn,
-							acc,
-							$elm$core$List$reverse(r4)) : A4($elm$core$List$foldrHelper, fn, acc, ctr + 1, r4);
-						return A2(
-							fn,
-							a,
-							A2(
-								fn,
-								b,
-								A2(
-									fn,
-									c,
-									A2(fn, d, res))));
-					}
-				}
-			}
-		}
-	});
-var $elm$core$List$foldr = F3(
-	function (fn, acc, ls) {
-		return A4($elm$core$List$foldrHelper, fn, acc, 0, ls);
-	});
-var $elm$core$List$map = F2(
-	function (f, xs) {
-		return A3(
-			$elm$core$List$foldr,
-			F2(
-				function (x, acc) {
-					return A2(
-						$elm$core$List$cons,
-						f(x),
-						acc);
-				}),
-			_List_Nil,
-			xs);
-	});
-var $elm$core$Tuple$pair = F2(
-	function (a, b) {
-		return _Utils_Tuple2(a, b);
-	});
-var $elm$core$List$repeatHelp = F3(
-	function (result, n, value) {
-		repeatHelp:
-		while (true) {
-			if (n <= 0) {
-				return result;
-			} else {
-				var $temp$result = A2($elm$core$List$cons, value, result),
-					$temp$n = n - 1,
-					$temp$value = value;
-				result = $temp$result;
-				n = $temp$n;
-				value = $temp$value;
-				continue repeatHelp;
-			}
-		}
-	});
-var $elm$core$List$repeat = F2(
-	function (n, value) {
-		return A3($elm$core$List$repeatHelp, _List_Nil, n, value);
-	});
-var $author$project$Example$StackArea$init = {
-	areas: $elm$core$Dict$fromList(
-		_List_fromArray(
-			[
-				_Utils_Tuple2(
-				0,
-				A2(
-					$elm$core$List$map,
-					$author$project$Example$StackArea$CardId,
-					A2($elm$core$List$range, 0, 4)))
-			])),
-	cards: $elm$core$Dict$fromList(
-		A2(
-			$elm$core$List$indexedMap,
-			$elm$core$Tuple$pair,
-			A2(
-				$elm$core$List$repeat,
-				3,
-				{}))),
-	dragging: $elm$core$Maybe$Nothing
+var $elm$core$Char$isUpper = function (_char) {
+	var code = $elm$core$Char$toCode(_char);
+	return (code <= 90) && (65 <= code);
 };
-var $author$project$Chapter$Area$init = {draggableState: $author$project$Example$Draggable$init, hoverState: $author$project$Example$Hover$init, stackAreaModel: $author$project$Example$StackArea$init};
-var $elm$core$Result$Err = function (a) {
-	return {$: 'Err', a: a};
-};
-var $elm$json$Json$Decode$Failure = F2(
-	function (a, b) {
-		return {$: 'Failure', a: a, b: b};
-	});
-var $elm$json$Json$Decode$Field = F2(
-	function (a, b) {
-		return {$: 'Field', a: a, b: b};
-	});
-var $elm$json$Json$Decode$Index = F2(
-	function (a, b) {
-		return {$: 'Index', a: a, b: b};
-	});
-var $elm$core$Result$Ok = function (a) {
-	return {$: 'Ok', a: a};
-};
-var $elm$json$Json$Decode$OneOf = function (a) {
-	return {$: 'OneOf', a: a};
-};
-var $elm$core$String$all = _String_all;
-var $elm$json$Json$Encode$encode = _Json_encode;
-var $elm$core$String$fromInt = _String_fromNumber;
-var $elm$core$String$join = F2(
-	function (sep, chunks) {
-		return A2(
-			_String_join,
-			sep,
-			_List_toArray(chunks));
-	});
-var $elm$core$String$split = F2(
-	function (sep, string) {
-		return _List_fromArray(
-			A2(_String_split, sep, string));
-	});
-var $elm$json$Json$Decode$indent = function (str) {
-	return A2(
-		$elm$core$String$join,
-		'\n    ',
-		A2($elm$core$String$split, '\n', str));
-};
+var $elm$core$Basics$or = _Basics_or;
 var $elm$core$Char$isAlpha = function (_char) {
 	return $elm$core$Char$isLower(_char) || $elm$core$Char$isUpper(_char);
+};
+var $elm$core$Char$isDigit = function (_char) {
+	var code = $elm$core$Char$toCode(_char);
+	return (code <= 57) && (48 <= code);
+};
+var $elm$core$Char$isAlphaNum = function (_char) {
+	return $elm$core$Char$isLower(_char) || ($elm$core$Char$isUpper(_char) || $elm$core$Char$isDigit(_char));
+};
+var $elm$core$List$reverse = function (list) {
+	return A3($elm$core$List$foldl, $elm$core$List$cons, _List_Nil, list);
 };
 var $elm$core$String$uncons = _String_uncons;
 var $elm$json$Json$Decode$errorOneOf = F2(
@@ -5347,6 +5059,7 @@ var $elm$core$Basics$apL = F2(
 var $elm$core$Basics$eq = _Utils_equal;
 var $elm$core$Basics$floor = _Basics_floor;
 var $elm$core$Elm$JsArray$length = _JsArray_length;
+var $elm$core$Basics$gt = _Utils_gt;
 var $elm$core$Basics$max = F2(
 	function (x, y) {
 		return (_Utils_cmp(x, y) > 0) ? x : y;
@@ -5461,6 +5174,7 @@ var $elm$core$Array$initialize = F2(
 			return A5($elm$core$Array$initializeHelp, fn, initialFromIndex, len, _List_Nil, tail);
 		}
 	});
+var $elm$core$Basics$True = {$: 'True'};
 var $elm$core$Result$isOk = function (result) {
 	if (result.$ === 'Ok') {
 		return true;
@@ -5483,6 +5197,714 @@ var $elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 			return 3;
 	}
 };
+var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$core$String$fromFloat = _String_fromNumber;
+var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
+var $author$project$Game$Card$ratio = function (_float) {
+	return A2(
+		$elm$html$Html$Attributes$style,
+		'aspect-ratio',
+		$elm$core$String$fromFloat(_float));
+};
+var $author$project$Game$Card$default = F2(
+	function (attrs, content) {
+		return A2(
+			$elm$html$Html$div,
+			_Utils_ap(
+				_List_fromArray(
+					[
+						A2($elm$html$Html$Attributes$style, 'display', 'flex'),
+						A2($elm$html$Html$Attributes$style, 'flex-direction', 'column'),
+						$author$project$Game$Card$ratio(0.66),
+						A2($elm$html$Html$Attributes$style, 'height', '200px'),
+						A2($elm$html$Html$Attributes$style, 'border-radius', '16px'),
+						A2($elm$html$Html$Attributes$style, 'overflow', 'hidden'),
+						A2($elm$html$Html$Attributes$style, 'background-color', 'white'),
+						A2($elm$html$Html$Attributes$style, 'border-width', '1px'),
+						A2($elm$html$Html$Attributes$style, 'border-style', 'solid'),
+						A2($elm$html$Html$Attributes$style, 'border-color', 'rgba(0, 0, 0, 0.2)'),
+						A2($elm$html$Html$Attributes$style, 'font-size', '0.8em'),
+						A2($elm$html$Html$Attributes$style, 'z-index', '1'),
+						A2($elm$html$Html$Attributes$style, 'backface-visibility', 'hidden')
+					]),
+				attrs),
+			content);
+	});
+var $author$project$Game$Card$element = F2(
+	function (attrs, content) {
+		return A2(
+			$elm$html$Html$div,
+			_Utils_ap(
+				_List_fromArray(
+					[
+						A2($elm$html$Html$Attributes$style, 'display', 'flex'),
+						A2($elm$html$Html$Attributes$style, 'padding', '8px 8px')
+					]),
+				attrs),
+			_List_fromArray(
+				[content]));
+	});
+var $author$project$Game$Card$backgroundImage = function (src) {
+	return _List_fromArray(
+		[
+			A2($elm$html$Html$Attributes$style, 'background-image', 'url(' + (src + ')')),
+			A2($elm$html$Html$Attributes$style, 'background-size', 'cover'),
+			A2($elm$html$Html$Attributes$style, 'background-position', 'center')
+		]);
+};
+var $author$project$Game$Card$fillingImage = F2(
+	function (attrs, src) {
+		return A2(
+			$elm$html$Html$div,
+			_Utils_ap(
+				_List_fromArray(
+					[
+						A2($elm$html$Html$Attributes$style, 'display', 'flex'),
+						A2($elm$html$Html$Attributes$style, 'flex-grow', '1')
+					]),
+				_Utils_ap(
+					$author$project$Game$Card$backgroundImage(src),
+					attrs)),
+			_List_Nil);
+	});
+var $author$project$View$Component$image = 'assets/Elm_logo.svg';
+var $author$project$Game$Entity$new = function (a) {
+	return {
+		content: a,
+		customTransformations: _List_Nil,
+		position: _Utils_Tuple2(0, 0),
+		rotation: 0,
+		zIndex: 1
+	};
+};
+var $author$project$Game$Card$row = F2(
+	function (attrs, content) {
+		return A2(
+			$elm$html$Html$div,
+			_Utils_ap(
+				_List_fromArray(
+					[
+						A2($elm$html$Html$Attributes$style, 'display', 'flex'),
+						A2($elm$html$Html$Attributes$style, 'flex-direction', 'row'),
+						A2($elm$html$Html$Attributes$style, 'justify-content', 'space-between')
+					]),
+				attrs),
+			content);
+	});
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $author$project$View$Component$defaultCard = $author$project$Game$Entity$new(
+	function (a) {
+		return A2(
+			$author$project$Game$Card$default,
+			a,
+			_List_fromArray(
+				[
+					A2(
+					$author$project$Game$Card$row,
+					_List_Nil,
+					_List_fromArray(
+						[
+							A2(
+							$author$project$Game$Card$element,
+							_List_Nil,
+							$elm$html$Html$text('Elm')),
+							A2(
+							$author$project$Game$Card$element,
+							_List_Nil,
+							$elm$html$Html$text('🌳'))
+						])),
+					A2($author$project$Game$Card$fillingImage, _List_Nil, $author$project$View$Component$image),
+					A2(
+					$author$project$Game$Card$row,
+					_List_Nil,
+					_List_fromArray(
+						[
+							A2(
+							$author$project$Game$Card$element,
+							_List_Nil,
+							$elm$html$Html$text('1')),
+							A2(
+							$author$project$Game$Card$element,
+							_List_Nil,
+							$elm$html$Html$text('Removes runtime exceptions'))
+						]))
+				]));
+	});
+var $author$project$Game$Card$empty = F2(
+	function (attrs, string) {
+		return A2(
+			$author$project$Game$Card$default,
+			_Utils_ap(
+				_List_fromArray(
+					[
+						A2($elm$html$Html$Attributes$style, 'border-style', 'dashed'),
+						A2($elm$html$Html$Attributes$style, 'color', 'rgba(0, 0, 0, 0.5)'),
+						A2($elm$html$Html$Attributes$style, 'justify-content', 'center'),
+						A2($elm$html$Html$Attributes$style, 'align-items', 'center'),
+						A2($elm$html$Html$Attributes$style, 'background-color', 'none'),
+						A2($elm$html$Html$Attributes$style, 'z-index', '0')
+					]),
+				attrs),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							A2($elm$html$Html$Attributes$style, 'display', 'flex')
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text(string)
+						]))
+				]));
+	});
+var $author$project$View$Component$empty = function (attrs) {
+	return A2($author$project$Game$Card$empty, attrs, 'No Card');
+};
+var $elm$core$Basics$negate = function (n) {
+	return -n;
+};
+var $elm$core$Basics$pi = _Basics_pi;
+var $elm$core$List$foldrHelper = F4(
+	function (fn, acc, ctr, ls) {
+		if (!ls.b) {
+			return acc;
+		} else {
+			var a = ls.a;
+			var r1 = ls.b;
+			if (!r1.b) {
+				return A2(fn, a, acc);
+			} else {
+				var b = r1.a;
+				var r2 = r1.b;
+				if (!r2.b) {
+					return A2(
+						fn,
+						a,
+						A2(fn, b, acc));
+				} else {
+					var c = r2.a;
+					var r3 = r2.b;
+					if (!r3.b) {
+						return A2(
+							fn,
+							a,
+							A2(
+								fn,
+								b,
+								A2(fn, c, acc)));
+					} else {
+						var d = r3.a;
+						var r4 = r3.b;
+						var res = (ctr > 500) ? A3(
+							$elm$core$List$foldl,
+							fn,
+							acc,
+							$elm$core$List$reverse(r4)) : A4($elm$core$List$foldrHelper, fn, acc, ctr + 1, r4);
+						return A2(
+							fn,
+							a,
+							A2(
+								fn,
+								b,
+								A2(
+									fn,
+									c,
+									A2(fn, d, res))));
+					}
+				}
+			}
+		}
+	});
+var $elm$core$List$foldr = F3(
+	function (fn, acc, ls) {
+		return A4($elm$core$List$foldrHelper, fn, acc, 0, ls);
+	});
+var $elm$core$List$map = F2(
+	function (f, xs) {
+		return A3(
+			$elm$core$List$foldr,
+			F2(
+				function (x, acc) {
+					return A2(
+						$elm$core$List$cons,
+						f(x),
+						acc);
+				}),
+			_List_Nil,
+			xs);
+	});
+var $elm$core$Tuple$second = function (_v0) {
+	var y = _v0.b;
+	return y;
+};
+var $author$project$Game$Entity$moveTransformation = function (_v0) {
+	var x = _v0.a;
+	var y = _v0.b;
+	return 'translate(' + ($elm$core$String$fromFloat(x) + ('px,' + ($elm$core$String$fromFloat(y) + 'px)')));
+};
+var $author$project$Game$Entity$rotateTransformation = function (_float) {
+	return 'rotate(' + ($elm$core$String$fromFloat(_float) + 'rad)');
+};
+var $author$project$Game$Entity$transform = function (list) {
+	return A2(
+		$elm$html$Html$Attributes$style,
+		'transform',
+		_Utils_eq(list, _List_Nil) ? 'unset' : A2($elm$core$String$join, ' ', list));
+};
+var $author$project$Game$Entity$toAttributes = function (entity) {
+	return _Utils_Tuple2(
+		entity.content,
+		_List_fromArray(
+			[
+				$author$project$Game$Entity$transform(
+				_Utils_ap(
+					_List_fromArray(
+						[
+							$author$project$Game$Entity$moveTransformation(entity.position),
+							$author$project$Game$Entity$rotateTransformation(entity.rotation)
+						]),
+					entity.customTransformations)),
+				A2(
+				$elm$html$Html$Attributes$style,
+				'z-index',
+				$elm$core$String$fromInt(entity.zIndex))
+			]));
+};
+var $author$project$Game$Entity$toHtml = F2(
+	function (attrs, entity) {
+		return entity.content(
+			_Utils_ap(
+				$author$project$Game$Entity$toAttributes(entity).b,
+				attrs));
+	});
+var $author$project$Game$Entity$pileAbove = F2(
+	function (empty, stack) {
+		return $author$project$Game$Entity$new(
+			function (attrs) {
+				return A2(
+					$elm$html$Html$div,
+					_Utils_ap(
+						_List_fromArray(
+							[
+								A2($elm$html$Html$Attributes$style, 'display', 'flex'),
+								A2($elm$html$Html$Attributes$style, 'position', 'relative')
+							]),
+						attrs),
+					A2(
+						$elm$core$List$cons,
+						empty,
+						A2(
+							$elm$core$List$map,
+							$author$project$Game$Entity$toHtml(
+								_List_fromArray(
+									[
+										A2($elm$html$Html$Attributes$style, 'position', 'absolute')
+									])),
+							stack)));
+			});
+	});
+var $elm$core$List$repeatHelp = F3(
+	function (result, n, value) {
+		repeatHelp:
+		while (true) {
+			if (n <= 0) {
+				return result;
+			} else {
+				var $temp$result = A2($elm$core$List$cons, value, result),
+					$temp$n = n - 1,
+					$temp$value = value;
+				result = $temp$result;
+				n = $temp$n;
+				value = $temp$value;
+				continue repeatHelp;
+			}
+		}
+	});
+var $elm$core$List$repeat = F2(
+	function (n, value) {
+		return A3($elm$core$List$repeatHelp, _List_Nil, n, value);
+	});
+var $elm$core$Basics$cos = _Basics_cos;
+var $elm$core$Basics$sin = _Basics_sin;
+var $elm$core$Basics$fromPolar = function (_v0) {
+	var radius = _v0.a;
+	var theta = _v0.b;
+	return _Utils_Tuple2(
+		radius * $elm$core$Basics$cos(theta),
+		radius * $elm$core$Basics$sin(theta));
+};
+var $author$project$Game$Entity$mapPosition = F2(
+	function (fun, entity) {
+		return _Utils_update(
+			entity,
+			{
+				position: fun(entity.position)
+			});
+	});
+var $author$project$Game$Area$mapPosition = function (fun) {
+	return $elm$core$List$indexedMap(
+		F2(
+			function (i, entity) {
+				return A2(
+					$author$project$Game$Entity$mapPosition,
+					A2(fun, i, entity.content),
+					entity);
+			}));
+};
+var $author$project$Game$Area$withPolarPosition = F2(
+	function (args, list) {
+		return A2(
+			$author$project$Game$Area$mapPosition,
+			F3(
+				function (i, _v0, _v1) {
+					return ($elm$core$List$length(list) === 1) ? $elm$core$Basics$fromPolar(
+						_Utils_Tuple2(args.minDistance + ((args.maxDistance - args.minDistance) / 2), args.minAngle + ((args.maxAngle - args.minAngle) / 2))) : $elm$core$Basics$fromPolar(
+						_Utils_Tuple2(
+							args.minDistance + ((i * (args.maxDistance - args.minDistance)) / ($elm$core$List$length(list) - 1)),
+							args.minAngle + ((i * (args.maxAngle - args.minAngle)) / ($elm$core$List$length(list) - 1))));
+				}),
+			list);
+	});
+var $author$project$View$Area$below = A2(
+	$author$project$Game$Entity$toHtml,
+	_List_Nil,
+	A2(
+		$author$project$Game$Entity$pileAbove,
+		$author$project$View$Component$empty(_List_Nil),
+		A2(
+			$author$project$Game$Area$withPolarPosition,
+			{maxAngle: $elm$core$Basics$pi / 2, maxDistance: 0, minAngle: $elm$core$Basics$pi / 2, minDistance: -50},
+			A2(
+				$elm$core$List$repeat,
+				3,
+				$author$project$Game$Entity$new(
+					function (attrs) {
+						return A2($author$project$Game$Entity$toHtml, attrs, $author$project$View$Component$defaultCard);
+					})))));
+var $dtwrks$elm_book$ElmBook$Internal$Chapter$ChapterBuilder = function (a) {
+	return {$: 'ChapterBuilder', a: a};
+};
+var $dtwrks$elm_book$ElmBook$Internal$Chapter$ChapterOptions = function (a) {
+	return {$: 'ChapterOptions', a: a};
+};
+var $dtwrks$elm_book$ElmBook$Internal$Chapter$defaultOverrides = $dtwrks$elm_book$ElmBook$Internal$Chapter$ChapterOptions(
+	{hiddenTitle: $elm$core$Maybe$Nothing});
+var $dtwrks$elm_book$ElmBook$Internal$ComponentOptions$ComponentOptions = function (a) {
+	return {$: 'ComponentOptions', a: a};
+};
+var $dtwrks$elm_book$ElmBook$Internal$ComponentOptions$defaultOverrides = $dtwrks$elm_book$ElmBook$Internal$ComponentOptions$ComponentOptions(
+	{background: $elm$core$Maybe$Nothing, display: $elm$core$Maybe$Nothing, fullWidth: $elm$core$Maybe$Nothing, hiddenLabel: $elm$core$Maybe$Nothing});
+var $elm$core$Basics$composeR = F3(
+	function (f, g, x) {
+		return g(
+			f(x));
+	});
+var $elm$core$String$map = _String_map;
+var $elm$core$Char$toLower = _Char_toLower;
+var $dtwrks$elm_book$ElmBook$Internal$Helpers$toUrlSafe = function (c) {
+	return $elm$core$Char$isAlphaNum(c) ? $elm$core$Char$toLower(c) : _Utils_chr('-');
+};
+var $elm$core$String$trim = _String_trim;
+var $dtwrks$elm_book$ElmBook$Internal$Helpers$toSlug = A2(
+	$elm$core$Basics$composeR,
+	$elm$core$String$trim,
+	$elm$core$String$map($dtwrks$elm_book$ElmBook$Internal$Helpers$toUrlSafe));
+var $dtwrks$elm_book$ElmBook$Chapter$chapter = function (title) {
+	return $dtwrks$elm_book$ElmBook$Internal$Chapter$ChapterBuilder(
+		{
+			body: '',
+			chapterOptions: $dtwrks$elm_book$ElmBook$Internal$Chapter$defaultOverrides,
+			componentList: _List_Nil,
+			componentOptions: $dtwrks$elm_book$ElmBook$Internal$ComponentOptions$defaultOverrides,
+			groupTitle: $elm$core$Maybe$Nothing,
+			init: $elm$core$Maybe$Nothing,
+			internal: true,
+			title: title,
+			url: '/' + $dtwrks$elm_book$ElmBook$Internal$Helpers$toSlug(title)
+		});
+};
+var $author$project$Game$Entity$map = F2(
+	function (fun, i) {
+		return {
+			content: fun(i.content),
+			customTransformations: i.customTransformations,
+			position: i.position,
+			rotation: i.rotation,
+			zIndex: i.zIndex
+		};
+	});
+var $elm$core$Tuple$mapBoth = F3(
+	function (funcA, funcB, _v0) {
+		var x = _v0.a;
+		var y = _v0.b;
+		return _Utils_Tuple2(
+			funcA(x),
+			funcB(y));
+	});
+var $author$project$Game$Entity$mapRotation = F2(
+	function (fun, entity) {
+		return _Utils_update(
+			entity,
+			{
+				rotation: fun(entity.rotation)
+			});
+	});
+var $author$project$Game$Area$mapRotation = function (fun) {
+	return $elm$core$List$indexedMap(
+		F2(
+			function (i, entity) {
+				return A2(
+					$author$project$Game$Entity$mapRotation,
+					A2(fun, i, entity.content),
+					entity);
+			}));
+};
+var $author$project$Game$Area$withLinearRotation = F2(
+	function (args, list) {
+		return A2(
+			$author$project$Game$Area$mapRotation,
+			F3(
+				function (i, _v0, _v1) {
+					return ($elm$core$List$length(list) === 1) ? (args.min + ((args.max - args.min) / 2)) : (args.min + ((i * (args.max - args.min)) / ($elm$core$List$length(list) - 1)));
+				}),
+			list);
+	});
+var $author$project$View$Area$hand = A2(
+	$author$project$Game$Entity$toHtml,
+	_List_fromArray(
+		[
+			A2($elm$html$Html$Attributes$style, 'height', '250px'),
+			A2($elm$html$Html$Attributes$style, 'width', '400px'),
+			A2($elm$html$Html$Attributes$style, 'align-items', 'end'),
+			A2($elm$html$Html$Attributes$style, 'justify-content', 'center')
+		]),
+	A2(
+		$author$project$Game$Entity$pileAbove,
+		$elm$html$Html$text(''),
+		A2(
+			$elm$core$List$map,
+			$author$project$Game$Entity$map(
+				F2(
+					function (_v0, attrs) {
+						return A2($author$project$Game$Entity$toHtml, attrs, $author$project$View$Component$defaultCard);
+					})),
+			A2(
+				$elm$core$List$indexedMap,
+				F2(
+					function (i, stackItem) {
+						return (i === 3) ? _Utils_update(
+							stackItem,
+							{
+								position: A3(
+									$elm$core$Tuple$mapBoth,
+									$elm$core$Basics$add(0),
+									$elm$core$Basics$add(-50),
+									stackItem.position),
+								rotation: 0
+							}) : stackItem;
+					}),
+				A2(
+					$author$project$Game$Area$withLinearRotation,
+					{max: $elm$core$Basics$pi / 16, min: (-$elm$core$Basics$pi) / 16},
+					A2(
+						$author$project$Game$Area$withPolarPosition,
+						{maxAngle: $elm$core$Basics$pi / 32, maxDistance: 100, minAngle: (-$elm$core$Basics$pi) / 32, minDistance: -100},
+						A2(
+							$elm$core$List$repeat,
+							5,
+							$author$project$Game$Entity$new(_Utils_Tuple0))))))));
+var $author$project$Example$Draggable$init = {at: 0, selected: false};
+var $author$project$Example$Hover$init = $elm$core$Maybe$Nothing;
+var $elm$core$Dict$RBEmpty_elm_builtin = {$: 'RBEmpty_elm_builtin'};
+var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
+var $elm$core$Dict$Black = {$: 'Black'};
+var $elm$core$Dict$RBNode_elm_builtin = F5(
+	function (a, b, c, d, e) {
+		return {$: 'RBNode_elm_builtin', a: a, b: b, c: c, d: d, e: e};
+	});
+var $elm$core$Dict$Red = {$: 'Red'};
+var $elm$core$Dict$balance = F5(
+	function (color, key, value, left, right) {
+		if ((right.$ === 'RBNode_elm_builtin') && (right.a.$ === 'Red')) {
+			var _v1 = right.a;
+			var rK = right.b;
+			var rV = right.c;
+			var rLeft = right.d;
+			var rRight = right.e;
+			if ((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Red')) {
+				var _v3 = left.a;
+				var lK = left.b;
+				var lV = left.c;
+				var lLeft = left.d;
+				var lRight = left.e;
+				return A5(
+					$elm$core$Dict$RBNode_elm_builtin,
+					$elm$core$Dict$Red,
+					key,
+					value,
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, rK, rV, rLeft, rRight));
+			} else {
+				return A5(
+					$elm$core$Dict$RBNode_elm_builtin,
+					color,
+					rK,
+					rV,
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, key, value, left, rLeft),
+					rRight);
+			}
+		} else {
+			if ((((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Red')) && (left.d.$ === 'RBNode_elm_builtin')) && (left.d.a.$ === 'Red')) {
+				var _v5 = left.a;
+				var lK = left.b;
+				var lV = left.c;
+				var _v6 = left.d;
+				var _v7 = _v6.a;
+				var llK = _v6.b;
+				var llV = _v6.c;
+				var llLeft = _v6.d;
+				var llRight = _v6.e;
+				var lRight = left.e;
+				return A5(
+					$elm$core$Dict$RBNode_elm_builtin,
+					$elm$core$Dict$Red,
+					lK,
+					lV,
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, llK, llV, llLeft, llRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, key, value, lRight, right));
+			} else {
+				return A5($elm$core$Dict$RBNode_elm_builtin, color, key, value, left, right);
+			}
+		}
+	});
+var $elm$core$Basics$compare = _Utils_compare;
+var $elm$core$Dict$insertHelp = F3(
+	function (key, value, dict) {
+		if (dict.$ === 'RBEmpty_elm_builtin') {
+			return A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, key, value, $elm$core$Dict$RBEmpty_elm_builtin, $elm$core$Dict$RBEmpty_elm_builtin);
+		} else {
+			var nColor = dict.a;
+			var nKey = dict.b;
+			var nValue = dict.c;
+			var nLeft = dict.d;
+			var nRight = dict.e;
+			var _v1 = A2($elm$core$Basics$compare, key, nKey);
+			switch (_v1.$) {
+				case 'LT':
+					return A5(
+						$elm$core$Dict$balance,
+						nColor,
+						nKey,
+						nValue,
+						A3($elm$core$Dict$insertHelp, key, value, nLeft),
+						nRight);
+				case 'EQ':
+					return A5($elm$core$Dict$RBNode_elm_builtin, nColor, nKey, value, nLeft, nRight);
+				default:
+					return A5(
+						$elm$core$Dict$balance,
+						nColor,
+						nKey,
+						nValue,
+						nLeft,
+						A3($elm$core$Dict$insertHelp, key, value, nRight));
+			}
+		}
+	});
+var $elm$core$Dict$insert = F3(
+	function (key, value, dict) {
+		var _v0 = A3($elm$core$Dict$insertHelp, key, value, dict);
+		if ((_v0.$ === 'RBNode_elm_builtin') && (_v0.a.$ === 'Red')) {
+			var _v1 = _v0.a;
+			var k = _v0.b;
+			var v = _v0.c;
+			var l = _v0.d;
+			var r = _v0.e;
+			return A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, k, v, l, r);
+		} else {
+			var x = _v0;
+			return x;
+		}
+	});
+var $elm$core$Dict$fromList = function (assocs) {
+	return A3(
+		$elm$core$List$foldl,
+		F2(
+			function (_v0, dict) {
+				var key = _v0.a;
+				var value = _v0.b;
+				return A3($elm$core$Dict$insert, key, value, dict);
+			}),
+		$elm$core$Dict$empty,
+		assocs);
+};
+var $elm$core$Tuple$pair = F2(
+	function (a, b) {
+		return _Utils_Tuple2(a, b);
+	});
+var $author$project$Example$StackArea$init = {
+	areas: $elm$core$Dict$fromList(
+		_List_fromArray(
+			[
+				_Utils_Tuple2(
+				0,
+				A2($elm$core$List$range, 0, 4))
+			])),
+	cards: $elm$core$Dict$fromList(
+		A2(
+			$elm$core$List$indexedMap,
+			$elm$core$Tuple$pair,
+			A2(
+				$elm$core$List$repeat,
+				3,
+				{}))),
+	dragging: $elm$core$Maybe$Nothing
+};
+var $author$project$Chapter$Area$init = {draggableState: $author$project$Example$Draggable$init, hoverState: $author$project$Example$Hover$init, stackAreaModel: $author$project$Example$StackArea$init};
+var $author$project$View$Component$list = function (l) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				A2($elm$html$Html$Attributes$style, 'display', 'flex'),
+				A2($elm$html$Html$Attributes$style, 'flex-direction', 'row'),
+				A2($elm$html$Html$Attributes$style, 'flex-wrap', 'wrap'),
+				A2($elm$html$Html$Attributes$style, 'justify-content', 'space-between')
+			]),
+		A2(
+			$elm$core$List$map,
+			function (_v0) {
+				var subtitle = _v0.a;
+				var content = _v0.b;
+				return A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							A2($elm$html$Html$Attributes$style, 'display', 'flex'),
+							A2($elm$html$Html$Attributes$style, 'flex-direction', 'column'),
+							A2($elm$html$Html$Attributes$style, 'gap', '8px')
+						]),
+					_List_fromArray(
+						[
+							content,
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									A2($elm$html$Html$Attributes$style, 'text-align', 'center')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text(subtitle)
+								]))
+						]));
+			},
+			l));
+};
 var $elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
 var $elm$html$Html$map = $elm$virtual_dom$VirtualDom$map;
 var $elm$core$Tuple$mapSecond = F2(
@@ -5495,33 +5917,346 @@ var $elm$core$Tuple$mapSecond = F2(
 	});
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
+var $elm$random$Random$Generator = function (a) {
+	return {$: 'Generator', a: a};
+};
+var $elm$random$Random$andThen = F2(
+	function (callback, _v0) {
+		var genA = _v0.a;
+		return $elm$random$Random$Generator(
+			function (seed) {
+				var _v1 = genA(seed);
+				var result = _v1.a;
+				var newSeed = _v1.b;
+				var _v2 = callback(result);
+				var genB = _v2.a;
+				return genB(newSeed);
+			});
+	});
+var $elm$core$Basics$abs = function (n) {
+	return (n < 0) ? (-n) : n;
+};
+var $elm$core$Bitwise$and = _Bitwise_and;
+var $elm$random$Random$Seed = F2(
+	function (a, b) {
+		return {$: 'Seed', a: a, b: b};
+	});
+var $elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
+var $elm$random$Random$next = function (_v0) {
+	var state0 = _v0.a;
+	var incr = _v0.b;
+	return A2($elm$random$Random$Seed, ((state0 * 1664525) + incr) >>> 0, incr);
+};
+var $elm$core$Bitwise$xor = _Bitwise_xor;
+var $elm$random$Random$peel = function (_v0) {
+	var state = _v0.a;
+	var word = (state ^ (state >>> ((state >>> 28) + 4))) * 277803737;
+	return ((word >>> 22) ^ word) >>> 0;
+};
+var $elm$random$Random$float = F2(
+	function (a, b) {
+		return $elm$random$Random$Generator(
+			function (seed0) {
+				var seed1 = $elm$random$Random$next(seed0);
+				var range = $elm$core$Basics$abs(b - a);
+				var n1 = $elm$random$Random$peel(seed1);
+				var n0 = $elm$random$Random$peel(seed0);
+				var lo = (134217727 & n1) * 1.0;
+				var hi = (67108863 & n0) * 1.0;
+				var val = ((hi * 134217728.0) + lo) / 9007199254740992.0;
+				var scaled = (val * range) + a;
+				return _Utils_Tuple2(
+					scaled,
+					$elm$random$Random$next(seed1));
+			});
+	});
+var $elm$random$Random$initialSeed = function (x) {
+	var _v0 = $elm$random$Random$next(
+		A2($elm$random$Random$Seed, 0, 1013904223));
+	var state1 = _v0.a;
+	var incr = _v0.b;
+	var state2 = (state1 + x) >>> 0;
+	return $elm$random$Random$next(
+		A2($elm$random$Random$Seed, state2, incr));
+};
+var $elm$random$Random$map2 = F3(
+	function (func, _v0, _v1) {
+		var genA = _v0.a;
+		var genB = _v1.a;
+		return $elm$random$Random$Generator(
+			function (seed0) {
+				var _v2 = genA(seed0);
+				var a = _v2.a;
+				var seed1 = _v2.b;
+				var _v3 = genB(seed1);
+				var b = _v3.a;
+				var seed2 = _v3.b;
+				return _Utils_Tuple2(
+					A2(func, a, b),
+					seed2);
+			});
+	});
+var $elm$random$Random$int = F2(
+	function (a, b) {
+		return $elm$random$Random$Generator(
+			function (seed0) {
+				var _v0 = (_Utils_cmp(a, b) < 0) ? _Utils_Tuple2(a, b) : _Utils_Tuple2(b, a);
+				var lo = _v0.a;
+				var hi = _v0.b;
+				var range = (hi - lo) + 1;
+				if (!((range - 1) & range)) {
+					return _Utils_Tuple2(
+						(((range - 1) & $elm$random$Random$peel(seed0)) >>> 0) + lo,
+						$elm$random$Random$next(seed0));
+				} else {
+					var threshhold = (((-range) >>> 0) % range) >>> 0;
+					var accountForBias = function (seed) {
+						accountForBias:
+						while (true) {
+							var x = $elm$random$Random$peel(seed);
+							var seedN = $elm$random$Random$next(seed);
+							if (_Utils_cmp(x, threshhold) < 0) {
+								var $temp$seed = seedN;
+								seed = $temp$seed;
+								continue accountForBias;
+							} else {
+								return _Utils_Tuple2((x % range) + lo, seedN);
+							}
+						}
+					};
+					return accountForBias(seed0);
+				}
+			});
+	});
+var $elm$random$Random$map3 = F4(
+	function (func, _v0, _v1, _v2) {
+		var genA = _v0.a;
+		var genB = _v1.a;
+		var genC = _v2.a;
+		return $elm$random$Random$Generator(
+			function (seed0) {
+				var _v3 = genA(seed0);
+				var a = _v3.a;
+				var seed1 = _v3.b;
+				var _v4 = genB(seed1);
+				var b = _v4.a;
+				var seed2 = _v4.b;
+				var _v5 = genC(seed2);
+				var c = _v5.a;
+				var seed3 = _v5.b;
+				return _Utils_Tuple2(
+					A3(func, a, b, c),
+					seed3);
+			});
+	});
+var $elm$core$Bitwise$or = _Bitwise_or;
+var $elm$random$Random$step = F2(
+	function (_v0, seed) {
+		var generator = _v0.a;
+		return generator(seed);
+	});
+var $elm$random$Random$independentSeed = $elm$random$Random$Generator(
+	function (seed0) {
+		var makeIndependentSeed = F3(
+			function (state, b, c) {
+				return $elm$random$Random$next(
+					A2($elm$random$Random$Seed, state, (1 | (b ^ c)) >>> 0));
+			});
+		var gen = A2($elm$random$Random$int, 0, 4294967295);
+		return A2(
+			$elm$random$Random$step,
+			A4($elm$random$Random$map3, makeIndependentSeed, gen, gen, gen),
+			seed0);
+	});
+var $elm$random$Random$listHelp = F4(
+	function (revList, n, gen, seed) {
+		listHelp:
+		while (true) {
+			if (n < 1) {
+				return _Utils_Tuple2(revList, seed);
+			} else {
+				var _v0 = gen(seed);
+				var value = _v0.a;
+				var newSeed = _v0.b;
+				var $temp$revList = A2($elm$core$List$cons, value, revList),
+					$temp$n = n - 1,
+					$temp$gen = gen,
+					$temp$seed = newSeed;
+				revList = $temp$revList;
+				n = $temp$n;
+				gen = $temp$gen;
+				seed = $temp$seed;
+				continue listHelp;
+			}
+		}
+	});
+var $elm$random$Random$list = F2(
+	function (n, _v0) {
+		var gen = _v0.a;
+		return $elm$random$Random$Generator(
+			function (seed) {
+				return A4($elm$random$Random$listHelp, _List_Nil, n, gen, seed);
+			});
+	});
+var $elm$random$Random$map = F2(
+	function (func, _v0) {
+		var genA = _v0.a;
+		return $elm$random$Random$Generator(
+			function (seed0) {
+				var _v1 = genA(seed0);
+				var a = _v1.a;
+				var seed1 = _v1.b;
+				return _Utils_Tuple2(
+					func(a),
+					seed1);
+			});
+	});
+var $author$project$Game$Area$mapPositionRandomly = F2(
+	function (fun, list) {
+		return A2(
+			$elm$random$Random$map,
+			function (randomList) {
+				return A2(
+					$elm$core$List$indexedMap,
+					F2(
+						function (i, _v0) {
+							var entity = _v0.a;
+							var seed = _v0.b;
+							return function (_v1) {
+								var position = _v1.a;
+								return _Utils_update(
+									entity,
+									{position: position});
+							}(
+								A2(
+									$elm$random$Random$step,
+									A3(fun, i, entity.content, entity.position),
+									seed));
+						}),
+					A3($elm$core$List$map2, $elm$core$Tuple$pair, list, randomList));
+			},
+			A2(
+				$elm$random$Random$list,
+				$elm$core$List$length(list),
+				$elm$random$Random$independentSeed));
+	});
+var $author$project$Game$Area$mapRotationRandomly = F2(
+	function (fun, list) {
+		return A2(
+			$elm$random$Random$map,
+			function (randomList) {
+				return A2(
+					$elm$core$List$indexedMap,
+					F2(
+						function (i, _v0) {
+							var entity = _v0.a;
+							var seed = _v0.b;
+							return function (_v1) {
+								var rotation = _v1.a;
+								return _Utils_update(
+									entity,
+									{rotation: rotation});
+							}(
+								A2(
+									$elm$random$Random$step,
+									A3(fun, i, entity.content, entity.rotation),
+									seed));
+						}),
+					A3($elm$core$List$map2, $elm$core$Tuple$pair, list, randomList));
+			},
+			A2(
+				$elm$random$Random$list,
+				$elm$core$List$length(list),
+				$elm$random$Random$independentSeed));
+	});
+var $author$project$View$Area$random = A2(
+	$author$project$Game$Entity$toHtml,
+	_List_Nil,
+	A2(
+		$author$project$Game$Entity$pileAbove,
+		$author$project$View$Component$empty(_List_Nil),
+		function (generator) {
+			return A2(
+				$elm$random$Random$step,
+				generator,
+				$elm$random$Random$initialSeed(40));
+		}(
+			A2(
+				$elm$random$Random$andThen,
+				$author$project$Game$Area$mapPositionRandomly(
+					F3(
+						function (_v3, _v4, _v5) {
+							return A3(
+								$elm$random$Random$map2,
+								F2(
+									function (angle, distance) {
+										return $elm$core$Basics$fromPolar(
+											_Utils_Tuple2(distance, angle));
+									}),
+								A2($elm$random$Random$float, (-$elm$core$Basics$pi) / 8, $elm$core$Basics$pi / 8),
+								A2($elm$random$Random$float, -50, 50));
+						})),
+				A2(
+					$author$project$Game$Area$mapRotationRandomly,
+					F3(
+						function (_v0, _v1, _v2) {
+							return A2($elm$random$Random$float, (-$elm$core$Basics$pi) / 8, $elm$core$Basics$pi / 8);
+						}),
+					A2(
+						$elm$core$List$repeat,
+						3,
+						$author$project$Game$Entity$new(
+							function (attrs) {
+								return A2($author$project$Game$Entity$toHtml, attrs, $author$project$View$Component$defaultCard);
+							}))))).a));
 var $dtwrks$elm_book$ElmBook$Internal$Chapter$Chapter = function (a) {
 	return {$: 'Chapter', a: a};
 };
-var $dtwrks$elm_book$ElmBook$Internal$Chapter$ChapterComponentViewStateful = function (a) {
-	return {$: 'ChapterComponentViewStateful', a: a};
-};
-var $dtwrks$elm_book$ElmBook$Chapter$fromTupleStateful = function (_v0) {
-	var label = _v0.a;
-	var view_ = _v0.b;
-	return {
-		label: label,
-		view: $dtwrks$elm_book$ElmBook$Internal$Chapter$ChapterComponentViewStateful(view_)
-	};
-};
-var $dtwrks$elm_book$ElmBook$Chapter$renderStatefulComponentList = F2(
-	function (componentList, _v0) {
+var $dtwrks$elm_book$ElmBook$Chapter$renderWithComponentList = F2(
+	function (body, _v0) {
 		var builder = _v0.a;
 		return $dtwrks$elm_book$ElmBook$Internal$Chapter$Chapter(
 			_Utils_update(
 				builder,
-				{
-					body: builder.body + '<component-list />',
-					componentList: _Utils_ap(
-						A2($elm$core$List$map, $dtwrks$elm_book$ElmBook$Chapter$fromTupleStateful, componentList),
-						builder.componentList)
-				}));
+				{body: builder.body + (body + '\n<component-list />')}));
 	});
+var $author$project$View$Area$rotated = A2(
+	$author$project$Game$Entity$toHtml,
+	_List_Nil,
+	A2(
+		$author$project$Game$Entity$pileAbove,
+		$author$project$View$Component$empty(_List_Nil),
+		A2(
+			$author$project$Game$Area$withLinearRotation,
+			{max: 0, min: (-$elm$core$Basics$pi) / 16},
+			A2(
+				$elm$core$List$repeat,
+				3,
+				$author$project$Game$Entity$new(
+					function (attrs) {
+						return A2($author$project$Game$Entity$toHtml, attrs, $author$project$View$Component$defaultCard);
+					})))));
+var $author$project$View$Area$singleCard = A2(
+	$author$project$Game$Entity$toHtml,
+	_List_Nil,
+	A2(
+		$author$project$Game$Entity$pileAbove,
+		$author$project$View$Component$empty(_List_Nil),
+		_List_fromArray(
+			[
+				function (it) {
+				return _Utils_update(
+					it,
+					{
+						position: _Utils_Tuple2(-50, 0),
+						rotation: (-$elm$core$Basics$pi) / 16
+					});
+			}(
+				$author$project$Game$Entity$new(
+					function (attrs) {
+						return A2($author$project$Game$Entity$toHtml, attrs, $author$project$View$Component$defaultCard);
+					}))
+			])));
 var $elm$core$Maybe$andThen = F2(
 	function (callback, maybeValue) {
 		if (maybeValue.$ === 'Just') {
@@ -5991,7 +6726,7 @@ var $author$project$Example$StackArea$update = F2(
 							A2(
 								$elm$core$Maybe$andThen,
 								$elm$core$List$head,
-								A2($elm$core$Dict$get, areaId.areaId, model.areas)))
+								A2($elm$core$Dict$get, areaId, model.areas)))
 					});
 			case 'StopDragging':
 				return _Utils_update(
@@ -6012,7 +6747,7 @@ var $author$project$Example$StackArea$update = F2(
 								{
 									areas: A3(
 										$elm$core$Dict$update,
-										id.areaId,
+										id,
 										function (maybe) {
 											return $elm$core$Maybe$Just(
 												A2(
@@ -6022,7 +6757,7 @@ var $author$project$Example$StackArea$update = F2(
 										},
 										A3(
 											$elm$core$Dict$update,
-											fromArea.areaId,
+											fromArea,
 											function (maybe) {
 												return A2(
 													$elm$core$Maybe$map,
@@ -6108,138 +6843,6 @@ var $elm$core$List$append = F2(
 var $elm$core$List$concat = function (lists) {
 	return A3($elm$core$List$foldr, $elm$core$List$append, _List_Nil, lists);
 };
-var $elm$html$Html$div = _VirtualDom_node('div');
-var $elm$core$String$fromFloat = _String_fromNumber;
-var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
-var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
-var $author$project$Game$Card$ratio = function (_float) {
-	return A2(
-		$elm$html$Html$Attributes$style,
-		'aspect-ratio',
-		$elm$core$String$fromFloat(_float));
-};
-var $author$project$Game$Card$default = F2(
-	function (attrs, content) {
-		return A2(
-			$elm$html$Html$div,
-			_Utils_ap(
-				_List_fromArray(
-					[
-						A2($elm$html$Html$Attributes$style, 'display', 'flex'),
-						A2($elm$html$Html$Attributes$style, 'flex-direction', 'column'),
-						$author$project$Game$Card$ratio(0.66),
-						A2($elm$html$Html$Attributes$style, 'height', '200px'),
-						A2($elm$html$Html$Attributes$style, 'border-radius', '16px'),
-						A2($elm$html$Html$Attributes$style, 'overflow', 'hidden'),
-						A2($elm$html$Html$Attributes$style, 'background-color', 'white'),
-						A2($elm$html$Html$Attributes$style, 'border-width', '1px'),
-						A2($elm$html$Html$Attributes$style, 'border-style', 'solid'),
-						A2($elm$html$Html$Attributes$style, 'border-color', 'rgba(0, 0, 0, 0.2)'),
-						A2($elm$html$Html$Attributes$style, 'font-size', '0.8em'),
-						A2($elm$html$Html$Attributes$style, 'z-index', '1'),
-						A2($elm$html$Html$Attributes$style, 'backface-visibility', 'hidden')
-					]),
-				attrs),
-			content);
-	});
-var $author$project$Game$Card$description = F2(
-	function (attrs, content) {
-		return A2(
-			$elm$html$Html$div,
-			_Utils_ap(
-				_List_fromArray(
-					[
-						A2($elm$html$Html$Attributes$style, 'display', 'flex'),
-						A2($elm$html$Html$Attributes$style, 'padding', '8px 8px')
-					]),
-				attrs),
-			_List_fromArray(
-				[content]));
-	});
-var $author$project$Game$Card$backgroundImage = function (src) {
-	return _List_fromArray(
-		[
-			A2($elm$html$Html$Attributes$style, 'background-image', 'url(' + (src + ')')),
-			A2($elm$html$Html$Attributes$style, 'background-size', 'cover'),
-			A2($elm$html$Html$Attributes$style, 'background-position', 'center')
-		]);
-};
-var $author$project$Game$Card$fillingImage = F2(
-	function (attrs, src) {
-		return A2(
-			$elm$html$Html$div,
-			_Utils_ap(
-				_List_fromArray(
-					[
-						A2($elm$html$Html$Attributes$style, 'flex-grow', '1'),
-						A2($elm$html$Html$Attributes$style, 'display', 'flex')
-					]),
-				_Utils_ap(
-					$author$project$Game$Card$backgroundImage(src),
-					attrs)),
-			_List_Nil);
-	});
-var $author$project$Game$Card$header = F2(
-	function (attrs, content) {
-		return A2(
-			$elm$html$Html$div,
-			_Utils_ap(
-				_List_fromArray(
-					[
-						A2($elm$html$Html$Attributes$style, 'display', 'flex'),
-						A2($elm$html$Html$Attributes$style, 'flex-direction', 'row'),
-						A2($elm$html$Html$Attributes$style, 'justify-content', 'space-between'),
-						A2($elm$html$Html$Attributes$style, 'padding', '8px 8px')
-					]),
-				attrs),
-			content);
-	});
-var $author$project$View$Component$image = 'assets/Elm_logo.svg';
-var $author$project$Game$Entity$new = function (a) {
-	return {
-		content: a,
-		customTransformations: _List_Nil,
-		position: _Utils_Tuple2(0, 0),
-		rotation: 0,
-		zIndex: 1
-	};
-};
-var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $author$project$View$Component$defaultCard = $author$project$Game$Entity$new(
-	function (a) {
-		return A2(
-			$author$project$Game$Card$default,
-			a,
-			_List_fromArray(
-				[
-					A2(
-					$author$project$Game$Card$header,
-					_List_Nil,
-					_List_fromArray(
-						[
-							A2(
-							$elm$html$Html$div,
-							_List_Nil,
-							_List_fromArray(
-								[
-									$elm$html$Html$text('Elm')
-								])),
-							A2(
-							$elm$html$Html$div,
-							_List_Nil,
-							_List_fromArray(
-								[
-									$elm$html$Html$text('🌳')
-								]))
-						])),
-					A2($author$project$Game$Card$fillingImage, _List_Nil, $author$project$View$Component$image),
-					A2(
-					$author$project$Game$Card$description,
-					_List_Nil,
-					$elm$html$Html$text('Removes runtime exceptions'))
-				]));
-	});
 var $elm$core$List$maybeCons = F3(
 	function (f, mx, xs) {
 		var _v0 = f(mx);
@@ -6311,64 +6914,7 @@ var $author$project$Game$Area$draggable = function (args) {
 				}())
 			]));
 };
-var $author$project$Game$Card$empty = F2(
-	function (attrs, string) {
-		return A2(
-			$author$project$Game$Card$default,
-			_Utils_ap(
-				_List_fromArray(
-					[
-						A2($elm$html$Html$Attributes$style, 'border-style', 'dashed'),
-						A2($elm$html$Html$Attributes$style, 'color', 'rgba(0, 0, 0, 0.5)'),
-						A2($elm$html$Html$Attributes$style, 'justify-content', 'center'),
-						A2($elm$html$Html$Attributes$style, 'align-items', 'center'),
-						A2($elm$html$Html$Attributes$style, 'background-color', 'none'),
-						A2($elm$html$Html$Attributes$style, 'z-index', '0')
-					]),
-				attrs),
-			_List_fromArray(
-				[
-					A2(
-					$elm$html$Html$div,
-					_List_fromArray(
-						[
-							A2($elm$html$Html$Attributes$style, 'display', 'flex')
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text(string)
-						]))
-				]));
-	});
-var $author$project$View$Component$empty = function (attrs) {
-	return A2($author$project$Game$Card$empty, attrs, 'No Card');
-};
-var $author$project$Game$Entity$map = F2(
-	function (fun, i) {
-		return {
-			content: fun(i.content),
-			customTransformations: i.customTransformations,
-			position: i.position,
-			rotation: i.rotation,
-			zIndex: i.zIndex
-		};
-	});
-var $elm$core$Tuple$mapBoth = F3(
-	function (funcA, funcB, _v0) {
-		var x = _v0.a;
-		var y = _v0.b;
-		return _Utils_Tuple2(
-			funcA(x),
-			funcB(y));
-	});
-var $author$project$Game$Entity$mapPosition = F2(
-	function (fun, entity) {
-		return _Utils_update(
-			entity,
-			{
-				position: fun(entity.position)
-			});
-	});
+var $author$project$Game$Entity$perspective = A2($elm$html$Html$Attributes$style, 'perspective', '1000px');
 var $author$project$Game$Entity$mapZIndex = F2(
 	function (fun, entity) {
 		return _Utils_update(
@@ -6397,15 +6943,15 @@ var $elm$core$List$singleton = function (value) {
 	return _List_fromArray(
 		[value]);
 };
-var $author$project$Game$Area$fromStack = F3(
-	function (_v0, args, list) {
+var $author$project$Game$Area$pileAbove = F3(
+	function (_v0, empty, list) {
 		var x = _v0.a;
 		var y = _v0.b;
 		return _Utils_ap(
 			A2(
 				$author$project$Game$Area$new,
 				_Utils_Tuple2(x, y),
-				$elm$core$List$singleton(args.empty)),
+				$elm$core$List$singleton(empty)),
 			A2(
 				$elm$core$List$indexedMap,
 				F2(
@@ -6419,58 +6965,16 @@ var $author$project$Game$Area$fromStack = F3(
 									$elm$core$Tuple$mapBoth,
 									$elm$core$Basics$add(x),
 									$elm$core$Basics$add(y)),
-								A2(
-									$author$project$Game$Entity$map,
-									args.view(i),
-									entity)));
+								entity));
 					}),
 				list));
 	});
-var $author$project$Game$Entity$perspective = A2($elm$html$Html$Attributes$style, 'perspective', '1000px');
-var $elm$core$Basics$pi = _Basics_pi;
 var $elm$virtual_dom$VirtualDom$keyedNode = function (tag) {
 	return _VirtualDom_keyedNode(
 		_VirtualDom_noScript(tag));
 };
 var $elm$html$Html$Keyed$node = $elm$virtual_dom$VirtualDom$keyedNode;
-var $elm$core$Tuple$second = function (_v0) {
-	var y = _v0.b;
-	return y;
-};
 var $elm$core$List$sortBy = _List_sortBy;
-var $author$project$Game$Entity$move = function (_v0) {
-	var x = _v0.a;
-	var y = _v0.b;
-	return 'translate(' + ($elm$core$String$fromFloat(x) + ('px,' + ($elm$core$String$fromFloat(y) + 'px)')));
-};
-var $author$project$Game$Entity$rotate = function (_float) {
-	return 'rotate(' + ($elm$core$String$fromFloat(_float) + 'rad)');
-};
-var $author$project$Game$Entity$transform = function (list) {
-	return A2(
-		$elm$html$Html$Attributes$style,
-		'transform',
-		_Utils_eq(list, _List_Nil) ? 'unset' : A2($elm$core$String$join, ' ', list));
-};
-var $author$project$Game$Entity$toAttributes = function (entity) {
-	return _Utils_Tuple2(
-		entity.content,
-		_List_fromArray(
-			[
-				$author$project$Game$Entity$transform(
-				_Utils_ap(
-					_List_fromArray(
-						[
-							$author$project$Game$Entity$move(entity.position),
-							$author$project$Game$Entity$rotate(entity.rotation)
-						]),
-					entity.customTransformations)),
-				A2(
-				$elm$html$Html$Attributes$style,
-				'z-index',
-				$elm$core$String$fromInt(entity.zIndex))
-			]));
-};
 var $author$project$Game$Area$toHtml = F2(
 	function (attr, list) {
 		return A3(
@@ -6506,15 +7010,6 @@ var $author$project$Game$Area$toHtml = F2(
 					},
 					list)));
 	});
-var $author$project$Game$Entity$toHtml = F3(
-	function (attrs, fun, entity) {
-		return A2(
-			fun,
-			entity.content,
-			_Utils_ap(
-				$author$project$Game$Entity$toAttributes(entity).b,
-				attrs));
-	});
 var $author$project$View$Area$draggable = function (args) {
 	return A2(
 		$elm$html$Html$div,
@@ -6538,35 +7033,29 @@ var $author$project$View$Area$draggable = function (args) {
 										onRelease: args.onRelease(i)
 									});
 								return A3(
-									$author$project$Game$Area$fromStack,
+									$author$project$Game$Area$pileAbove,
 									_Utils_Tuple2(i * 150, 0),
-									{
-										empty: _Utils_Tuple2(
-											'draggable__empty_' + $elm$core$String$fromInt(i),
-											function (a) {
-												return $author$project$View$Component$empty(
-													_Utils_ap(attrs, a));
-											}),
-										view: F2(
-											function (_v1, _v2) {
-												return _Utils_Tuple2(
-													'draggable__card',
-													function (a) {
-														return A3(
-															$author$project$Game$Entity$toHtml,
-															_Utils_ap(attrs, a),
-															$elm$core$Basics$identity,
-															$author$project$View$Component$defaultCard);
-													});
-											})
-									},
+									_Utils_Tuple2(
+										'draggable__empty_' + $elm$core$String$fromInt(i),
+										function (a) {
+											return $author$project$View$Component$empty(
+												_Utils_ap(attrs, a));
+										}),
 									_Utils_eq(args.cardAt, i) ? $elm$core$List$singleton(
 										function (stackItem) {
 											return args.isSelected ? _Utils_update(
 												stackItem,
 												{rotation: $elm$core$Basics$pi / 16}) : stackItem;
 										}(
-											$author$project$Game$Entity$new(_Utils_Tuple0))) : _List_Nil);
+											$author$project$Game$Entity$new(
+												_Utils_Tuple2(
+													'draggable__card',
+													function (a) {
+														return A2(
+															$author$project$Game$Entity$toHtml,
+															_Utils_ap(attrs, a),
+															$author$project$View$Component$defaultCard);
+													})))) : _List_Nil);
 							}),
 						A2($elm$core$List$repeat, 3, _Utils_Tuple0))))));
 };
@@ -6610,7 +7099,7 @@ var $author$project$View$Component$defaultBack = $author$project$Game$Entity$new
 					$author$project$View$Component$image)
 				]));
 	});
-var $author$project$Game$Entity$flip = function (_float) {
+var $author$project$Game$Entity$flipTransformation = function (_float) {
 	return 'rotateY(' + ($elm$core$String$fromFloat(_float) + 'rad)');
 };
 var $author$project$Game$Entity$mapCustomTransformations = F2(
@@ -6628,10 +7117,10 @@ var $author$project$Game$Entity$flippable = F2(
 			$elm$core$Basics$append(
 				(!args.faceUp) ? _List_fromArray(
 					[
-						$author$project$Game$Entity$flip($elm$core$Basics$pi)
+						$author$project$Game$Entity$flipTransformation($elm$core$Basics$pi)
 					]) : _List_fromArray(
 					[
-						$author$project$Game$Entity$flip(0)
+						$author$project$Game$Entity$flipTransformation(0)
 					])),
 			$author$project$Game$Entity$new(
 				function (a) {
@@ -6642,8 +7131,8 @@ var $author$project$Game$Entity$flippable = F2(
 								[
 									A2($elm$html$Html$Attributes$style, 'position', 'relative'),
 									A2($elm$html$Html$Attributes$style, 'transition', 'transform 0.5s'),
-									A2($elm$html$Html$Attributes$style, 'transform-style', 'preserve-3d'),
 									A2($elm$html$Html$Attributes$style, 'height', '200px'),
+									A2($elm$html$Html$Attributes$style, 'transform-style', 'preserve-3d'),
 									A2(
 									$elm$html$Html$Attributes$style,
 									'width',
@@ -6652,29 +7141,27 @@ var $author$project$Game$Entity$flippable = F2(
 							_Utils_ap(a, attrs)),
 						_List_fromArray(
 							[
-								A3(
+								A2(
 								$author$project$Game$Entity$toHtml,
 								_List_fromArray(
 									[
 										A2($elm$html$Html$Attributes$style, 'position', 'absolute')
 									]),
-								$elm$core$Basics$identity,
 								A2(
 									$author$project$Game$Entity$mapCustomTransformations,
 									$elm$core$List$cons(
-										$author$project$Game$Entity$flip(0)),
+										$author$project$Game$Entity$flipTransformation(0)),
 									args.front)),
-								A3(
+								A2(
 								$author$project$Game$Entity$toHtml,
 								_List_fromArray(
 									[
 										A2($elm$html$Html$Attributes$style, 'position', 'absolute')
 									]),
-								$elm$core$Basics$identity,
 								A2(
 									$author$project$Game$Entity$mapCustomTransformations,
 									$elm$core$List$cons(
-										$author$project$Game$Entity$flip($elm$core$Basics$pi)),
+										$author$project$Game$Entity$flipTransformation($elm$core$Basics$pi)),
 									args.back))
 							]));
 				}));
@@ -6701,35 +7188,6 @@ var $author$project$Game$Area$hoverable = function (args) {
 				A2($elm$core$Maybe$map, $elm$html$Html$Events$onMouseLeave, args.onLeave)
 			]));
 };
-var $author$project$Game$Pile$toHtml = F3(
-	function (attrs, _v0, stack) {
-		var view = _v0.view;
-		var empty = _v0.empty;
-		return A2(
-			$elm$html$Html$div,
-			_Utils_ap(
-				_List_fromArray(
-					[
-						A2($elm$html$Html$Attributes$style, 'display', 'flex'),
-						A2($elm$html$Html$Attributes$style, 'position', 'relative')
-					]),
-				attrs),
-			A2(
-				$elm$core$List$cons,
-				empty,
-				A2(
-					$elm$core$List$indexedMap,
-					function (i) {
-						return A2(
-							$author$project$Game$Entity$toHtml,
-							_List_fromArray(
-								[
-									A2($elm$html$Html$Attributes$style, 'position', 'absolute')
-								]),
-							view(i));
-					},
-					stack)));
-	});
 var $author$project$View$Area$hoverable = function (args) {
 	return A2(
 		$elm$html$Html$div,
@@ -6745,34 +7203,30 @@ var $author$project$View$Area$hoverable = function (args) {
 			$elm$core$List$indexedMap,
 			F2(
 				function (i, _v0) {
-					return A3(
-						$author$project$Game$Pile$toHtml,
+					return A2(
+						$author$project$Game$Entity$toHtml,
 						$author$project$Game$Area$hoverable(
 							{
 								onEnter: $elm$core$Maybe$Just(
 									args.onEnter(i)),
 								onLeave: $elm$core$Maybe$Just(args.onLeave)
 							}),
-						{
-							empty: $author$project$View$Component$empty(_List_Nil),
-							view: F2(
-								function (_v1, fun) {
-									return fun;
-								})
-						},
-						_List_fromArray(
-							[
-								A2(
-								$author$project$Game$Entity$flippable,
-								_List_Nil,
-								{
-									back: $author$project$View$Component$defaultBack,
-									faceUp: _Utils_eq(
-										args.hoverOver,
-										$elm$core$Maybe$Just(i)),
-									front: $author$project$View$Component$defaultCard
-								})
-							]));
+						A2(
+							$author$project$Game$Entity$pileAbove,
+							$author$project$View$Component$empty(_List_Nil),
+							_List_fromArray(
+								[
+									A2(
+									$author$project$Game$Entity$flippable,
+									_List_Nil,
+									{
+										back: $author$project$View$Component$defaultBack,
+										faceUp: _Utils_eq(
+											args.hoverOver,
+											$elm$core$Maybe$Just(i)),
+										front: $author$project$View$Component$defaultCard
+									})
+								])));
 				}),
 			A2($elm$core$List$repeat, 3, _Utils_Tuple0)));
 };
@@ -6786,9 +7240,6 @@ var $author$project$Example$Hover$view = function (model) {
 			onLeave: $elm$core$Maybe$Nothing
 		});
 };
-var $author$project$Example$StackArea$AreaId = function (areaId) {
-	return {areaId: areaId};
-};
 var $author$project$Example$StackArea$DragIn = function (a) {
 	return {$: 'DragIn', a: a};
 };
@@ -6800,17 +7251,6 @@ var $author$project$Example$StackArea$StartDragging = function (a) {
 	return {$: 'StartDragging', a: a};
 };
 var $author$project$Example$StackArea$StopDragging = {$: 'StopDragging'};
-var $author$project$Game$Entity$mapRotation = F2(
-	function (fun, entity) {
-		return _Utils_update(
-			entity,
-			{
-				rotation: fun(entity.rotation)
-			});
-	});
-var $elm$core$Basics$negate = function (n) {
-	return -n;
-};
 var $author$project$View$Area$pile = F3(
 	function (index, args, list) {
 		var attrs = _Utils_ap(
@@ -6819,63 +7259,57 @@ var $author$project$View$Area$pile = F3(
 			$author$project$Game$Area$hoverable(
 				{onEnter: args.onEntering, onLeave: args.onEntering}));
 		return A3(
-			$author$project$Game$Area$fromStack,
+			$author$project$Game$Area$pileAbove,
 			args.position,
-			{
-				empty: _Utils_Tuple2(
-					'pile__empty__' + $elm$core$String$fromInt(index),
-					function (a) {
-						return $author$project$View$Component$empty(
-							A2(
-								$elm$core$List$cons,
-								A2($elm$html$Html$Attributes$style, 'z-index', '0'),
-								_Utils_ap(attrs, a)));
-					}),
-				view: F2(
-					function (_v0, card) {
-						return _Utils_Tuple2(
-							'pile__' + $elm$core$String$fromInt(card.cardId.cardId),
-							function (a) {
-								return A3(
-									$author$project$Game$Entity$toHtml,
-									_Utils_ap(
-										card.asPhantom ? _List_fromArray(
-											[
-												A2($elm$html$Html$Attributes$style, 'filter', 'brightness(0.9)')
-											]) : _List_Nil,
-										_Utils_ap(attrs, a)),
-									$elm$core$Basics$identity,
-									$author$project$View$Component$defaultCard);
-							});
-					})
-			},
+			_Utils_Tuple2(
+				'pile__empty__' + $elm$core$String$fromInt(index),
+				function (a) {
+					return $author$project$View$Component$empty(
+						A2(
+							$elm$core$List$cons,
+							A2($elm$html$Html$Attributes$style, 'z-index', '0'),
+							_Utils_ap(attrs, a)));
+				}),
 			A2(
-				$elm$core$List$map,
-				function (stackItem) {
-					return stackItem.content.asPhantom ? _Utils_update(
-						stackItem,
-						{zIndex: 100}) : stackItem;
-				},
-				A2(
-					$elm$core$List$indexedMap,
-					F2(
-						function (i, stackItem) {
-							return A2(
-								$author$project$Game$Entity$mapRotation,
-								$elm$core$Basics$add(
-									stackItem.content.asPhantom ? ($elm$core$Basics$pi / 16) : stackItem.rotation),
+				$elm$core$List$indexedMap,
+				F2(
+					function (i, stackItem) {
+						return A2(
+							$author$project$Game$Entity$mapRotation,
+							$elm$core$Basics$add(
+								stackItem.content.asPhantom ? ($elm$core$Basics$pi / 16) : stackItem.rotation),
+							A2(
+								$author$project$Game$Entity$mapPosition,
 								A2(
-									$author$project$Game$Entity$mapPosition,
-									A2(
-										$elm$core$Tuple$mapBoth,
-										$elm$core$Basics$add(0),
-										$elm$core$Basics$add((-4) * i)),
-									stackItem));
-						}),
-					A2(
-						$elm$core$List$map,
-						$author$project$Game$Entity$new,
-						$elm$core$List$reverse(list)))));
+									$elm$core$Tuple$mapBoth,
+									$elm$core$Basics$add(0),
+									$elm$core$Basics$add((-4) * i)),
+								A2(
+									$author$project$Game$Entity$map,
+									function (card) {
+										return _Utils_Tuple2(
+											'pile__' + $elm$core$String$fromInt(card.cardId),
+											function (a) {
+												return A2(
+													$author$project$Game$Entity$toHtml,
+													_Utils_ap(
+														card.asPhantom ? _List_fromArray(
+															[
+																A2($elm$html$Html$Attributes$style, 'filter', 'brightness(0.9)')
+															]) : _List_Nil,
+														_Utils_ap(attrs, a)),
+													$author$project$View$Component$defaultCard);
+											});
+									},
+									stackItem.content.asPhantom ? A2(
+										$author$project$Game$Entity$mapZIndex,
+										$elm$core$Basics$add(100),
+										stackItem) : stackItem)));
+					}),
+				A2(
+					$elm$core$List$map,
+					$author$project$Game$Entity$new,
+					$elm$core$List$reverse(list))));
 	});
 var $author$project$Example$StackArea$view = function (state) {
 	var draggedFromArea = A2(
@@ -6903,8 +7337,7 @@ var $author$project$Example$StackArea$view = function (state) {
 									$elm$core$Maybe$andThen,
 									function (_v1) {
 										return $elm$core$Maybe$Just(
-											$author$project$Example$StackArea$DragIn(
-												$author$project$Example$StackArea$AreaId(i)));
+											$author$project$Example$StackArea$DragIn(i));
 									},
 									draggedFromArea),
 								onLeaving: A2(
@@ -6914,14 +7347,11 @@ var $author$project$Example$StackArea$view = function (state) {
 									},
 									draggedFromArea),
 								onStartDragging: (!_Utils_eq(draggedFromArea, $elm$core$Maybe$Nothing)) ? $elm$core$Maybe$Nothing : $elm$core$Maybe$Just(
-									$author$project$Example$StackArea$StartDragging(
-										$author$project$Example$StackArea$AreaId(i))),
+									$author$project$Example$StackArea$StartDragging(i)),
 								onStopDragging: _Utils_eq(
 									draggedFromArea,
-									$elm$core$Maybe$Just(
-										$author$project$Example$StackArea$AreaId(i))) ? $elm$core$Maybe$Just($author$project$Example$StackArea$StopDragging) : $elm$core$Maybe$Just(
-									$author$project$Example$StackArea$DraggedOnto(
-										$author$project$Example$StackArea$AreaId(i))),
+									$elm$core$Maybe$Just(i)) ? $elm$core$Maybe$Just($author$project$Example$StackArea$StopDragging) : $elm$core$Maybe$Just(
+									$author$project$Example$StackArea$DraggedOnto(i)),
 								position: _Utils_Tuple2(i * 150, 0)
 							},
 							A3(
@@ -6929,9 +7359,7 @@ var $author$project$Example$StackArea$view = function (state) {
 								A2(
 									$elm$core$Maybe$map,
 									function (dragging) {
-										return _Utils_eq(
-											dragging.aboveArea,
-											$author$project$Example$StackArea$AreaId(i)) ? A2(
+										return _Utils_eq(dragging.aboveArea, i) ? A2(
 											$elm$core$Maybe$withDefault,
 											$elm$core$Basics$identity,
 											A2(
@@ -6940,7 +7368,7 @@ var $author$project$Example$StackArea$view = function (state) {
 													return $elm$core$List$cons(
 														{asPhantom: true, card: card, cardId: dragging.cardId});
 												},
-												A2($elm$core$Dict$get, dragging.cardId.cardId, state.cards))) : $elm$core$Basics$identity;
+												A2($elm$core$Dict$get, dragging.cardId, state.cards))) : $elm$core$Basics$identity;
 									},
 									state.dragging),
 								$elm$core$Maybe$withDefault($elm$core$Basics$identity),
@@ -6963,7 +7391,7 @@ var $author$project$Example$StackArea$view = function (state) {
 											function (card) {
 												return {asPhantom: false, card: card, cardId: cardId};
 											},
-											A2($elm$core$Dict$get, cardId.cardId, state.cards));
+											A2($elm$core$Dict$get, cardId, state.cards));
 									},
 									list)));
 					}),
@@ -6988,67 +7416,106 @@ var $dtwrks$elm_book$ElmBook$Chapter$withChapterInit = F2(
 					init: $elm$core$Maybe$Just(init_)
 				}));
 	});
+var $dtwrks$elm_book$ElmBook$Internal$Chapter$ChapterComponentViewStateful = function (a) {
+	return {$: 'ChapterComponentViewStateful', a: a};
+};
+var $dtwrks$elm_book$ElmBook$Chapter$fromTupleStateful = function (_v0) {
+	var label = _v0.a;
+	var view_ = _v0.b;
+	return {
+		label: label,
+		view: $dtwrks$elm_book$ElmBook$Internal$Chapter$ChapterComponentViewStateful(view_)
+	};
+};
+var $dtwrks$elm_book$ElmBook$Chapter$withStatefulComponentList = F2(
+	function (componentList, _v0) {
+		var builder = _v0.a;
+		return $dtwrks$elm_book$ElmBook$Internal$Chapter$ChapterBuilder(
+			_Utils_update(
+				builder,
+				{
+					componentList: _Utils_ap(
+						A2($elm$core$List$map, $dtwrks$elm_book$ElmBook$Chapter$fromTupleStateful, componentList),
+						builder.componentList)
+				}));
+	});
 var $author$project$Chapter$Area$chapter = function (args) {
 	return A2(
-		$dtwrks$elm_book$ElmBook$Chapter$renderStatefulComponentList,
+		$dtwrks$elm_book$ElmBook$Chapter$renderWithComponentList,
+		'A Area should be something you can interact with. It uses `Html.Keyed` to allow for transitions between states.',
 		A2(
-			$elm$core$List$map,
-			$elm$core$Tuple$mapSecond(
-				function (fun) {
-					return function (m) {
-						return A2(
-							$elm$html$Html$map,
-							function (msg) {
-								return $dtwrks$elm_book$ElmBook$Actions$updateState(
-									function (model) {
-										return A2(
-											args.setTo,
-											model,
-											A2(
-												$author$project$Chapter$Area$update,
-												msg,
-												args.get(model)));
-									});
-							},
-							fun(
-								args.get(m)));
-					};
-				}),
-			_List_fromArray(
-				[
-					_Utils_Tuple2(
-					'hoverable',
-					function (state) {
-						return A2(
-							$elm$html$Html$map,
-							$author$project$Chapter$Area$HoverStateSet,
-							$author$project$Example$Hover$view(state.hoverState));
+			$dtwrks$elm_book$ElmBook$Chapter$withStatefulComponentList,
+			A2(
+				$elm$core$List$map,
+				$elm$core$Tuple$mapSecond(
+					function (fun) {
+						return function (m) {
+							return A2(
+								$elm$html$Html$map,
+								function (msg) {
+									return $dtwrks$elm_book$ElmBook$Actions$updateState(
+										function (model) {
+											return A2(
+												args.setTo,
+												model,
+												A2(
+													$author$project$Chapter$Area$update,
+													msg,
+													args.get(model)));
+										});
+								},
+								fun(
+									args.get(m)));
+						};
 					}),
-					_Utils_Tuple2(
-					'draggable',
-					function (state) {
-						return A2(
-							$elm$html$Html$map,
-							$author$project$Chapter$Area$DraggableStateSet,
-							$author$project$Example$Draggable$view(state.draggableState));
-					}),
-					_Utils_Tuple2(
-					'fromStack',
-					function (state) {
-						return A2(
-							$elm$html$Html$map,
-							$author$project$Chapter$Area$StackAreaMsg,
-							$author$project$Example$StackArea$view(state.stackAreaModel));
-					})
-				])),
-		A2(
-			$dtwrks$elm_book$ElmBook$Chapter$withChapterInit,
-			function (state) {
-				return _Utils_Tuple2(
-					A2(args.setTo, state, $author$project$Chapter$Area$init),
-					$elm$core$Platform$Cmd$none);
-			},
-			$dtwrks$elm_book$ElmBook$Chapter$chapter('Game.Area')));
+				_List_fromArray(
+					[
+						_Utils_Tuple2(
+						'Pile',
+						function (_v0) {
+							return $author$project$View$Component$list(
+								_List_fromArray(
+									[
+										_Utils_Tuple2('Single Card', $author$project$View$Area$singleCard),
+										_Utils_Tuple2('withPolarPosition', $author$project$View$Area$below),
+										_Utils_Tuple2('withLinearRotation', $author$project$View$Area$rotated),
+										_Utils_Tuple2('Randomness', $author$project$View$Area$random),
+										_Utils_Tuple2('withLinearRotation and withPolarPosition', $author$project$View$Area$hand)
+									]));
+						}),
+						_Utils_Tuple2(
+						'hoverable',
+						function (state) {
+							return A2(
+								$elm$html$Html$map,
+								$author$project$Chapter$Area$HoverStateSet,
+								$author$project$Example$Hover$view(state.hoverState));
+						}),
+						_Utils_Tuple2(
+						'draggable',
+						function (state) {
+							return A2(
+								$elm$html$Html$map,
+								$author$project$Chapter$Area$DraggableStateSet,
+								$author$project$Example$Draggable$view(state.draggableState));
+						}),
+						_Utils_Tuple2(
+						'fromPile',
+						function (state) {
+							return A2(
+								$elm$html$Html$map,
+								$author$project$Chapter$Area$StackAreaMsg,
+								$author$project$Example$StackArea$view(state.stackAreaModel));
+						})
+					])),
+			A2(
+				$dtwrks$elm_book$ElmBook$Chapter$withChapterInit,
+				function (state) {
+					return _Utils_Tuple2(
+						A2(args.setTo, state, $author$project$Chapter$Area$init),
+						$elm$core$Platform$Cmd$none);
+				},
+				$dtwrks$elm_book$ElmBook$Chapter$chapter('Game.Area'))));
 };
 var $author$project$Game$Card$back = F2(
 	function (attrs, content) {
@@ -7068,6 +7535,16 @@ var $author$project$View$Card$back = A2(
 	$author$project$Game$Card$back,
 	_List_Nil,
 	$elm$html$Html$text('Title'));
+var $author$project$View$Card$backgroundImage = A2(
+	$author$project$Game$Card$default,
+	$author$project$Game$Card$backgroundImage($author$project$View$Component$image),
+	_List_fromArray(
+		[
+			A2(
+			$author$project$Game$Card$element,
+			_List_Nil,
+			$elm$html$Html$text('Title'))
+		]));
 var $author$project$Game$Card$coin = F2(
 	function (attrs, content) {
 		return A2(
@@ -7089,28 +7566,24 @@ var $author$project$View$Card$coin = A2(
 	$author$project$Game$Card$coin,
 	_List_Nil,
 	$elm$html$Html$text('Title'));
-var $author$project$Game$Card$title = F2(
-	function (attrs, content) {
-		return A2(
-			$elm$html$Html$div,
-			_Utils_ap(
-				_List_fromArray(
-					[
-						A2($elm$html$Html$Attributes$style, 'padding', '8px 8px'),
-						A2($elm$html$Html$Attributes$style, 'display', 'flex')
-					]),
-				attrs),
-			_List_fromArray(
-				[content]));
-	});
 var $author$project$View$Card$default = A2(
 	$author$project$Game$Card$default,
 	_List_Nil,
 	$elm$core$List$singleton(
 		A2(
-			$author$project$Game$Card$title,
+			$author$project$Game$Card$element,
 			_List_Nil,
 			$elm$html$Html$text('Title'))));
+var $author$project$View$Card$element = A2(
+	$author$project$Game$Card$default,
+	_List_Nil,
+	_List_fromArray(
+		[
+			A2(
+			$author$project$Game$Card$element,
+			_List_Nil,
+			$elm$html$Html$text('This is an element of the card. It has a 8px wide border and wraps the content to fit into the element.'))
+		]));
 var $author$project$View$Card$empty = $author$project$View$Component$empty(_List_Nil);
 var $author$project$View$Card$fullImage = A2(
 	$author$project$Game$Card$default,
@@ -7118,9 +7591,9 @@ var $author$project$View$Card$fullImage = A2(
 	_List_fromArray(
 		[
 			A2(
-			$author$project$Game$Card$title,
+			$author$project$Game$Card$element,
 			_List_Nil,
-			$elm$html$Html$text('Card with an Image')),
+			$elm$html$Html$text('Title')),
 			A2($author$project$Game$Card$fillingImage, _List_Nil, $author$project$View$Component$image)
 		]));
 var $author$project$View$Card$horizontal = A2(
@@ -7131,72 +7604,27 @@ var $author$project$View$Card$horizontal = A2(
 		]),
 	$elm$core$List$singleton(
 		A2(
-			$author$project$Game$Card$title,
+			$author$project$Game$Card$element,
 			_List_Nil,
 			$elm$html$Html$text('Title'))));
-var $author$project$View$Card$imageAndDesc = A2(
+var $author$project$View$Card$row = A2(
 	$author$project$Game$Card$default,
 	_List_Nil,
-	_List_fromArray(
-		[
-			A2(
-			$author$project$Game$Card$title,
-			_List_Nil,
-			$elm$html$Html$text('Title')),
-			A2($author$project$Game$Card$fillingImage, _List_Nil, $author$project$View$Component$image),
-			A2(
-			$author$project$Game$Card$description,
-			_List_Nil,
-			$elm$html$Html$text('Card with image and description'))
-		]));
-var $author$project$View$Component$list = function (l) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				A2($elm$html$Html$Attributes$style, 'display', 'flex'),
-				A2($elm$html$Html$Attributes$style, 'flex-direction', 'row'),
-				A2($elm$html$Html$Attributes$style, 'flex-wrap', 'wrap'),
-				A2($elm$html$Html$Attributes$style, 'justify-content', 'space-between')
-			]),
+	$elm$core$List$singleton(
 		A2(
-			$elm$core$List$map,
-			function (_v0) {
-				var subtitle = _v0.a;
-				var content = _v0.b;
-				return A2(
-					$elm$html$Html$div,
-					_List_fromArray(
-						[
-							A2($elm$html$Html$Attributes$style, 'display', 'flex'),
-							A2($elm$html$Html$Attributes$style, 'flex-direction', 'column'),
-							A2($elm$html$Html$Attributes$style, 'gap', '8px')
-						]),
-					_List_fromArray(
-						[
-							content,
-							A2(
-							$elm$html$Html$div,
-							_List_fromArray(
-								[
-									A2($elm$html$Html$Attributes$style, 'text-align', 'center')
-								]),
-							_List_fromArray(
-								[
-									$elm$html$Html$text(subtitle)
-								]))
-						]));
-			},
-			l));
-};
-var $dtwrks$elm_book$ElmBook$Chapter$renderWithComponentList = F2(
-	function (body, _v0) {
-		var builder = _v0.a;
-		return $dtwrks$elm_book$ElmBook$Internal$Chapter$Chapter(
-			_Utils_update(
-				builder,
-				{body: builder.body + (body + '\n<component-list />')}));
-	});
+			$author$project$Game$Card$row,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					$author$project$Game$Card$element,
+					_List_Nil,
+					$elm$html$Html$text('Title')),
+					A2(
+					$author$project$Game$Card$element,
+					_List_Nil,
+					$elm$html$Html$text('🌳'))
+				]))));
 var $author$project$View$Card$square = A2(
 	$author$project$Game$Card$default,
 	_List_fromArray(
@@ -7205,33 +7633,9 @@ var $author$project$View$Card$square = A2(
 		]),
 	$elm$core$List$singleton(
 		A2(
-			$author$project$Game$Card$title,
+			$author$project$Game$Card$element,
 			_List_Nil,
 			$elm$html$Html$text('Title'))));
-var $author$project$View$Card$titleRow = A2(
-	$author$project$Game$Card$default,
-	_List_Nil,
-	$elm$core$List$singleton(
-		A2(
-			$author$project$Game$Card$header,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					$elm$html$Html$div,
-					_List_Nil,
-					_List_fromArray(
-						[
-							$elm$html$Html$text('Title with a symbol')
-						])),
-					A2(
-					$elm$html$Html$div,
-					_List_Nil,
-					_List_fromArray(
-						[
-							$elm$html$Html$text('🔥')
-						]))
-				]))));
 var $dtwrks$elm_book$ElmBook$Internal$Chapter$ChapterComponentViewStateless = function (a) {
 	return {$: 'ChapterComponentViewStateless', a: a};
 };
@@ -7257,7 +7661,7 @@ var $dtwrks$elm_book$ElmBook$Chapter$withComponentList = F2(
 	});
 var $author$project$Chapter$Card$chapter = A2(
 	$dtwrks$elm_book$ElmBook$Chapter$renderWithComponentList,
-	'',
+	'Cards are styled `div` nodes that take use of Flexbox.\n        \nIt has a couple of default styling defined that are meant to be overwritten.\n\nIf you want to use the package without this module, make sure your custom cards have the CSS-style `backface-visibility` set to `hidden`. This is required in order for `Game.Entity.flip` to work.\n        ',
 	A2(
 		$dtwrks$elm_book$ElmBook$Chapter$withComponentList,
 		_List_fromArray(
@@ -7286,9 +7690,10 @@ var $author$project$Chapter$Card$chapter = A2(
 				$author$project$View$Component$list(
 					_List_fromArray(
 						[
-							_Utils_Tuple2('header', $author$project$View$Card$titleRow),
-							_Utils_Tuple2('fillingImage', $author$project$View$Card$fullImage),
-							_Utils_Tuple2('description', $author$project$View$Card$imageAndDesc)
+							_Utils_Tuple2('element', $author$project$View$Card$element),
+							_Utils_Tuple2('row', $author$project$View$Card$row),
+							_Utils_Tuple2('backgroundImage', $author$project$View$Card$backgroundImage),
+							_Utils_Tuple2('fillingImage', $author$project$View$Card$fullImage)
 						])))
 			]),
 		$dtwrks$elm_book$ElmBook$Chapter$chapter('Game.Card')));
@@ -7304,52 +7709,105 @@ var $dtwrks$elm_book$ElmBook$Chapter$render = F2(
 	});
 var $author$project$Chapter$Customization$chapter = A2(
 	$dtwrks$elm_book$ElmBook$Chapter$render,
-	'\nPlease feel free to look at the source code. We tried to make the code as understandable as possible.\n\nWhile developing this package we sticked to the following rules:\n\n* We always used `height` and `aspect-ratio` instead of using `weight`.\n* We used `rgba(0, 0, 0, 0.2)` as a placeholder for color.\n* The styling is intended to be overwritten.\n* Cards have a minimum z-Index of 1\n',
+	'\nThe mechanics behind this package are actually quite boring. No wizardry was used.\n\nPlease feel free to look at the source code. We tried to make the code as understandable as possible.\n\nWhile developing this package we sticked to the following rules:\n\n* We always used `height` and `aspect-ratio` instead of using `weight`.\n* We used `rgba(0, 0, 0, 0.2)` as a placeholder for color.\n* Every node uses Flexbox.\n* All stylings are intended to be overwritten.\n* Cards have a minimum z-Index of 1\n',
 	$dtwrks$elm_book$ElmBook$Chapter$chapter('No magic included'));
-var $author$project$View$Card$flipped = A2(
+var $author$project$View$Entity$flip = A2(
 	$elm$html$Html$div,
 	_List_fromArray(
 		[$author$project$Game$Entity$perspective]),
 	$elm$core$List$singleton(
-		A3(
+		A2(
 			$author$project$Game$Entity$toHtml,
 			_List_Nil,
-			$elm$core$Basics$identity,
 			A2(
 				$author$project$Game$Entity$mapCustomTransformations,
 				$elm$core$Basics$append(
 					_List_fromArray(
 						[
-							$author$project$Game$Entity$flip($elm$core$Basics$pi / 4)
+							$author$project$Game$Entity$flipTransformation($elm$core$Basics$pi / 4)
 						])),
 				$author$project$View$Component$defaultCard))));
 var $author$project$Example$FlippableCard$init = {isFlipped: false};
 var $author$project$Chapter$Entity$init = {flippableCard: $author$project$Example$FlippableCard$init};
-var $author$project$View$Card$move = A3(
+var $author$project$View$Entity$mapPosition = A2(
 	$author$project$Game$Entity$toHtml,
 	_List_Nil,
-	$elm$core$Basics$identity,
 	A2(
 		$author$project$Game$Entity$mapPosition,
 		function (_v0) {
 			return _Utils_Tuple2(0, -50);
 		},
 		$author$project$View$Component$defaultCard));
-var $author$project$View$Card$rotated = A3(
+var $author$project$View$Entity$mapRotation = A2(
 	$author$project$Game$Entity$toHtml,
 	_List_Nil,
-	$elm$core$Basics$identity,
 	A2(
 		$author$project$Game$Entity$mapRotation,
 		$elm$core$Basics$add($elm$core$Basics$pi / 2),
 		$author$project$View$Component$defaultCard));
+var $author$project$Game$Entity$move = function (_v0) {
+	var x = _v0.a;
+	var y = _v0.b;
+	return $author$project$Game$Entity$mapPosition(
+		A2(
+			$elm$core$Tuple$mapBoth,
+			$elm$core$Basics$add(x),
+			$elm$core$Basics$add(y)));
+};
+var $author$project$View$Entity$move = A2(
+	$author$project$Game$Card$default,
+	$author$project$Game$Card$backgroundImage($author$project$View$Component$image),
+	_List_fromArray(
+		[
+			A2(
+			$author$project$Game$Entity$toHtml,
+			_List_Nil,
+			A2(
+				$author$project$Game$Entity$move,
+				_Utils_Tuple2(90, 160),
+				$author$project$Game$Entity$new(
+					function (attrs) {
+						return A2(
+							$author$project$Game$Card$element,
+							attrs,
+							$elm$html$Html$text('Title'));
+					})))
+		]));
+var $author$project$Game$Entity$rotate = function (amount) {
+	return $author$project$Game$Entity$mapRotation(
+		$elm$core$Basics$add(amount));
+};
+var $author$project$View$Entity$rotate = A2(
+	$author$project$Game$Card$default,
+	$author$project$Game$Card$backgroundImage($author$project$View$Component$image),
+	_List_fromArray(
+		[
+			A2(
+			$author$project$Game$Card$row,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					$author$project$Game$Entity$toHtml,
+					_List_Nil,
+					A2(
+						$author$project$Game$Entity$rotate,
+						(-$elm$core$Basics$pi) / 4,
+						$author$project$Game$Entity$new(
+							function (attrs) {
+								return A2(
+									$author$project$Game$Card$element,
+									attrs,
+									$elm$html$Html$text('Title'));
+							})))
+				]))
+		]));
 var $author$project$Game$Entity$scale = function (_float) {
 	return 'scale(' + ($elm$core$String$fromFloat(_float) + ')');
 };
-var $author$project$View$Card$small = A3(
+var $author$project$View$Entity$scale = A2(
 	$author$project$Game$Entity$toHtml,
 	_List_Nil,
-	$elm$core$Basics$identity,
 	A2(
 		$author$project$Game$Entity$mapCustomTransformations,
 		$elm$core$Basics$append(
@@ -7371,10 +7829,9 @@ var $author$project$Example$FlippableCard$view = function (model) {
 		_List_fromArray(
 			[$author$project$Game$Entity$perspective]),
 		$elm$core$List$singleton(
-			A3(
+			A2(
 				$author$project$Game$Entity$toHtml,
 				_List_Nil,
-				$elm$core$Basics$identity,
 				A2(
 					$author$project$Game$Entity$flippable,
 					_List_fromArray(
@@ -7383,22 +7840,10 @@ var $author$project$Example$FlippableCard$view = function (model) {
 						]),
 					{back: $author$project$View$Component$defaultBack, faceUp: model.isFlipped, front: $author$project$View$Component$defaultCard}))));
 };
-var $dtwrks$elm_book$ElmBook$Chapter$withStatefulComponentList = F2(
-	function (componentList, _v0) {
-		var builder = _v0.a;
-		return $dtwrks$elm_book$ElmBook$Internal$Chapter$ChapterBuilder(
-			_Utils_update(
-				builder,
-				{
-					componentList: _Utils_ap(
-						A2($elm$core$List$map, $dtwrks$elm_book$ElmBook$Chapter$fromTupleStateful, componentList),
-						builder.componentList)
-				}));
-	});
 var $author$project$Chapter$Entity$chapter = function (args) {
 	return A2(
 		$dtwrks$elm_book$ElmBook$Chapter$renderWithComponentList,
-		'',
+		'Entities are an abstraction of CSS-Transformations. You can move and rotate entities, pile them together and apply transformations to piles of entities.\n            \nYou can use `Game.Entity.toHtml` to turn an entity into Html.',
 		A2(
 			$dtwrks$elm_book$ElmBook$Chapter$withStatefulComponentList,
 			_List_fromArray(
@@ -7409,8 +7854,8 @@ var $author$project$Chapter$Entity$chapter = function (args) {
 						return $author$project$View$Component$list(
 							_List_fromArray(
 								[
-									_Utils_Tuple2('withRotate (pi/2)', $author$project$View$Card$rotated),
-									_Utils_Tuple2('withTranslate (0,-50)', $author$project$View$Card$move)
+									_Utils_Tuple2('move', $author$project$View$Entity$move),
+									_Utils_Tuple2('rotate', $author$project$View$Entity$rotate)
 								]));
 					}),
 					_Utils_Tuple2(
@@ -7419,12 +7864,14 @@ var $author$project$Chapter$Entity$chapter = function (args) {
 						return $author$project$View$Component$list(
 							_List_fromArray(
 								[
-									_Utils_Tuple2('scale (1/2)', $author$project$View$Card$small),
-									_Utils_Tuple2('flip (pi/4)', $author$project$View$Card$flipped)
+									_Utils_Tuple2('mapRotation', $author$project$View$Entity$mapRotation),
+									_Utils_Tuple2('mapPosition', $author$project$View$Entity$mapPosition),
+									_Utils_Tuple2('scale', $author$project$View$Entity$scale),
+									_Utils_Tuple2('flip', $author$project$View$Entity$flip)
 								]));
 					}),
 					_Utils_Tuple2(
-					'Flippable Cards',
+					'Perspective',
 					function (model) {
 						return function (state) {
 							return $author$project$View$Component$list(
@@ -7466,468 +7913,6 @@ var $author$project$Chapter$Entity$chapter = function (args) {
 				},
 				$dtwrks$elm_book$ElmBook$Chapter$chapter('Game.Entity'))));
 };
-var $elm$core$Basics$cos = _Basics_cos;
-var $elm$core$Basics$sin = _Basics_sin;
-var $elm$core$Basics$fromPolar = function (_v0) {
-	var radius = _v0.a;
-	var theta = _v0.b;
-	return _Utils_Tuple2(
-		radius * $elm$core$Basics$cos(theta),
-		radius * $elm$core$Basics$sin(theta));
-};
-var $author$project$Game$Pile$mapPosition = function (fun) {
-	return $elm$core$List$indexedMap(
-		F2(
-			function (i, entity) {
-				return A2(
-					$author$project$Game$Entity$mapPosition,
-					A2(fun, i, entity.content),
-					entity);
-			}));
-};
-var $author$project$Game$Pile$withPolarPosition = F2(
-	function (args, list) {
-		return A2(
-			$author$project$Game$Pile$mapPosition,
-			F3(
-				function (i, _v0, _v1) {
-					return $elm$core$Basics$fromPolar(
-						_Utils_Tuple2(
-							args.minDistance + ((i * (args.maxDistance - args.minDistance)) / ($elm$core$List$length(list) - 1)),
-							args.minAngle + ((i * (args.maxAngle - args.minAngle)) / ($elm$core$List$length(list) - 1))));
-				}),
-			list);
-	});
-var $author$project$View$Pile$below = A3(
-	$author$project$Game$Pile$toHtml,
-	_List_Nil,
-	{
-		empty: $author$project$View$Component$empty(_List_Nil),
-		view: F3(
-			function (_v0, _v1, attrs) {
-				return A3($author$project$Game$Entity$toHtml, attrs, $elm$core$Basics$identity, $author$project$View$Component$defaultCard);
-			})
-	},
-	A2(
-		$author$project$Game$Pile$withPolarPosition,
-		{maxAngle: $elm$core$Basics$pi / 2, maxDistance: 0, minAngle: $elm$core$Basics$pi / 2, minDistance: -50},
-		A2(
-			$elm$core$List$repeat,
-			3,
-			$author$project$Game$Entity$new(_Utils_Tuple0))));
-var $author$project$Game$Pile$mapRotation = function (fun) {
-	return $elm$core$List$indexedMap(
-		F2(
-			function (i, entity) {
-				return A2(
-					$author$project$Game$Entity$mapRotation,
-					A2(fun, i, entity.content),
-					entity);
-			}));
-};
-var $author$project$Game$Pile$withLinearRotation = F2(
-	function (args, list) {
-		return A2(
-			$author$project$Game$Pile$mapRotation,
-			F3(
-				function (i, _v0, _v1) {
-					return args.min + ((i * (args.max - args.min)) / ($elm$core$List$length(list) - 1));
-				}),
-			list);
-	});
-var $author$project$View$Pile$hand = A3(
-	$author$project$Game$Pile$toHtml,
-	_List_fromArray(
-		[
-			A2($elm$html$Html$Attributes$style, 'height', '250px'),
-			A2($elm$html$Html$Attributes$style, 'width', '400px'),
-			A2($elm$html$Html$Attributes$style, 'align-items', 'end'),
-			A2($elm$html$Html$Attributes$style, 'justify-content', 'center')
-		]),
-	{
-		empty: $elm$html$Html$text(''),
-		view: F3(
-			function (_v0, _v1, attrs) {
-				return A3($author$project$Game$Entity$toHtml, attrs, $elm$core$Basics$identity, $author$project$View$Component$defaultCard);
-			})
-	},
-	A2(
-		$elm$core$List$indexedMap,
-		F2(
-			function (i, stackItem) {
-				return (i === 3) ? _Utils_update(
-					stackItem,
-					{
-						position: A3(
-							$elm$core$Tuple$mapBoth,
-							$elm$core$Basics$add(0),
-							$elm$core$Basics$add(-50),
-							stackItem.position),
-						rotation: 0
-					}) : stackItem;
-			}),
-		A2(
-			$author$project$Game$Pile$withLinearRotation,
-			{max: $elm$core$Basics$pi / 16, min: (-$elm$core$Basics$pi) / 16},
-			A2(
-				$author$project$Game$Pile$withPolarPosition,
-				{maxAngle: $elm$core$Basics$pi / 32, maxDistance: 100, minAngle: (-$elm$core$Basics$pi) / 32, minDistance: -100},
-				A2(
-					$elm$core$List$repeat,
-					5,
-					$author$project$Game$Entity$new(_Utils_Tuple0))))));
-var $elm$random$Random$Generator = function (a) {
-	return {$: 'Generator', a: a};
-};
-var $elm$random$Random$andThen = F2(
-	function (callback, _v0) {
-		var genA = _v0.a;
-		return $elm$random$Random$Generator(
-			function (seed) {
-				var _v1 = genA(seed);
-				var result = _v1.a;
-				var newSeed = _v1.b;
-				var _v2 = callback(result);
-				var genB = _v2.a;
-				return genB(newSeed);
-			});
-	});
-var $elm$core$Basics$abs = function (n) {
-	return (n < 0) ? (-n) : n;
-};
-var $elm$core$Bitwise$and = _Bitwise_and;
-var $elm$random$Random$Seed = F2(
-	function (a, b) {
-		return {$: 'Seed', a: a, b: b};
-	});
-var $elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
-var $elm$random$Random$next = function (_v0) {
-	var state0 = _v0.a;
-	var incr = _v0.b;
-	return A2($elm$random$Random$Seed, ((state0 * 1664525) + incr) >>> 0, incr);
-};
-var $elm$core$Bitwise$xor = _Bitwise_xor;
-var $elm$random$Random$peel = function (_v0) {
-	var state = _v0.a;
-	var word = (state ^ (state >>> ((state >>> 28) + 4))) * 277803737;
-	return ((word >>> 22) ^ word) >>> 0;
-};
-var $elm$random$Random$float = F2(
-	function (a, b) {
-		return $elm$random$Random$Generator(
-			function (seed0) {
-				var seed1 = $elm$random$Random$next(seed0);
-				var range = $elm$core$Basics$abs(b - a);
-				var n1 = $elm$random$Random$peel(seed1);
-				var n0 = $elm$random$Random$peel(seed0);
-				var lo = (134217727 & n1) * 1.0;
-				var hi = (67108863 & n0) * 1.0;
-				var val = ((hi * 134217728.0) + lo) / 9007199254740992.0;
-				var scaled = (val * range) + a;
-				return _Utils_Tuple2(
-					scaled,
-					$elm$random$Random$next(seed1));
-			});
-	});
-var $elm$random$Random$initialSeed = function (x) {
-	var _v0 = $elm$random$Random$next(
-		A2($elm$random$Random$Seed, 0, 1013904223));
-	var state1 = _v0.a;
-	var incr = _v0.b;
-	var state2 = (state1 + x) >>> 0;
-	return $elm$random$Random$next(
-		A2($elm$random$Random$Seed, state2, incr));
-};
-var $elm$random$Random$map2 = F3(
-	function (func, _v0, _v1) {
-		var genA = _v0.a;
-		var genB = _v1.a;
-		return $elm$random$Random$Generator(
-			function (seed0) {
-				var _v2 = genA(seed0);
-				var a = _v2.a;
-				var seed1 = _v2.b;
-				var _v3 = genB(seed1);
-				var b = _v3.a;
-				var seed2 = _v3.b;
-				return _Utils_Tuple2(
-					A2(func, a, b),
-					seed2);
-			});
-	});
-var $elm$random$Random$int = F2(
-	function (a, b) {
-		return $elm$random$Random$Generator(
-			function (seed0) {
-				var _v0 = (_Utils_cmp(a, b) < 0) ? _Utils_Tuple2(a, b) : _Utils_Tuple2(b, a);
-				var lo = _v0.a;
-				var hi = _v0.b;
-				var range = (hi - lo) + 1;
-				if (!((range - 1) & range)) {
-					return _Utils_Tuple2(
-						(((range - 1) & $elm$random$Random$peel(seed0)) >>> 0) + lo,
-						$elm$random$Random$next(seed0));
-				} else {
-					var threshhold = (((-range) >>> 0) % range) >>> 0;
-					var accountForBias = function (seed) {
-						accountForBias:
-						while (true) {
-							var x = $elm$random$Random$peel(seed);
-							var seedN = $elm$random$Random$next(seed);
-							if (_Utils_cmp(x, threshhold) < 0) {
-								var $temp$seed = seedN;
-								seed = $temp$seed;
-								continue accountForBias;
-							} else {
-								return _Utils_Tuple2((x % range) + lo, seedN);
-							}
-						}
-					};
-					return accountForBias(seed0);
-				}
-			});
-	});
-var $elm$random$Random$map3 = F4(
-	function (func, _v0, _v1, _v2) {
-		var genA = _v0.a;
-		var genB = _v1.a;
-		var genC = _v2.a;
-		return $elm$random$Random$Generator(
-			function (seed0) {
-				var _v3 = genA(seed0);
-				var a = _v3.a;
-				var seed1 = _v3.b;
-				var _v4 = genB(seed1);
-				var b = _v4.a;
-				var seed2 = _v4.b;
-				var _v5 = genC(seed2);
-				var c = _v5.a;
-				var seed3 = _v5.b;
-				return _Utils_Tuple2(
-					A3(func, a, b, c),
-					seed3);
-			});
-	});
-var $elm$core$Bitwise$or = _Bitwise_or;
-var $elm$random$Random$step = F2(
-	function (_v0, seed) {
-		var generator = _v0.a;
-		return generator(seed);
-	});
-var $elm$random$Random$independentSeed = $elm$random$Random$Generator(
-	function (seed0) {
-		var makeIndependentSeed = F3(
-			function (state, b, c) {
-				return $elm$random$Random$next(
-					A2($elm$random$Random$Seed, state, (1 | (b ^ c)) >>> 0));
-			});
-		var gen = A2($elm$random$Random$int, 0, 4294967295);
-		return A2(
-			$elm$random$Random$step,
-			A4($elm$random$Random$map3, makeIndependentSeed, gen, gen, gen),
-			seed0);
-	});
-var $elm$random$Random$listHelp = F4(
-	function (revList, n, gen, seed) {
-		listHelp:
-		while (true) {
-			if (n < 1) {
-				return _Utils_Tuple2(revList, seed);
-			} else {
-				var _v0 = gen(seed);
-				var value = _v0.a;
-				var newSeed = _v0.b;
-				var $temp$revList = A2($elm$core$List$cons, value, revList),
-					$temp$n = n - 1,
-					$temp$gen = gen,
-					$temp$seed = newSeed;
-				revList = $temp$revList;
-				n = $temp$n;
-				gen = $temp$gen;
-				seed = $temp$seed;
-				continue listHelp;
-			}
-		}
-	});
-var $elm$random$Random$list = F2(
-	function (n, _v0) {
-		var gen = _v0.a;
-		return $elm$random$Random$Generator(
-			function (seed) {
-				return A4($elm$random$Random$listHelp, _List_Nil, n, gen, seed);
-			});
-	});
-var $elm$random$Random$map = F2(
-	function (func, _v0) {
-		var genA = _v0.a;
-		return $elm$random$Random$Generator(
-			function (seed0) {
-				var _v1 = genA(seed0);
-				var a = _v1.a;
-				var seed1 = _v1.b;
-				return _Utils_Tuple2(
-					func(a),
-					seed1);
-			});
-	});
-var $author$project$Game$Pile$mapPositionRandomly = F2(
-	function (fun, list) {
-		return A2(
-			$elm$random$Random$map,
-			function (randomList) {
-				return A2(
-					$elm$core$List$indexedMap,
-					F2(
-						function (i, _v0) {
-							var entity = _v0.a;
-							var seed = _v0.b;
-							return function (_v1) {
-								var position = _v1.a;
-								return _Utils_update(
-									entity,
-									{position: position});
-							}(
-								A2(
-									$elm$random$Random$step,
-									A3(fun, i, entity.content, entity.position),
-									seed));
-						}),
-					A3($elm$core$List$map2, $elm$core$Tuple$pair, list, randomList));
-			},
-			A2(
-				$elm$random$Random$list,
-				$elm$core$List$length(list),
-				$elm$random$Random$independentSeed));
-	});
-var $author$project$Game$Pile$mapRotationRandomly = F2(
-	function (fun, list) {
-		return A2(
-			$elm$random$Random$map,
-			function (randomList) {
-				return A2(
-					$elm$core$List$indexedMap,
-					F2(
-						function (i, _v0) {
-							var entity = _v0.a;
-							var seed = _v0.b;
-							return function (_v1) {
-								var rotation = _v1.a;
-								return _Utils_update(
-									entity,
-									{rotation: rotation});
-							}(
-								A2(
-									$elm$random$Random$step,
-									A3(fun, i, entity.content, entity.rotation),
-									seed));
-						}),
-					A3($elm$core$List$map2, $elm$core$Tuple$pair, list, randomList));
-			},
-			A2(
-				$elm$random$Random$list,
-				$elm$core$List$length(list),
-				$elm$random$Random$independentSeed));
-	});
-var $author$project$View$Pile$random = A3(
-	$author$project$Game$Pile$toHtml,
-	_List_Nil,
-	{
-		empty: $author$project$View$Component$empty(_List_Nil),
-		view: F3(
-			function (_v6, _v7, attrs) {
-				return A3($author$project$Game$Entity$toHtml, attrs, $elm$core$Basics$identity, $author$project$View$Component$defaultCard);
-			})
-	},
-	function (generator) {
-		return A2(
-			$elm$random$Random$step,
-			generator,
-			$elm$random$Random$initialSeed(40));
-	}(
-		A2(
-			$elm$random$Random$andThen,
-			$author$project$Game$Pile$mapPositionRandomly(
-				F3(
-					function (_v3, _v4, _v5) {
-						return A3(
-							$elm$random$Random$map2,
-							F2(
-								function (angle, distance) {
-									return $elm$core$Basics$fromPolar(
-										_Utils_Tuple2(distance, angle));
-								}),
-							A2($elm$random$Random$float, (-$elm$core$Basics$pi) / 8, $elm$core$Basics$pi / 8),
-							A2($elm$random$Random$float, -50, 50));
-					})),
-			A2(
-				$author$project$Game$Pile$mapRotationRandomly,
-				F3(
-					function (_v0, _v1, _v2) {
-						return A2($elm$random$Random$float, (-$elm$core$Basics$pi) / 8, $elm$core$Basics$pi / 8);
-					}),
-				A2(
-					$elm$core$List$repeat,
-					3,
-					$author$project$Game$Entity$new(_Utils_Tuple0))))).a);
-var $author$project$View$Pile$rotated = A3(
-	$author$project$Game$Pile$toHtml,
-	_List_Nil,
-	{
-		empty: $author$project$View$Component$empty(_List_Nil),
-		view: F3(
-			function (_v0, _v1, attrs) {
-				return A3($author$project$Game$Entity$toHtml, attrs, $elm$core$Basics$identity, $author$project$View$Component$defaultCard);
-			})
-	},
-	A2(
-		$author$project$Game$Pile$withLinearRotation,
-		{max: 0, min: (-$elm$core$Basics$pi) / 16},
-		A2(
-			$elm$core$List$repeat,
-			3,
-			$author$project$Game$Entity$new(_Utils_Tuple0))));
-var $author$project$View$Pile$singleCard = A3(
-	$author$project$Game$Pile$toHtml,
-	_List_Nil,
-	{
-		empty: $author$project$View$Component$empty(_List_Nil),
-		view: F3(
-			function (_v0, _v1, attrs) {
-				return A3($author$project$Game$Entity$toHtml, attrs, $elm$core$Basics$identity, $author$project$View$Component$defaultCard);
-			})
-	},
-	_List_fromArray(
-		[
-			function (it) {
-			return _Utils_update(
-				it,
-				{
-					position: _Utils_Tuple2(-50, 0),
-					rotation: (-$elm$core$Basics$pi) / 16
-				});
-		}(
-			$author$project$Game$Entity$new(_Utils_Tuple0))
-		]));
-var $author$project$Chapter$Pile$chapter = A2(
-	$dtwrks$elm_book$ElmBook$Chapter$renderWithComponentList,
-	'',
-	A2(
-		$dtwrks$elm_book$ElmBook$Chapter$withComponentList,
-		_List_fromArray(
-			[
-				_Utils_Tuple2(
-				'Pile',
-				$author$project$View$Component$list(
-					_List_fromArray(
-						[
-							_Utils_Tuple2('Single Card', $author$project$View$Pile$singleCard),
-							_Utils_Tuple2('withMovement', $author$project$View$Pile$below),
-							_Utils_Tuple2('withRotation', $author$project$View$Pile$rotated),
-							_Utils_Tuple2('randomRotation and randomMovement', $author$project$View$Pile$random),
-							_Utils_Tuple2('withRotation and withMovement', $author$project$View$Pile$hand)
-						])))
-			]),
-		$dtwrks$elm_book$ElmBook$Chapter$chapter('Game.Pile')));
 var $dtwrks$elm_book$ElmBook$Chapter$renderStatefulComponent = F2(
 	function (view_, _v0) {
 		var builder = _v0.a;
@@ -8235,17 +8220,19 @@ var $author$project$Demo$Chapter$update = F2(
 					A2(
 						$elm$core$Maybe$map,
 						function (selected) {
-							return function (_v1) {
+							return model.turnedOver ? function (_v1) {
 								var game = _v1.a;
 								var seed = _v1.b;
 								return _Utils_update(
 									model,
-									{game: game, seed: seed, selected: $elm$core$Maybe$Nothing});
+									{game: game, seed: seed, selected: $elm$core$Maybe$Nothing, turnedOver: false});
 							}(
 								A2(
 									$elm$random$Random$step,
 									A2($author$project$Demo$Game$play, selected, model.game),
-									model.seed));
+									model.seed)) : _Utils_update(
+								model,
+								{turnedOver: true});
 						},
 						model.selected));
 			default:
@@ -8254,7 +8241,7 @@ var $author$project$Demo$Chapter$update = F2(
 					var seed = _v2.b;
 					return _Utils_update(
 						model,
-						{game: game, seed: seed, selected: $elm$core$Maybe$Nothing});
+						{game: game, seed: seed, selected: $elm$core$Maybe$Nothing, turnedOver: false});
 				}(
 					A2($elm$random$Random$step, $author$project$Demo$Game$init, model.seed));
 		}
@@ -8301,7 +8288,7 @@ var $author$project$Demo$View$Card$toEntity = F3(
 							_List_fromArray(
 								[
 									A2(
-									$author$project$Game$Card$title,
+									$author$project$Game$Card$element,
 									_List_fromArray(
 										[
 											A2($elm$html$Html$Attributes$style, 'font-size', '18px')
@@ -8309,7 +8296,7 @@ var $author$project$Demo$View$Card$toEntity = F3(
 									$elm$html$Html$text(
 										$author$project$Demo$View$Card$toEmoji(card) + (' ' + $author$project$Demo$View$Card$toString(card)))),
 									A2(
-									$author$project$Game$Card$description,
+									$author$project$Game$Card$element,
 									_List_fromArray(
 										[
 											A2($elm$html$Html$Attributes$style, 'font-size', '64px'),
@@ -8337,36 +8324,35 @@ var $author$project$Demo$View$Game$arena = F2(
 				_List_fromArray(
 					[
 						A3(
-						$author$project$Game$Area$fromStack,
+						$author$project$Game$Area$pileAbove,
 						_Utils_Tuple2(-100, 0),
-						{
-							empty: _Utils_Tuple2(
-								'selected_0',
-								function (attrs) {
-									return A2($author$project$Game$Card$empty, attrs, 'Select a card');
-								}),
-							view: F2(
-								function (_v1, _v2) {
-									var cardId = _v2.a;
-									var card = _v2.b;
-									return _Utils_Tuple2(
-										'card_' + $elm$core$String$fromInt(cardId),
-										function (attrs) {
-											return A3(
-												$author$project$Game$Entity$toHtml,
-												attrs,
-												$elm$core$Basics$identity,
-												A3($author$project$Demo$View$Card$toEntity, _List_Nil, true, card));
-										});
-								})
-						},
+						_Utils_Tuple2(
+							'selected_0',
+							function (attrs) {
+								return A2($author$project$Game$Card$empty, attrs, 'Select a card');
+							}),
 						A2(
 							$elm$core$Maybe$withDefault,
 							_List_Nil,
 							A2(
 								$elm$core$Maybe$map,
 								$elm$core$List$singleton,
-								A2($elm$core$Maybe$map, $author$project$Game$Entity$new, args.yourPick)))),
+								A2(
+									$elm$core$Maybe$map,
+									function (_v1) {
+										var cardId = _v1.a;
+										var card = _v1.b;
+										return $author$project$Game$Entity$new(
+											_Utils_Tuple2(
+												'card_' + $elm$core$String$fromInt(cardId),
+												function (attrs) {
+													return A2(
+														$author$project$Game$Entity$toHtml,
+														attrs,
+														A3($author$project$Demo$View$Card$toEntity, _List_Nil, true, card));
+												}));
+									},
+									args.yourPick)))),
 						_List_fromArray(
 						[
 							A2(
@@ -8392,29 +8378,13 @@ var $author$project$Demo$View$Game$arena = F2(
 								}))
 						]),
 						A3(
-						$author$project$Game$Area$fromStack,
+						$author$project$Game$Area$pileAbove,
 						_Utils_Tuple2(100, 0),
-						{
-							empty: _Utils_Tuple2(
-								'selected_1',
-								function (attrs) {
-									return A2($author$project$Game$Card$empty, attrs, 'No Card');
-								}),
-							view: F2(
-								function (_v4, _v5) {
-									var cardId = _v5.a;
-									var fun = _v5.b;
-									return _Utils_Tuple2(
-										'card_' + $elm$core$String$fromInt(cardId),
-										function (attrs) {
-											return fun(
-												A2(
-													$elm$core$List$cons,
-													$elm$html$Html$Events$onClick(args.playCard),
-													attrs));
-										});
-								})
-						},
+						_Utils_Tuple2(
+							'selected_1',
+							function (attrs) {
+								return A2($author$project$Game$Card$empty, attrs, 'No Card');
+							}),
 						A2(
 							$elm$core$Maybe$withDefault,
 							_List_Nil,
@@ -8423,18 +8393,28 @@ var $author$project$Demo$View$Game$arena = F2(
 								$elm$core$List$singleton,
 								A2(
 									$elm$core$Maybe$map,
-									function (_v3) {
-										var cardId = _v3.a;
-										var card = _v3.b;
+									function (_v2) {
+										var cardId = _v2.a;
+										var card = _v2.b;
 										return A2(
 											$author$project$Game$Entity$map,
-											$elm$core$Tuple$pair(cardId),
-											A3($author$project$Demo$View$Card$toEntity, _List_Nil, false, card));
+											function (fun) {
+												return _Utils_Tuple2(
+													'card_' + $elm$core$String$fromInt(cardId),
+													function (attrs) {
+														return fun(
+															A2(
+																$elm$core$List$cons,
+																$elm$html$Html$Events$onClick(args.playCard),
+																attrs));
+													});
+											},
+											A3($author$project$Demo$View$Card$toEntity, _List_Nil, args.turnedOver, card));
 									},
 									args.opponentPick))))
 					])));
 	});
-var $author$project$Game$Pile$mapZIndex = function (fun) {
+var $author$project$Game$Area$mapZIndex = function (fun) {
 	return $elm$core$List$indexedMap(
 		F2(
 			function (i, entity) {
@@ -8449,7 +8429,7 @@ var $author$project$Demo$View$Game$discardPile = F2(
 		var x = _v0.a;
 		var y = _v0.b;
 		return A2(
-			$author$project$Game$Pile$mapPosition,
+			$author$project$Game$Area$mapPosition,
 			F3(
 				function (i, _v3, _v4) {
 					return _Utils_Tuple2(
@@ -8457,7 +8437,7 @@ var $author$project$Demo$View$Game$discardPile = F2(
 						((i * 15) + y) - (($elm$core$List$length(l) * 15) / 2));
 				}),
 			A2(
-				$author$project$Game$Pile$mapZIndex,
+				$author$project$Game$Area$mapZIndex,
 				F2(
 					function (i, _v2) {
 						return $elm$core$Basics$add(i + 1);
@@ -8503,57 +8483,46 @@ var $author$project$Demo$Game$gameOver = function (game) {
 var $author$project$Demo$View$Game$hand = F3(
 	function (pos, args, l) {
 		return A3(
-			$author$project$Game$Area$fromStack,
+			$author$project$Game$Area$pileAbove,
 			pos,
-			{
-				empty: _Utils_Tuple2(
-					'empty_stack',
-					function (attrs) {
-						return A2($elm$html$Html$div, attrs, _List_Nil);
-					}),
-				view: F2(
-					function (_v3, _v4) {
-						var cardId = _v4.a;
-						var fun = _v4.b;
-						return _Utils_Tuple2(
-							'card_' + $elm$core$String$fromInt(cardId),
-							function (attrs) {
-								return fun(
-									_Utils_ap(
-										attrs,
-										_List_fromArray(
-											[
-												$elm$html$Html$Events$onClick(
-												args.selectCard(cardId))
-											])));
-							});
-					})
-			},
-			function (list) {
-				return A2(
-					$author$project$Game$Pile$mapPosition,
-					F3(
-						function (i, _v1, _v2) {
-							return _Utils_Tuple2(
-								(i - (($elm$core$List$length(list) - 1) / 2)) * 30,
-								0);
-						}),
-					list);
-			}(
+			_Utils_Tuple2(
+				'empty_stack',
+				function (attrs) {
+					return A2($elm$html$Html$div, attrs, _List_Nil);
+				}),
+			A2(
+				$author$project$Game$Area$withLinearRotation,
+				{max: $elm$core$Basics$pi / 16, min: (-$elm$core$Basics$pi) / 16},
 				A2(
-					$elm$core$List$filterMap,
-					function (_v0) {
-						var cardId = _v0.a;
-						var card = _v0.b;
-						return (!_Utils_eq(
-							$elm$core$Maybe$Just(cardId),
-							args.selected)) ? $elm$core$Maybe$Just(
-							A2(
-								$author$project$Game$Entity$map,
-								$elm$core$Tuple$pair(cardId),
-								A3($author$project$Demo$View$Card$toEntity, _List_Nil, true, card))) : $elm$core$Maybe$Nothing;
-					},
-					l)));
+					$author$project$Game$Area$withPolarPosition,
+					{maxAngle: $elm$core$Basics$pi / 32, maxDistance: 50, minAngle: (-$elm$core$Basics$pi) / 32, minDistance: -50},
+					A2(
+						$elm$core$List$filterMap,
+						function (_v0) {
+							var cardId = _v0.a;
+							var card = _v0.b;
+							return (!_Utils_eq(
+								$elm$core$Maybe$Just(cardId),
+								args.selected)) ? $elm$core$Maybe$Just(
+								A2(
+									$author$project$Game$Entity$map,
+									function (fun) {
+										return _Utils_Tuple2(
+											'card_' + $elm$core$String$fromInt(cardId),
+											function (attrs) {
+												return fun(
+													_Utils_ap(
+														attrs,
+														_List_fromArray(
+															[
+																$elm$html$Html$Events$onClick(
+																args.selectCard(cardId))
+															])));
+											});
+									},
+									A3($author$project$Demo$View$Card$toEntity, _List_Nil, true, card))) : $elm$core$Maybe$Nothing;
+						},
+						l))));
 	});
 var $author$project$Demo$Game$handOf = F2(
 	function (playerId, game) {
@@ -8573,26 +8542,16 @@ var $author$project$Demo$Game$handOf = F2(
 var $author$project$Demo$View$Game$hiddenHand = F3(
 	function (pos, args, l) {
 		return A3(
-			$author$project$Game$Area$fromStack,
+			$author$project$Game$Area$pileAbove,
 			pos,
-			{
-				empty: _Utils_Tuple2(
-					'empty_stack',
-					function (attrs) {
-						return A2($elm$html$Html$div, attrs, _List_Nil);
-					}),
-				view: F2(
-					function (_v3, _v4) {
-						var cardId = _v4.a;
-						var fun = _v4.b;
-						return _Utils_Tuple2(
-							'card_' + $elm$core$String$fromInt(cardId),
-							fun);
-					})
-			},
+			_Utils_Tuple2(
+				'empty_stack',
+				function (attrs) {
+					return A2($elm$html$Html$div, attrs, _List_Nil);
+				}),
 			function (list) {
 				return A2(
-					$author$project$Game$Pile$mapPosition,
+					$author$project$Game$Area$mapPosition,
 					F3(
 						function (i, _v1, _v2) {
 							return _Utils_Tuple2(
@@ -8618,7 +8577,8 @@ var $author$project$Demo$View$Game$hiddenHand = F3(
 										])),
 								A2(
 									$author$project$Game$Entity$map,
-									$elm$core$Tuple$pair(cardId),
+									$elm$core$Tuple$pair(
+										'card_' + $elm$core$String$fromInt(cardId)),
 									A3($author$project$Demo$View$Card$toEntity, _List_Nil, false, card)))) : $elm$core$Maybe$Nothing;
 					},
 					l)));
@@ -8663,6 +8623,7 @@ var $author$project$Demo$View$Game$toHtml = F2(
 										},
 										game.opponentPick),
 									playCard: args.playCard,
+									turnedOver: args.turnedOver,
 									yourPick: A2(
 										$elm$core$Maybe$andThen,
 										function (cardId) {
@@ -8738,7 +8699,15 @@ var $author$project$Demo$View$Game$toHtml = F2(
 var $author$project$Demo$Chapter$view = function (model) {
 	return A2(
 		$author$project$Demo$View$Game$toHtml,
-		{playCard: $author$project$Demo$Chapter$PlayCard, restart: $author$project$Demo$Chapter$Restart, selectCard: $author$project$Demo$Chapter$SelectCard, selected: model.selected},
+		{
+			playCard: $author$project$Demo$Chapter$PlayCard,
+			restart: $author$project$Demo$Chapter$Restart,
+			selectCard: model.turnedOver ? function (_v0) {
+				return $author$project$Demo$Chapter$PlayCard;
+			} : $author$project$Demo$Chapter$SelectCard,
+			selected: model.selected,
+			turnedOver: model.turnedOver
+		},
 		model.game);
 };
 var $author$project$Demo$Chapter$chapter = function (args) {
@@ -8791,7 +8760,7 @@ var $author$project$Demo$Chapter$init = function () {
 		$elm$random$Random$initialSeed(39));
 	var game = _v0.a;
 	var seed = _v0.b;
-	return {game: game, seed: seed, selected: $elm$core$Maybe$Nothing};
+	return {game: game, seed: seed, selected: $elm$core$Maybe$Nothing, turnedOver: false};
 }();
 var $author$project$Main$init = {area: $author$project$Chapter$Area$init, card: $author$project$Chapter$Card$init, demo: $author$project$Demo$Chapter$init};
 var $dtwrks$elm_book$ElmBook$StatefulOptions$initialState = F2(
@@ -24875,7 +24844,6 @@ var $author$project$Main$main = A2(
 									{card: state});
 							})
 					}),
-					$author$project$Chapter$Pile$chapter,
 					$author$project$Chapter$Area$chapter(
 					{
 						get: function ($) {

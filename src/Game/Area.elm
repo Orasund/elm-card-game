@@ -7,7 +7,7 @@ module Game.Area exposing
 
 {-|
 
-@docs new, move, rotate, toHtml
+@docs new, toHtml
 
 @docs map, mapPosition, mapPositionRandomly, mapRotation, mapRotationRandomly, mapZIndex
 
