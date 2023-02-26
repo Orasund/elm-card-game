@@ -24,19 +24,19 @@ arena :
     -> List (Entity ( String, List (Attribute msg) -> Html msg ))
 arena ( x, y ) args =
     [ args.yourPick
-        |> Maybe.map Game.Entity.new
+        |> Maybe.map
+            (\( cardId, card ) ->
+                ( "card_" ++ String.fromInt cardId
+                , \attrs ->
+                    Demo.View.Card.toEntity [] True card
+                        |> Game.Entity.toHtml attrs
+                )
+                    |> Game.Entity.new
+            )
         |> Maybe.map List.singleton
         |> Maybe.withDefault []
-        |> Game.Area.fromPile ( -100, 0 )
-            { view =
-                \_ ( cardId, card ) ->
-                    ( "card_" ++ String.fromInt cardId
-                    , \attrs ->
-                        Demo.View.Card.toEntity [] True card
-                            |> Game.Entity.toHtml attrs
-                    )
-            , empty = ( "selected_0", \attrs -> Game.Card.empty attrs "Select a card" )
-            }
+        |> Game.Area.pileAbove ( -100, 0 )
+            ( "selected_0", \attrs -> Game.Card.empty attrs "Select a card" )
     , [ (\attrs ->
             Html.text "vs."
                 |> List.singleton
@@ -57,18 +57,17 @@ arena ( x, y ) args =
             (\( cardId, card ) ->
                 card
                     |> Demo.View.Card.toEntity [] args.turnedOver
-                    |> Game.Entity.map (Tuple.pair cardId)
+                    |> Game.Entity.map
+                        (\fun ->
+                            ( "card_" ++ String.fromInt cardId
+                            , \attrs -> fun (Html.Events.onClick args.playCard :: attrs)
+                            )
+                        )
             )
         |> Maybe.map List.singleton
         |> Maybe.withDefault []
-        |> Game.Area.fromPile ( 100, 0 )
-            { view =
-                \_ ( cardId, fun ) ->
-                    ( "card_" ++ String.fromInt cardId
-                    , \attrs -> fun (Html.Events.onClick args.playCard :: attrs)
-                    )
-            , empty = ( "selected_1", \attrs -> Game.Card.empty attrs "No Card" )
-            }
+        |> Game.Area.pileAbove ( 100, 0 )
+            ( "selected_1", \attrs -> Game.Card.empty attrs "No Card" )
     ]
         |> List.concat
         |> List.map (Game.Entity.mapPosition (Tuple.mapBoth ((+) x) ((+) y)))
@@ -82,7 +81,12 @@ hand pos args l =
                 if Just cardId /= args.selected then
                     card
                         |> Demo.View.Card.toEntity [] True
-                        |> Game.Entity.map (Tuple.pair cardId)
+                        |> Game.Entity.map
+                            (\fun ->
+                                ( "card_" ++ String.fromInt cardId
+                                , \attrs -> fun (attrs ++ [ Html.Events.onClick (args.selectCard cardId) ])
+                                )
+                            )
                         |> Just
 
                 else
@@ -95,17 +99,10 @@ hand pos args l =
             , maxAngle = pi / 32
             }
         |> Game.Area.withLinearRotation { min = -pi / 16, max = pi / 16 }
-        |> Game.Area.fromPile pos
-            { view =
-                \_ ( cardId, fun ) ->
-                    ( "card_" ++ String.fromInt cardId
-                    , \attrs -> fun (attrs ++ [ Html.Events.onClick (args.selectCard cardId) ])
-                    )
-            , empty =
-                ( "empty_stack"
-                , \attrs -> Html.div attrs []
-                )
-            }
+        |> Game.Area.pileAbove pos
+            ( "empty_stack"
+            , \attrs -> Html.div attrs []
+            )
 
 
 hiddenHand : ( Float, Float ) -> { selected : Maybe CardId } -> List ( CardId, Card ) -> List (Entity ( String, List (Attribute msg) -> Html msg ))
@@ -116,7 +113,7 @@ hiddenHand pos args l =
                 if Just cardId /= args.selected then
                     card
                         |> Demo.View.Card.toEntity [] False
-                        |> Game.Entity.map (Tuple.pair cardId)
+                        |> Game.Entity.map (Tuple.pair ("card_" ++ String.fromInt cardId))
                         |> Game.Entity.mapCustomTransformations ((++) [ Game.Entity.scale (1 / 2) ])
                         |> Just
 
@@ -130,17 +127,10 @@ hiddenHand pos args l =
                             ( (toFloat i - (toFloat (List.length list) - 1) / 2) * 30, 0 )
                         )
            )
-        |> Game.Area.fromPile pos
-            { view =
-                \_ ( cardId, fun ) ->
-                    ( "card_" ++ String.fromInt cardId
-                    , fun
-                    )
-            , empty =
-                ( "empty_stack"
-                , \attrs -> Html.div attrs []
-                )
-            }
+        |> Game.Area.pileAbove pos
+            ( "empty_stack"
+            , \attrs -> Html.div attrs []
+            )
 
 
 discardPile : ( Float, Float ) -> List ( CardId, Card ) -> List (Entity ( String, List (Attribute msg) -> Html msg ))

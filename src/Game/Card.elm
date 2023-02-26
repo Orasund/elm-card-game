@@ -70,6 +70,8 @@ empty attrs string =
          , Html.Attributes.style "justify-content" "center"
          , Html.Attributes.style "align-items" "center"
          , Html.Attributes.style "background-color" "none"
+
+         --Should be placed behind all cards
          , Html.Attributes.style "z-index" "0"
          ]
             ++ attrs
@@ -111,6 +113,8 @@ coin attrs content =
 backgroundImage : String -> List (Attribute msg)
 backgroundImage src =
     [ Html.Attributes.style "background-image" ("url(" ++ src ++ ")")
+
+    --fill the available space with the image.
     , Html.Attributes.style "background-size" "cover"
     , Html.Attributes.style "background-position" "center"
     ]
@@ -121,8 +125,8 @@ backgroundImage src =
 fillingImage : List (Attribute msg) -> String -> Html msg
 fillingImage attrs src =
     Html.div
-        ([ Html.Attributes.style "flex-grow" "1"
-         , Html.Attributes.style "display" "flex"
+        ([ Html.Attributes.style "display" "flex"
+         , Html.Attributes.style "flex-grow" "1"
          ]
             ++ backgroundImage src
             ++ attrs

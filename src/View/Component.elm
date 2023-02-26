@@ -24,7 +24,7 @@ defaultCard =
           ]
             |> Game.Card.row []
         , image |> Game.Card.fillingImage []
-        , [ Html.text "🔥" |> Game.Card.element []
+        , [ Html.text "1" |> Game.Card.element []
           , Html.text "Removes runtime exceptions" |> Game.Card.element []
           ]
             |> Game.Card.row []

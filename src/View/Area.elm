@@ -10,19 +10,16 @@ import View.Component
 
 singleCard : Html msg
 singleCard =
-    [ Game.Entity.new ()
+    [ Game.Entity.new (\attrs -> View.Component.defaultCard |> Game.Entity.toHtml attrs)
         |> (\it -> { it | rotation = -pi / 16, position = ( -50, 0 ) })
     ]
-        |> Game.Area.pile
-            { view = \_ () attrs -> View.Component.defaultCard |> Game.Entity.toHtml attrs
-            , empty = View.Component.empty []
-            }
+        |> Game.Entity.pileAbove (View.Component.empty [])
         |> Game.Entity.toHtml []
 
 
 below : Html msg
 below =
-    Game.Entity.new ()
+    Game.Entity.new (\attrs -> View.Component.defaultCard |> Game.Entity.toHtml attrs)
         |> List.repeat 3
         |> Game.Area.withPolarPosition
             { minDistance = -50
@@ -30,28 +27,22 @@ below =
             , minAngle = pi / 2
             , maxAngle = pi / 2
             }
-        |> Game.Area.pile
-            { view = \_ () attrs -> View.Component.defaultCard |> Game.Entity.toHtml attrs
-            , empty = View.Component.empty []
-            }
+        |> Game.Entity.pileAbove (View.Component.empty [])
         |> Game.Entity.toHtml []
 
 
 rotated : Html msg
 rotated =
-    Game.Entity.new ()
+    Game.Entity.new (\attrs -> View.Component.defaultCard |> Game.Entity.toHtml attrs)
         |> List.repeat 3
         |> Game.Area.withLinearRotation { min = -pi / 16, max = 0 }
-        |> Game.Area.pile
-            { view = \_ () attrs -> View.Component.defaultCard |> Game.Entity.toHtml attrs
-            , empty = View.Component.empty []
-            }
+        |> Game.Entity.pileAbove (View.Component.empty [])
         |> Game.Entity.toHtml []
 
 
 random : Html msg
 random =
-    Game.Entity.new ()
+    Game.Entity.new (\attrs -> View.Component.defaultCard |> Game.Entity.toHtml attrs)
         |> List.repeat 3
         |> Game.Area.mapRotationRandomly (\_ _ _ -> Random.float (-pi / 8) (pi / 8))
         |> Random.andThen
@@ -64,10 +55,7 @@ random =
             )
         |> (\generator -> Random.step generator (Random.initialSeed 40))
         |> Tuple.first
-        |> Game.Area.pile
-            { view = \_ () attrs -> View.Component.defaultCard |> Game.Entity.toHtml attrs
-            , empty = View.Component.empty []
-            }
+        |> Game.Entity.pileAbove (View.Component.empty [])
         |> Game.Entity.toHtml []
 
 
@@ -97,10 +85,8 @@ hand =
                 else
                     stackItem
             )
-        |> Game.Area.pile
-            { view = \_ () attrs -> View.Component.defaultCard |> Game.Entity.toHtml attrs
-            , empty = Html.text ""
-            }
+        |> List.map (Game.Entity.map (\() attrs -> View.Component.defaultCard |> Game.Entity.toHtml attrs))
+        |> Game.Entity.pileAbove (Html.text "")
         |> Game.Entity.toHtml
             [ Html.Attributes.style "height" "250px"
             , Html.Attributes.style "width" "400px"
@@ -120,10 +106,8 @@ hoverable args =
                     , faceUp = args.hoverOver == Just i
                     }
                 ]
-                    |> Game.Area.pile
-                        { view = \_ fun -> fun
-                        , empty = View.Component.empty []
-                        }
+                    |> Game.Entity.pileAbove
+                        (View.Component.empty [])
                     |> Game.Entity.toHtml
                         (Game.Area.hoverable
                             { onEnter = Just (args.onEnter i), onLeave = Just args.onLeave }
@@ -151,7 +135,9 @@ draggable args =
                             }
                 in
                 (if args.cardAt == i then
-                    ()
+                    ( "draggable__card"
+                    , \a -> View.Component.defaultCard |> Game.Entity.toHtml (attrs ++ a)
+                    )
                         |> Game.Entity.new
                         |> (\stackItem ->
                                 if args.isSelected then
@@ -165,17 +151,10 @@ draggable args =
                  else
                     []
                 )
-                    |> Game.Area.fromPile ( toFloat i * 150, 0 )
-                        { view =
-                            \_ () ->
-                                ( "draggable__card"
-                                , \a -> View.Component.defaultCard |> Game.Entity.toHtml (attrs ++ a)
-                                )
-                        , empty =
-                            ( "draggable__empty_" ++ String.fromInt i
-                            , \a -> View.Component.empty (attrs ++ a)
-                            )
-                        }
+                    |> Game.Area.pileAbove ( toFloat i * 150, 0 )
+                        ( "draggable__empty_" ++ String.fromInt i
+                        , \a -> View.Component.empty (attrs ++ a)
+                        )
             )
         |> List.concat
         |> Game.Area.toHtml [ Html.Attributes.style "height" "200px" ]
@@ -205,7 +184,31 @@ pile index args list =
         |> List.map Game.Entity.new
         |> List.indexedMap
             (\i stackItem ->
-                stackItem
+                (if stackItem.content.asPhantom then
+                    stackItem
+                        |> Game.Entity.mapZIndex ((+) 100)
+
+                 else
+                    stackItem
+                )
+                    |> Game.Entity.map
+                        (\card ->
+                            ( "pile__" ++ String.fromInt card.cardId
+                            , \a ->
+                                View.Component.defaultCard
+                                    |> Game.Entity.toHtml
+                                        ((if card.asPhantom then
+                                            [ Html.Attributes.style "filter" "brightness(0.9)"
+                                            ]
+
+                                          else
+                                            []
+                                         )
+                                            ++ attrs
+                                            ++ a
+                                        )
+                            )
+                        )
                     |> Game.Entity.mapPosition
                         (Tuple.mapBoth
                             ((+) 0)
@@ -221,31 +224,7 @@ pile index args list =
                             )
                         )
             )
-        |> List.map
-            (\stackItem ->
-                if stackItem.content.asPhantom then
-                    { stackItem | zIndex = 100 }
-
-                else
-                    stackItem
+        |> Game.Area.pileAbove args.position
+            ( "pile__empty__" ++ String.fromInt index
+            , \a -> View.Component.empty (Html.Attributes.style "z-index" "0" :: attrs ++ a)
             )
-        |> Game.Area.fromPile args.position
-            { view =
-                \_ card ->
-                    ( "pile__" ++ String.fromInt card.cardId
-                    , \a ->
-                        View.Component.defaultCard
-                            |> Game.Entity.toHtml
-                                ((if card.asPhantom then
-                                    [ Html.Attributes.style "filter" "brightness(0.9)"
-                                    ]
-
-                                  else
-                                    []
-                                 )
-                                    ++ attrs
-                                    ++ a
-                                )
-                    )
-            , empty = ( "pile__empty__" ++ String.fromInt index, \a -> View.Component.empty (Html.Attributes.style "z-index" "0" :: attrs ++ a) )
-            }

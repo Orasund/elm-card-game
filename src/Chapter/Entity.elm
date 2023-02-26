@@ -4,8 +4,8 @@ import ElmBook.Actions
 import ElmBook.Chapter exposing (Chapter)
 import Example.FlippableCard
 import Html
-import View.Card
 import View.Component
+import View.Entity
 
 
 type alias Model =
@@ -28,18 +28,20 @@ chapter args =
             [ ( "Entity"
               , \_ ->
                     View.Component.list
-                        [ ( "withRotate (pi/2)", View.Card.rotated )
-                        , ( "withTranslate (0,-50)", View.Card.move )
+                        [ ( "move", View.Entity.move )
+                        , ( "rotate", View.Entity.rotate )
                         ]
               )
             , ( "Transformations"
               , \_ ->
                     View.Component.list
-                        [ ( "scale (1/2)", View.Card.small )
-                        , ( "flip (pi/4)", View.Card.flipped )
+                        [ ( "mapRotation", View.Entity.mapRotation )
+                        , ( "mapPosition", View.Entity.mapPosition )
+                        , ( "scale", View.Entity.scale )
+                        , ( "flip", View.Entity.flip )
                         ]
               )
-            , ( "Flippable Cards"
+            , ( "Perspective"
               , \model ->
                     model
                         |> args.get
@@ -67,4 +69,6 @@ chapter args =
               )
             ]
         |> ElmBook.Chapter.renderWithComponentList
-            ""
+            """Entities are an abstraction of CSS-Transformations. You can move and rotate entities, pile them together and apply transformations to piles of entities.
+            
+You can use `Game.Entity.toHtml` to turn an entity into Html."""

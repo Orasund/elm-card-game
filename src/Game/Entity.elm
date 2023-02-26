@@ -1,8 +1,9 @@
 module Game.Entity exposing
-    ( Entity, new, toAttributes, toHtml
+    ( Entity, new, toAttributes, toHtml, pileAbove
+    , move, rotate
     , map, mapCustomTransformations, mapPosition, mapRotation, mapZIndex
     , flippable, perspective
-    , Transformation, transform, move, rotate, scale, flip
+    , Transformation, transform, scale, moveTransformation, rotateTransformation, flipTransformation
     )
 
 {-| module for working with entities.
@@ -10,7 +11,9 @@ module Game.Entity exposing
 
 # Entity
 
-@docs Entity, new, toAttributes, toHtml
+@docs Entity, new, toAttributes, toHtml, pileAbove
+
+@docs move, rotate
 
 @docs map, mapCustomTransformations, mapPosition, mapRotation, mapZIndex
 
@@ -19,7 +22,7 @@ module Game.Entity exposing
 
 # Transformation
 
-@docs Transformation, transform, move, rotate, scale, flip
+@docs Transformation, transform, scale, moveTransformation, rotateTransformation, flipTransformation
 
 -}
 
@@ -45,8 +48,10 @@ new a =
     { position = ( 0, 0 )
     , rotation = 0
     , customTransformations = []
-    , zIndex = 1
     , content = a
+
+    -- cards should have at least a z-index of 1
+    , zIndex = 1
     }
 
 
@@ -67,8 +72,8 @@ map fun i =
 toAttributes : Entity a -> ( a, List (Attribute msg) )
 toAttributes entity =
     ( entity.content
-    , [ [ move entity.position
-        , rotate entity.rotation
+    , [ [ moveTransformation entity.position
+        , rotateTransformation entity.rotation
         ]
             ++ entity.customTransformations
             |> transform
@@ -98,6 +103,20 @@ mapPosition fun entity =
     { entity | position = fun entity.position }
 
 
+{-| rotate a entity
+-}
+rotate : Float -> Entity a -> Entity a
+rotate amount =
+    mapRotation ((+) amount)
+
+
+{-| move a entity
+-}
+move : ( Float, Float ) -> Entity a -> Entity a
+move ( x, y ) =
+    mapPosition (Tuple.mapBoth ((+) x) ((+) y))
+
+
 {-| map z-index
 -}
 mapZIndex : (Int -> Int) -> Entity a -> Entity a
@@ -113,6 +132,17 @@ mapCustomTransformations fun entity =
 
 
 {-| Create an entity that can be flipped
+
+**For technical reasons we needed to provide a width. Default is a ratio of 2/3**
+
+You can overrule the default by providing a width:
+
+    height = 200
+
+    ratio = 2/3
+
+    flippable [Html.Attributes.style "width" (String.fromFloat (height * ratio) ++ "px")]
+
 -}
 flippable :
     List (Attribute msg)
@@ -125,17 +155,24 @@ flippable :
 flippable attrs args =
     (\a ->
         [ args.front
-            |> mapCustomTransformations ((::) (flip 0))
+            |> mapCustomTransformations ((::) (flipTransformation 0))
             |> toHtml [ Html.Attributes.style "position" "absolute" ]
+
+        -- place behind the front element
         , args.back
-            |> mapCustomTransformations ((::) (flip pi))
+            |> mapCustomTransformations ((::) (flipTransformation pi))
             |> toHtml [ Html.Attributes.style "position" "absolute" ]
         ]
             |> Html.div
                 ([ Html.Attributes.style "position" "relative"
                  , Html.Attributes.style "transition" "transform 0.5s"
-                 , Html.Attributes.style "transform-style" "preserve-3d"
                  , Html.Attributes.style "height" "200px"
+
+                 -- allow 3d rotations (flipping)
+                 , Html.Attributes.style "transform-style" "preserve-3d"
+
+                 -- width can be overwritten if your entity has different dimensions
+                 -- using a ratio will not work for this implementation!
                  , Html.Attributes.style "width" (String.fromFloat (200 * 2 / 3) ++ "px")
                  ]
                     ++ a
@@ -146,10 +183,10 @@ flippable attrs args =
         |> mapCustomTransformations
             ((++)
                 (if not args.faceUp then
-                    [ flip pi ]
+                    [ flipTransformation pi ]
 
                  else
-                    [ flip 0 ]
+                    [ flipTransformation 0 ]
                 )
             )
 
@@ -185,8 +222,8 @@ scale float =
 
 {-| Rotate the card by a radial.
 -}
-rotate : Float -> Transformation
-rotate float =
+rotateTransformation : Float -> Transformation
+rotateTransformation float =
     "rotate("
         ++ String.fromFloat float
         ++ "rad)"
@@ -194,8 +231,8 @@ rotate float =
 
 {-| Move the card
 -}
-move : ( Float, Float ) -> Transformation
-move ( x, y ) =
+moveTransformation : ( Float, Float ) -> Transformation
+moveTransformation ( x, y ) =
     "translate("
         ++ String.fromFloat x
         ++ "px,"
@@ -203,17 +240,42 @@ move ( x, y ) =
         ++ "px)"
 
 
-{-| Only works if the outer div has a `perspective` Attribute
+{-| Flip the card. Only works if the outer div has a `perspective` Attribute
 -}
-flip : Float -> Transformation
-flip float =
+flipTransformation : Float -> Transformation
+flipTransformation float =
     "rotateY("
         ++ String.fromFloat float
         ++ "rad)"
 
 
-{-| activates a 3d-effect for the child notes. Should be used in combination with `flip`
+{-| Activates a 3d-effect for the child notes. Should be used in combination with `flip`
 -}
 perspective : Attribute msg
 perspective =
     Html.Attributes.style "perspective" "1000px"
+
+
+{-| Group Entities into a pile
+-}
+pileAbove :
+    Html msg
+    -> List (Entity (List (Attribute msg) -> Html msg))
+    -> Entity (List (Attribute msg) -> Html msg)
+pileAbove empty stack =
+    (\attrs ->
+        stack
+            |> List.map
+                (toHtml
+                    [ Html.Attributes.style "position" "absolute"
+                    ]
+                )
+            |> (::) empty
+            |> Html.div
+                ([ Html.Attributes.style "display" "flex"
+                 , Html.Attributes.style "position" "relative"
+                 ]
+                    ++ attrs
+                )
+    )
+        |> new

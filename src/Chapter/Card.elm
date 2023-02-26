@@ -43,5 +43,9 @@ chapter =
                     ]
               )
             ]
-        |> ElmBook.Chapter.renderWithComponentList
-            ""
+        |> ElmBook.Chapter.renderWithComponentList """Cards are styled `div` nodes that take use of Flexbox.
+        
+It has a couple of default styling defined that are meant to be overwritten.
+
+If you want to use the package without this module, make sure your custom cards have the CSS-style `backface-visibility` set to `hidden`. This is required in order for `Game.Entity.flip` to work.
+        """

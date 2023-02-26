@@ -1,7 +1,6 @@
 module View.Card exposing (..)
 
 import Game.Card
-import Game.Entity
 import Html exposing (Html)
 import View.Component
 
@@ -59,7 +58,7 @@ backgroundImage =
 row : Html msg
 row =
     [ Html.text "Title" |> Game.Card.element []
-    , Html.text "🔥" |> Game.Card.element []
+    , Html.text "🌳" |> Game.Card.element []
     ]
         |> Game.Card.row []
         |> List.singleton
@@ -73,36 +72,6 @@ fullImage =
     , View.Component.image |> Game.Card.fillingImage []
     ]
         |> Game.Card.default []
-
-
-rotated : Html msg
-rotated =
-    View.Component.defaultCard
-        |> Game.Entity.mapRotation ((+) (pi / 2))
-        |> Game.Entity.toHtml []
-
-
-small : Html msg
-small =
-    View.Component.defaultCard
-        |> Game.Entity.mapCustomTransformations ((++) [ Game.Entity.scale (1 / 2) ])
-        |> Game.Entity.toHtml []
-
-
-move : Html msg
-move =
-    View.Component.defaultCard
-        |> Game.Entity.mapPosition (\_ -> ( 0, -50 ))
-        |> Game.Entity.toHtml []
-
-
-flipped : Html msg
-flipped =
-    View.Component.defaultCard
-        |> Game.Entity.mapCustomTransformations ((++) [ Game.Entity.flip (pi / 4) ])
-        |> Game.Entity.toHtml []
-        |> List.singleton
-        |> Html.div [ Game.Entity.perspective ]
 
 
 coin : Html msg

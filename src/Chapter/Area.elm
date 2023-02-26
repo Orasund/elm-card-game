@@ -51,7 +51,7 @@ chapter args =
             (\state ->
                 ( args.setTo state init, Cmd.none )
             )
-        |> ElmBook.Chapter.renderStatefulComponentList
+        |> ElmBook.Chapter.withStatefulComponentList
             ([ ( "Pile"
                , \_ ->
                     View.Component.list
@@ -101,3 +101,5 @@ chapter args =
                         )
                     )
             )
+        |> ElmBook.Chapter.renderWithComponentList
+            """A Area should be something you can interact with. It uses `Html.Keyed` to allow for transitions between states."""
