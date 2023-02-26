@@ -33,6 +33,6 @@ view model =
         , back = View.Component.defaultBack
         , faceUp = model.isFlipped
         }
-        |> Game.Entity.toHtml [] identity
+        |> Game.Entity.toHtml []
         |> List.singleton
         |> Html.div [ Game.Entity.perspective ]

@@ -1,6 +1,6 @@
 module Game.Card exposing
     ( default, empty, back, coin
-    , title, header, fillingImage, description
+    , element, row, fillingImage
     , ratio, backgroundImage
     )
 
@@ -14,7 +14,7 @@ module Game.Card exposing
 
 # Parts
 
-@docs title, header, fillingImage, description
+@docs element, row, fillingImage
 
 
 # Attributes
@@ -106,19 +106,6 @@ coin attrs content =
         [ content ]
 
 
-{-| Display a text with some padding
--}
-title : List (Attribute msg) -> Html msg -> Html msg
-title attrs content =
-    Html.div
-        ([ Html.Attributes.style "padding" "8px 8px"
-         , Html.Attributes.style "display" "flex"
-         ]
-            ++ attrs
-        )
-        [ content ]
-
-
 {-| Sets the background to an image
 -}
 backgroundImage : String -> List (Attribute msg)
@@ -145,8 +132,8 @@ fillingImage attrs src =
 
 {-| Displays a content with a padding
 -}
-description : List (Attribute msg) -> Html msg -> Html msg
-description attrs content =
+element : List (Attribute msg) -> Html msg -> Html msg
+element attrs content =
     Html.div
         ([ Html.Attributes.style "display" "flex"
          , Html.Attributes.style "padding" "8px 8px"
@@ -158,13 +145,12 @@ description attrs content =
 
 {-| A row on top of the card. It uses flexbox.
 -}
-header : List (Attribute msg) -> List (Html msg) -> Html msg
-header attrs content =
+row : List (Attribute msg) -> List (Html msg) -> Html msg
+row attrs content =
     Html.div
         ([ Html.Attributes.style "display" "flex"
          , Html.Attributes.style "flex-direction" "row"
          , Html.Attributes.style "justify-content" "space-between"
-         , Html.Attributes.style "padding" "8px 8px"
          ]
             ++ attrs
         )

@@ -8,11 +8,11 @@ import View.Area
 
 
 type alias AreaId =
-    { areaId : Int }
+    Int
 
 
 type alias CardId =
-    { cardId : Int }
+    Int
 
 
 type alias Card =
@@ -47,7 +47,7 @@ init =
             |> Dict.fromList
     , areas =
         Dict.fromList
-            [ ( 0, List.range 0 4 |> List.map CardId ) ]
+            [ ( 0, List.range 0 4 ) ]
     , dragging = Nothing
     }
 
@@ -59,7 +59,7 @@ update msg model =
             { model
                 | dragging =
                     model.areas
-                        |> Dict.get areaId.areaId
+                        |> Dict.get areaId
                         |> Maybe.andThen List.head
                         |> Maybe.map
                             (\cardId ->
@@ -81,12 +81,12 @@ update msg model =
                             | dragging = Nothing
                             , areas =
                                 model.areas
-                                    |> Dict.update fromArea.areaId
+                                    |> Dict.update fromArea
                                         (\maybe ->
                                             maybe
                                                 |> Maybe.map (List.filter ((/=) cardId))
                                         )
-                                    |> Dict.update id.areaId
+                                    |> Dict.update id
                                         (\maybe ->
                                             maybe
                                                 |> Maybe.withDefault []
@@ -136,7 +136,7 @@ view state =
 
                             else
                                 state.cards
-                                    |> Dict.get cardId.cardId
+                                    |> Dict.get cardId
                                     |> Maybe.map
                                         (\card ->
                                             { cardId = cardId
@@ -148,9 +148,9 @@ view state =
                     |> (state.dragging
                             |> Maybe.map
                                 (\dragging ->
-                                    if dragging.aboveArea == AreaId i then
+                                    if dragging.aboveArea == i then
                                         state.cards
-                                            |> Dict.get dragging.cardId.cardId
+                                            |> Dict.get dragging.cardId
                                             |> Maybe.map
                                                 (\card ->
                                                     (::)
@@ -173,18 +173,18 @@ view state =
                                 Nothing
 
                             else
-                                StartDragging (AreaId i) |> Just
+                                StartDragging i |> Just
                         , onStopDragging =
-                            if draggedFromArea == Just (AreaId i) then
+                            if draggedFromArea == Just i then
                                 StopDragging |> Just
 
                             else
-                                DraggedOnto (AreaId i) |> Just
+                                DraggedOnto i |> Just
                         , onEntering =
                             draggedFromArea
                                 |> Maybe.andThen
                                     (\_ ->
-                                        Just (DragIn (AreaId i))
+                                        Just (DragIn i)
                                     )
                         , onLeaving =
                             draggedFromArea

@@ -6,6 +6,8 @@ import Example.Draggable
 import Example.Hover
 import Example.StackArea
 import Html
+import View.Area
+import View.Component
 
 
 type alias State =
@@ -50,7 +52,17 @@ chapter args =
                 ( args.setTo state init, Cmd.none )
             )
         |> ElmBook.Chapter.renderStatefulComponentList
-            ([ ( "hoverable"
+            ([ ( "Pile"
+               , \_ ->
+                    View.Component.list
+                        [ ( "Single Card", View.Area.singleCard )
+                        , ( "withPolarPosition", View.Area.below )
+                        , ( "withLinearRotation", View.Area.rotated )
+                        , ( "Randomness", View.Area.random )
+                        , ( "withLinearRotation and withPolarPosition", View.Area.hand )
+                        ]
+               )
+             , ( "hoverable"
                , \state ->
                     state.hoverState
                         |> Example.Hover.view

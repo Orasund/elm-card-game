@@ -19,7 +19,7 @@ back =
 default : Html msg
 default =
     Html.text "Title"
-        |> Game.Card.title []
+        |> Game.Card.element []
         |> List.singleton
         |> Game.Card.default []
 
@@ -27,7 +27,7 @@ default =
 square : Html msg
 square =
     Html.text "Title"
-        |> Game.Card.title []
+        |> Game.Card.element []
         |> List.singleton
         |> Game.Card.default [ Game.Card.ratio 1 ]
 
@@ -35,35 +35,42 @@ square =
 horizontal : Html msg
 horizontal =
     Html.text "Title"
-        |> Game.Card.title []
+        |> Game.Card.element []
         |> List.singleton
         |> Game.Card.default [ Game.Card.ratio 1.5 ]
 
 
-titleRow : Html msg
-titleRow =
-    [ Html.div [] [ Html.text "Title with a symbol" ]
-    , Html.div [] [ Html.text "🔥" ]
+element : Html msg
+element =
+    [ Html.text "This is an element of the card. It has a 8px wide border and wraps the content to fit into the element."
+        |> Game.Card.element []
     ]
-        |> Game.Card.header []
+        |> Game.Card.default []
+
+
+backgroundImage : Html msg
+backgroundImage =
+    [ Html.text "Title"
+        |> Game.Card.element []
+    ]
+        |> Game.Card.default (Game.Card.backgroundImage View.Component.image)
+
+
+row : Html msg
+row =
+    [ Html.text "Title" |> Game.Card.element []
+    , Html.text "🔥" |> Game.Card.element []
+    ]
+        |> Game.Card.row []
         |> List.singleton
         |> Game.Card.default []
 
 
 fullImage : Html msg
 fullImage =
-    [ Html.text "Card with an Image" |> Game.Card.title []
+    [ Html.text "Title"
+        |> Game.Card.element []
     , View.Component.image |> Game.Card.fillingImage []
-    ]
-        |> Game.Card.default []
-
-
-imageAndDesc : Html msg
-imageAndDesc =
-    [ Html.text "Title" |> Game.Card.title []
-    , View.Component.image |> Game.Card.fillingImage []
-    , Html.text "Card with image and description"
-        |> Game.Card.description []
     ]
         |> Game.Card.default []
 
@@ -72,28 +79,28 @@ rotated : Html msg
 rotated =
     View.Component.defaultCard
         |> Game.Entity.mapRotation ((+) (pi / 2))
-        |> Game.Entity.toHtml [] identity
+        |> Game.Entity.toHtml []
 
 
 small : Html msg
 small =
     View.Component.defaultCard
         |> Game.Entity.mapCustomTransformations ((++) [ Game.Entity.scale (1 / 2) ])
-        |> Game.Entity.toHtml [] identity
+        |> Game.Entity.toHtml []
 
 
 move : Html msg
 move =
     View.Component.defaultCard
         |> Game.Entity.mapPosition (\_ -> ( 0, -50 ))
-        |> Game.Entity.toHtml [] identity
+        |> Game.Entity.toHtml []
 
 
 flipped : Html msg
 flipped =
     View.Component.defaultCard
         |> Game.Entity.mapCustomTransformations ((++) [ Game.Entity.flip (pi / 4) ])
-        |> Game.Entity.toHtml [] identity
+        |> Game.Entity.toHtml []
         |> List.singleton
         |> Html.div [ Game.Entity.perspective ]
 

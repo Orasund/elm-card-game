@@ -8,7 +8,6 @@ import Dict
 import Game.Area
 import Game.Card
 import Game.Entity exposing (Entity)
-import Game.Pile
 import Html exposing (Attribute, Html)
 import Html.Attributes
 import Html.Events
@@ -34,7 +33,7 @@ arena ( x, y ) args =
                     ( "card_" ++ String.fromInt cardId
                     , \attrs ->
                         Demo.View.Card.toEntity [] True card
-                            |> Game.Entity.toHtml attrs identity
+                            |> Game.Entity.toHtml attrs
                     )
             , empty = ( "selected_0", \attrs -> Game.Card.empty attrs "Select a card" )
             }
@@ -89,13 +88,13 @@ hand pos args l =
                 else
                     Nothing
             )
-        |> Game.Pile.withPolarPosition
+        |> Game.Area.withPolarPosition
             { minDistance = -50
             , maxDistance = 50
             , minAngle = -pi / 32
             , maxAngle = pi / 32
             }
-        |> Game.Pile.withLinearRotation { min = -pi / 16, max = pi / 16 }
+        |> Game.Area.withLinearRotation { min = -pi / 16, max = pi / 16 }
         |> Game.Area.fromPile pos
             { view =
                 \_ ( cardId, fun ) ->
@@ -126,7 +125,7 @@ hiddenHand pos args l =
             )
         |> (\list ->
                 list
-                    |> Game.Pile.mapPosition
+                    |> Game.Area.mapPosition
                         (\i ( _, _ ) _ ->
                             ( (toFloat i - (toFloat (List.length list) - 1) / 2) * 30, 0 )
                         )
@@ -154,8 +153,8 @@ discardPile ( x, y ) l =
                     |> Game.Entity.map (Tuple.pair ("card_" ++ String.fromInt cardId))
                     |> Game.Entity.mapCustomTransformations ((++) [ Game.Entity.scale (1 / 2) ])
             )
-        |> Game.Pile.mapZIndex (\i _ -> (+) (i + 1))
-        |> Game.Pile.mapPosition (\i _ _ -> ( x, toFloat i * 15 + y - (toFloat (List.length l) * 15 / 2) ))
+        |> Game.Area.mapZIndex (\i _ -> (+) (i + 1))
+        |> Game.Area.mapPosition (\i _ _ -> ( x, toFloat i * 15 + y - (toFloat (List.length l) * 15 / 2) ))
 
 
 toHtml :

@@ -19,13 +19,15 @@ empty attrs =
 defaultCard : Entity (List (Attribute msg) -> Html msg)
 defaultCard =
     (\a ->
-        [ [ Html.div [] [ Html.text "Elm" ]
-          , Html.div [] [ Html.text "🌳" ]
+        [ [ Html.text "Elm" |> Game.Card.element []
+          , Html.text "🌳" |> Game.Card.element []
           ]
-            |> Game.Card.header []
+            |> Game.Card.row []
         , image |> Game.Card.fillingImage []
-        , Html.text "Removes runtime exceptions"
-            |> Game.Card.description []
+        , [ Html.text "🔥" |> Game.Card.element []
+          , Html.text "Removes runtime exceptions" |> Game.Card.element []
+          ]
+            |> Game.Card.row []
         ]
             |> Game.Card.default a
     )

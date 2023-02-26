@@ -36,9 +36,10 @@ chapter =
               )
             , ( "Layouts"
               , View.Component.list
-                    [ ( "header", View.Card.titleRow )
+                    [ ( "element", View.Card.element )
+                    , ( "row", View.Card.row )
+                    , ( "backgroundImage", View.Card.backgroundImage )
                     , ( "fillingImage", View.Card.fullImage )
-                    , ( "description", View.Card.imageAndDesc )
                     ]
               )
             ]

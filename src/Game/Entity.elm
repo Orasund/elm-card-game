@@ -79,9 +79,9 @@ toAttributes entity =
 
 {-| turn the entity into html
 -}
-toHtml : List (Attribute msg) -> (a -> List (Attribute msg) -> Html msg) -> Entity a -> Html msg
-toHtml attrs fun entity =
-    fun entity.content (Tuple.second (toAttributes entity) ++ attrs)
+toHtml : List (Attribute msg) -> Entity (List (Attribute msg) -> Html msg) -> Html msg
+toHtml attrs entity =
+    entity.content (Tuple.second (toAttributes entity) ++ attrs)
 
 
 {-| map rotation
@@ -126,10 +126,10 @@ flippable attrs args =
     (\a ->
         [ args.front
             |> mapCustomTransformations ((::) (flip 0))
-            |> toHtml [ Html.Attributes.style "position" "absolute" ] identity
+            |> toHtml [ Html.Attributes.style "position" "absolute" ]
         , args.back
             |> mapCustomTransformations ((::) (flip pi))
-            |> toHtml [ Html.Attributes.style "position" "absolute" ] identity
+            |> toHtml [ Html.Attributes.style "position" "absolute" ]
         ]
             |> Html.div
                 ([ Html.Attributes.style "position" "relative"
