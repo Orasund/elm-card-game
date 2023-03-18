@@ -12,6 +12,11 @@ Elm-Card-Game is a package for displaying card games. Checkout the [guide](https
 elm install Orasund/elm-card-game
 ```
 
+## Games created with elm-card-game
+
+* [Waiting for Wind](https://orasund.itch.io/waiting-for-wind)
+* [Enough for Now](https://orasund.itch.io/enough-for-now)
+
 ## No Magic Included
 
 The mechanics behind this package are actually quite boring. No wizardry was used.
