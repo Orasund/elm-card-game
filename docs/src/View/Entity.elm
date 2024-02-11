@@ -8,28 +8,24 @@ import View.Component
 
 move : Html msg
 move =
-    [ (\attrs ->
-        Html.text "Title"
-            |> Game.Card.element
-                attrs
-      )
-        |> Game.Entity.new
-        |> Game.Entity.move ( 90, 160 )
-        |> Game.Entity.toHtml []
+    [ Html.text "Title"
+        |> Game.Card.element
+            (Game.Entity.new
+                |> Game.Entity.move ( 90, 160 )
+                |> Game.Entity.toAttributes
+            )
     ]
         |> Game.Card.default (Game.Card.backgroundImage View.Component.image)
 
 
 rotate : Html msg
 rotate =
-    [ [ (\attrs ->
-            Html.text "Title"
-                |> Game.Card.element
-                    attrs
-        )
-            |> Game.Entity.new
-            |> Game.Entity.rotate (-pi / 4)
-            |> Game.Entity.toHtml []
+    [ [ Html.text "Title"
+            |> Game.Card.element
+                (Game.Entity.new
+                    |> Game.Entity.rotate (-pi / 4)
+                    |> Game.Entity.toAttributes
+                )
       ]
         |> Game.Card.row []
     ]
@@ -38,29 +34,33 @@ rotate =
 
 mapRotation : Html msg
 mapRotation =
-    View.Component.defaultCard
+    Game.Entity.new
         |> Game.Entity.mapRotation ((+) (pi / 2))
-        |> Game.Entity.toHtml []
+        |> Game.Entity.toAttributes
+        |> View.Component.defaultCard
 
 
 scale : Html msg
 scale =
-    View.Component.defaultCard
+    Game.Entity.new
         |> Game.Entity.mapCustomTransformations ((++) [ Game.Entity.scale (1 / 2) ])
-        |> Game.Entity.toHtml []
+        |> Game.Entity.toAttributes
+        |> View.Component.defaultCard
 
 
 mapPosition : Html msg
 mapPosition =
-    View.Component.defaultCard
+    Game.Entity.new
         |> Game.Entity.mapPosition (\_ -> ( 0, -50 ))
-        |> Game.Entity.toHtml []
+        |> Game.Entity.toAttributes
+        |> View.Component.defaultCard
 
 
 flip : Html msg
 flip =
-    View.Component.defaultCard
+    Game.Entity.new
         |> Game.Entity.mapCustomTransformations ((++) [ Game.Entity.flipTransformation (pi / 4) ])
-        |> Game.Entity.toHtml []
+        |> Game.Entity.toAttributes
+        |> View.Component.defaultCard
         |> List.singleton
         |> Html.div [ Game.Entity.perspective ]

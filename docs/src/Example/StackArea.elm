@@ -1,7 +1,7 @@
 module Example.StackArea exposing (..)
 
 import Dict exposing (Dict)
-import Game.Area
+import Game.Entity
 import Html exposing (Html)
 import Html.Attributes
 import View.Area
@@ -194,7 +194,7 @@ view state =
                                     )
                         }
             )
-        |> List.concat
-        |> Game.Area.toHtml
+        |> Html.div
             [ Html.Attributes.style "height" "200px"
+            , Game.Entity.asStack
             ]

@@ -1,97 +1,104 @@
 module View.Area exposing (..)
 
-import Game.Area
-import Game.Entity exposing (Entity)
-import Html exposing (Attribute, Html)
+import Game.Entity
+import Html exposing (Html)
 import Html.Attributes
-import Random
+import Html.Keyed
 import View.Component
 
 
 singleCard : Html msg
 singleCard =
-    [ Game.Entity.new (\attrs -> View.Component.defaultCard |> Game.Entity.toHtml attrs)
-        |> (\it -> { it | rotation = -pi / 16, position = ( -50, 0 ) })
+    [ View.Component.empty [ Game.Entity.asStackItems ]
+    , Game.Entity.new
+        |> Game.Entity.rotate (-pi / 16)
+        |> Game.Entity.move ( -50, 0 )
+        |> Game.Entity.toAttributes
+        |> (++) [ Game.Entity.asStackItems ]
+        |> View.Component.defaultCard
     ]
-        |> Game.Entity.pileAbove (View.Component.empty [])
-        |> Game.Entity.toHtml []
+        |> Html.div [ Game.Entity.asStack ]
 
 
 below : Html msg
 below =
-    Game.Entity.new (\attrs -> View.Component.defaultCard |> Game.Entity.toHtml attrs)
-        |> List.repeat 3
-        |> Game.Area.withPolarPosition
-            { minDistance = -50
-            , maxDistance = 0
-            , minAngle = pi / 2
-            , maxAngle = pi / 2
-            }
-        |> Game.Entity.pileAbove (View.Component.empty [])
-        |> Game.Entity.toHtml []
+    List.repeat 3 ()
+        |> List.indexedMap
+            (\i () ->
+                Game.Entity.new
+                    |> Game.Entity.moveEvenlyAroundCenter
+                        { minDistance = -50
+                        , maxDistance = 0
+                        , minAngle = pi / 2
+                        , maxAngle = pi / 2
+                        , index = i
+                        , length = 3
+                        }
+                    |> Game.Entity.toAttributes
+                    |> (::) Game.Entity.asStackItems
+                    |> View.Component.defaultCard
+            )
+        |> Html.div [ Game.Entity.asStack ]
 
 
 rotated : Html msg
 rotated =
-    Game.Entity.new (\attrs -> View.Component.defaultCard |> Game.Entity.toHtml attrs)
-        |> List.repeat 3
-        |> Game.Area.withLinearRotation { min = -pi / 16, max = 0 }
-        |> Game.Entity.pileAbove (View.Component.empty [])
-        |> Game.Entity.toHtml []
-
-
-random : Html msg
-random =
-    Game.Entity.new (\attrs -> View.Component.defaultCard |> Game.Entity.toHtml attrs)
-        |> List.repeat 3
-        |> Game.Area.mapRotationRandomly (\_ _ _ -> Random.float (-pi / 8) (pi / 8))
-        |> Random.andThen
-            (Game.Area.mapPositionRandomly
-                (\_ _ _ ->
-                    Random.map2 (\angle distance -> fromPolar ( distance, angle ))
-                        (Random.float (-pi / 8) (pi / 8))
-                        (Random.float -50 50)
-                )
+    List.repeat 3 ()
+        |> List.indexedMap
+            (\i () ->
+                Game.Entity.new
+                    |> Game.Entity.rotateEvenly
+                        { min = -pi / 16
+                        , max = 0
+                        , length = 3
+                        , index = i
+                        }
+                    |> Game.Entity.toAttributes
+                    |> (::) Game.Entity.asStackItems
+                    |> View.Component.defaultCard
             )
-        |> (\generator -> Random.step generator (Random.initialSeed 40))
-        |> Tuple.first
-        |> Game.Entity.pileAbove (View.Component.empty [])
-        |> Game.Entity.toHtml []
+        |> List.map
+            (\entity ->
+                entity
+            )
+        |> Html.div [ Game.Entity.asStack ]
 
 
 hand : Html msg
 hand =
-    Game.Entity.new ()
-        |> List.repeat 5
-        |> Game.Area.withPolarPosition
-            { minDistance = -100
-            , maxDistance = 100
-            , minAngle = -pi / 32
-            , maxAngle = pi / 32
-            }
-        |> Game.Area.withLinearRotation { min = -pi / 16, max = pi / 16 }
+    List.repeat 5 ()
         |> List.indexedMap
-            (\i stackItem ->
-                if i == 3 then
-                    { stackItem
-                        | rotation = 0
-                        , position =
-                            stackItem.position
-                                |> Tuple.mapBoth
-                                    ((+) 0)
-                                    ((+) -50)
-                    }
+            (\i () ->
+                Game.Entity.new
+                    |> Game.Entity.moveEvenlyAroundCenter
+                        { minDistance = -100
+                        , maxDistance = 100
+                        , minAngle = -pi / 32
+                        , maxAngle = pi / 32
+                        , length = 5
+                        , index = i
+                        }
+                    |> (if i == 3 then
+                            Game.Entity.move ( 0, -50 )
 
-                else
-                    stackItem
+                        else
+                            Game.Entity.rotateEvenly
+                                { min = -pi / 16
+                                , max = pi / 16
+                                , length = 5
+                                , index = i
+                                }
+                       )
+                    |> Game.Entity.toAttributes
+                    |> (::) Game.Entity.asStackItems
+                    |> View.Component.defaultCard
             )
-        |> List.map (Game.Entity.map (\() attrs -> View.Component.defaultCard |> Game.Entity.toHtml attrs))
-        |> Game.Entity.pileAbove (Html.text "")
-        |> Game.Entity.toHtml
+        |> Html.div
             [ Html.Attributes.style "height" "250px"
             , Html.Attributes.style "width" "400px"
             , Html.Attributes.style "align-items" "end"
             , Html.Attributes.style "justify-content" "center"
+            , Game.Entity.asStack
             ]
 
 
@@ -100,17 +107,18 @@ hoverable args =
     List.repeat 3 ()
         |> List.indexedMap
             (\i () ->
-                [ Game.Entity.flippable []
+                [ View.Component.empty [ Game.Entity.asStackItems ]
+                , Game.Entity.flippable []
                     { front = View.Component.defaultCard
                     , back = View.Component.defaultBack
                     , faceUp = args.hoverOver == Just i
                     }
+                    Game.Entity.new
                 ]
-                    |> Game.Entity.pileAbove
-                        (View.Component.empty [])
-                    |> Game.Entity.toHtml
-                        (Game.Area.hoverable
-                            { onEnter = Just (args.onEnter i), onLeave = Just args.onLeave }
+                    |> Html.div
+                        (Game.Entity.asStack
+                            :: Game.Entity.hoverable
+                                { onEnter = Just (args.onEnter i), onLeave = Just args.onLeave }
                         )
             )
         |> Html.div
@@ -127,37 +135,41 @@ draggable args =
     List.repeat 3 ()
         |> List.indexedMap
             (\i () ->
-                let
-                    attrs =
-                        Game.Area.draggable
-                            { onPress = args.onPress i
-                            , onRelease = args.onRelease i
-                            }
-                in
                 (if args.cardAt == i then
-                    ( "draggable__card"
-                    , \a -> View.Component.defaultCard |> Game.Entity.toHtml (attrs ++ a)
-                    )
-                        |> Game.Entity.new
-                        |> (\stackItem ->
-                                if args.isSelected then
-                                    { stackItem | rotation = pi / 16 }
+                    [ Game.Entity.new
+                        |> (if args.isSelected then
+                                Game.Entity.rotate (pi / 16)
 
-                                else
-                                    stackItem
+                            else
+                                identity
                            )
+                        |> Game.Entity.move ( toFloat i * 150, 0 )
+                        |> Game.Entity.toAttributes
+                    , Game.Entity.draggable
+                        { onPress = args.onPress i
+                        , onRelease = args.onRelease i
+                        }
+                    , [ Game.Entity.asStackItems ]
+                    ]
+                        |> List.concat
+                        |> View.Component.defaultCard
+                        |> Tuple.pair "draggable__card"
                         |> List.singleton
 
                  else
                     []
                 )
-                    |> Game.Area.pileAbove ( toFloat i * 150, 0 )
-                        ( "draggable__empty_" ++ String.fromInt i
-                        , \a -> View.Component.empty (attrs ++ a)
+                    |> (::)
+                        (Game.Entity.new
+                            |> Game.Entity.move ( toFloat i * 150, 0 )
+                            |> Game.Entity.toAttributes
+                            |> (::) Game.Entity.asStackItems
+                            |> View.Component.empty
+                            |> Tuple.pair ("draggable__empty_" ++ String.fromInt i)
                         )
             )
         |> List.concat
-        |> Game.Area.toHtml [ Html.Attributes.style "height" "200px" ]
+        |> Html.Keyed.node "div" [ Game.Entity.asStack, Html.Attributes.style "height" "200px" ]
         |> List.singleton
         |> Html.div [ Game.Entity.perspective ]
 
@@ -172,59 +184,50 @@ pile :
         , onLeaving : Maybe msg
         }
     -> List { cardId : Int, card : card, asPhantom : Bool }
-    -> List (Entity ( String, List (Attribute msg) -> Html msg ))
+    -> Html msg
 pile index args list =
     let
         attrs =
-            Game.Area.draggable { onPress = args.onStartDragging, onRelease = args.onStopDragging }
-                ++ Game.Area.hoverable { onEnter = args.onEntering, onLeave = args.onEntering }
+            Game.Entity.draggable { onPress = args.onStartDragging, onRelease = args.onStopDragging }
+                ++ Game.Entity.hoverable { onEnter = args.onEntering, onLeave = args.onEntering }
     in
     list
         |> List.reverse
-        |> List.map Game.Entity.new
         |> List.indexedMap
-            (\i stackItem ->
-                (if stackItem.content.asPhantom then
-                    stackItem
-                        |> Game.Entity.mapZIndex ((+) 100)
+            (\i content ->
+                Game.Entity.new
+                    |> (if content.asPhantom then
+                            Game.Entity.mapZIndex ((+) 100)
 
-                 else
-                    stackItem
-                )
-                    |> Game.Entity.map
-                        (\card ->
-                            ( "pile__" ++ String.fromInt card.cardId
-                            , \a ->
-                                View.Component.defaultCard
-                                    |> Game.Entity.toHtml
-                                        ((if card.asPhantom then
-                                            [ Html.Attributes.style "filter" "brightness(0.9)"
-                                            ]
+                        else
+                            identity
+                       )
+                    |> Game.Entity.move ( 0, -4 * toFloat i )
+                    |> (if content.asPhantom then
+                            Game.Entity.rotate (pi / 16)
 
-                                          else
-                                            []
-                                         )
-                                            ++ attrs
-                                            ++ a
-                                        )
-                            )
-                        )
-                    |> Game.Entity.mapPosition
-                        (Tuple.mapBoth
-                            ((+) 0)
-                            ((+) (-4 * toFloat i))
-                        )
-                    |> Game.Entity.mapRotation
-                        ((+)
-                            (if stackItem.content.asPhantom then
-                                pi / 16
+                        else
+                            identity
+                       )
+                    |> Game.Entity.toAttributes
+                    |> (++)
+                        (if content.asPhantom then
+                            [ Html.Attributes.style "filter" "brightness(0.9)"
+                            ]
 
-                             else
-                                stackItem.rotation
-                            )
+                         else
+                            []
                         )
+                    |> View.Component.defaultCard
+                    |> Tuple.pair ("pile__" ++ String.fromInt content.cardId)
             )
-        |> Game.Area.pileAbove args.position
-            ( "pile__empty__" ++ String.fromInt index
-            , \a -> View.Component.empty (Html.Attributes.style "z-index" "0" :: attrs ++ a)
+        |> (::)
+            (Game.Entity.new
+                |> Game.Entity.move args.position
+                |> Game.Entity.toAttributes
+                |> (++) [ Html.Attributes.style "z-index" "0" ]
+                |> (++) attrs
+                |> View.Component.empty
+                |> Tuple.pair ("pile__empty__" ++ String.fromInt index)
             )
+        |> Html.Keyed.node "div" [ Game.Entity.asStack ]

@@ -58,7 +58,6 @@ chapter args =
                         [ ( "Single Card", View.Area.singleCard )
                         , ( "withPolarPosition", View.Area.below )
                         , ( "withLinearRotation", View.Area.rotated )
-                        , ( "Randomness", View.Area.random )
                         , ( "withLinearRotation and withPolarPosition", View.Area.hand )
                         ]
                )

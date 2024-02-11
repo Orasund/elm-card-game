@@ -5,7 +5,6 @@ import Demo.Game exposing (Game)
 import Demo.Player
 import Demo.View.Card
 import Dict
-import Game.Area
 import Game.Card
 import Game.Entity exposing (Entity)
 import Html exposing (Attribute, Html)
@@ -13,6 +12,13 @@ import Html.Attributes
 import Html.Events
 
 
+nothing : Int
+nothing =
+    0
+
+
+
+{--
 arena :
     ( Float, Float )
     ->
@@ -213,3 +219,4 @@ toHtml args game =
         |> Html.div
             [ Html.Attributes.style "position" "relative"
             ]
+--}

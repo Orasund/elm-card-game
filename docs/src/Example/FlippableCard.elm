@@ -28,11 +28,11 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    Game.Entity.flippable [ Html.Events.onClick Flip ]
-        { front = View.Component.defaultCard
-        , back = View.Component.defaultBack
-        , faceUp = model.isFlipped
-        }
-        |> Game.Entity.toHtml []
+    Game.Entity.new
+        |> Game.Entity.flippable [ Html.Events.onClick Flip ]
+            { front = View.Component.defaultCard
+            , back = View.Component.defaultBack
+            , faceUp = model.isFlipped
+            }
         |> List.singleton
         |> Html.div [ Game.Entity.perspective ]

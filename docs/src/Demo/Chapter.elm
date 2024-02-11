@@ -77,7 +77,7 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-    Demo.View.Game.toHtml
+    {--Demo.View.Game.toHtml
         { selectCard =
             if model.turnedOver then
                 \_ -> PlayCard
@@ -89,7 +89,8 @@ view model =
         , restart = Restart
         , turnedOver = model.turnedOver
         }
-        model.game
+        model.game--}
+    Html.text ""
 
 
 chapter : { get : model -> Model, setTo : model -> Model -> model } -> Chapter model

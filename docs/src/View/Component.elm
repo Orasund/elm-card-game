@@ -1,7 +1,6 @@
 module View.Component exposing (..)
 
 import Game.Card
-import Game.Entity exposing (Entity)
 import Html exposing (Attribute, Html)
 import Html.Attributes
 
@@ -16,32 +15,26 @@ empty attrs =
     Game.Card.empty attrs "No Card"
 
 
-defaultCard : Entity (List (Attribute msg) -> Html msg)
-defaultCard =
-    (\a ->
-        [ [ Html.text "Elm" |> Game.Card.element []
-          , Html.text "🌳" |> Game.Card.element []
-          ]
-            |> Game.Card.row []
-        , image |> Game.Card.fillingImage []
-        , [ Html.text "1" |> Game.Card.element []
-          , Html.text "Removes runtime exceptions" |> Game.Card.element []
-          ]
-            |> Game.Card.row []
-        ]
-            |> Game.Card.default a
-    )
-        |> Game.Entity.new
+defaultCard : List (Attribute msg) -> Html msg
+defaultCard attrs =
+    [ [ Html.text "Elm" |> Game.Card.element []
+      , Html.text "🌳" |> Game.Card.element []
+      ]
+        |> Game.Card.row []
+    , image |> Game.Card.fillingImage []
+    , [ Html.text "1" |> Game.Card.element []
+      , Html.text "Removes runtime exceptions" |> Game.Card.element []
+      ]
+        |> Game.Card.row []
+    ]
+        |> Game.Card.default attrs
 
 
-defaultBack : Entity (List (Attribute msg) -> Html msg)
-defaultBack =
-    (\attrs ->
-        [ image |> Game.Card.fillingImage [ Html.Attributes.style "filter" "grayscale(1)" ]
-        ]
-            |> Game.Card.default attrs
-    )
-        |> Game.Entity.new
+defaultBack : List (Attribute msg) -> Html msg
+defaultBack attrs =
+    [ image |> Game.Card.fillingImage [ Html.Attributes.style "filter" "grayscale(1)" ]
+    ]
+        |> Game.Card.default attrs
 
 
 coin : List (Attribute msg) -> Html msg

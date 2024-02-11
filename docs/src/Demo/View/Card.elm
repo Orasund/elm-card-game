@@ -12,7 +12,7 @@ toEmoji : Card -> String
 toEmoji card =
     case card of
         Rock ->
-            "\u{1FAA8}"
+            "🪨"
 
         Paper ->
             "📄"
@@ -34,11 +34,11 @@ toString card =
             "Scissors"
 
 
-toEntity : List (Attribute msg) -> Bool -> Card -> Entity (List (Attribute msg) -> Html msg)
-toEntity attrs faceUp card =
+toEntity : List (Attribute msg) -> Bool -> ( Entity, Card ) -> Html msg
+toEntity attrs faceUp ( entity, card ) =
     Game.Entity.flippable attrs
         { front =
-            (\a ->
+            \a ->
                 [ toEmoji card
                     ++ " "
                     ++ toString card
@@ -53,8 +53,7 @@ toEntity attrs faceUp card =
                         ]
                 ]
                     |> Game.Card.default a
-            )
-                |> Game.Entity.new
         , back = View.Component.defaultBack
         , faceUp = faceUp
         }
+        entity
